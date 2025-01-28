@@ -4,17 +4,37 @@
 
 ### Timeline Screen
 
-- [] List all the records in chronological order with, for each record:
-  - [] the project name in bold letters
-  - [] the task name,
-  - [] the project color,
+- [] List all the records in chronological order with a grouping by date.
+  - [] Grouping label is made of:
+    - the day of the week in letters,
+    - the day of the month,
+    - the month in letters,
+    - the year if the record's year is different from the current year.
+- For each record not being tracked:
+  - [] the project name in bold letters preceeded by a small circle of the project's color on its left
+  - [] the task name is preceeded by a circle checkbox, empty if task is not completed, checked otherwise,
   - [] the time tracked,
   - [] the ability to start that task once again,
-  - [] the ability to comple the task, if the record is linked to a task. It is not the case for a project.
+  - [] the ability to complete the task, if the record is linked to a task. It is not the case for a project.
+- For a ongoing tracking,
+
+  - [] A box with a background as a gradient based on the project's color.
+  - [] the project name in bold letters
+  - [] the task name is preceeded by a circle checkbox, empty if task is not completed, checked otherwise,
+  - [] the time elapsed since start of tracking,
+  - [] the ability to stop the record.
+  - [] Tapping on the record being tracked, it brings the project's screen with task and or the project itself above a "Stop task" button.
+
+  ![screenshot](images/project-screen-current-tracking.jpeg)
+
+  - [] Tapping on the current tracked record in "Today" section brings the [Record Being Tracked Screen](#editing-a-record-being-tracked).
+
+  - [] Tapping on any past tracked record brings the [Record Not Tracked Screen](#editing-a-record-not-being-tracked).
+
 - [] The list is grouped by date in chronological order.
 - [] The top item is the current tracking.
 - [] At the bottom, we have:
-  - [] On the left side, a sandwitch menu icon.
+  - [] On the left side, a sandwitch menu icon. Clicking it brings up the [Bottom Menu Modal](#bottom-menu-modal).
   - [] In the center, a button "Projects". See the [Project Selection Modal](#project-selection-modal).
 
 ### Project Selection Modal
@@ -54,7 +74,9 @@ Here is the color palette.
 
 ### Project Screen
 
-When on the [Project Selection Modal](#project-selection-modal), selecting a project brings us to that project.
+When on the [Project Selection Modal](#project-selection-modal) from the [Timeline Screen](#timeline-screen), selecting a project brings us to that project.
+
+When on the [Project Selection Modal](#project-selection-modal) from the [Edit A Record Screen](#edit-record-screen), after selecting the "Back" button on the [Select A Task Modal](#select-a-task-modal), selecting a project brings us to the edited record and updates the record to be linked to the selected project.
 
 The elements of the screen are:
 
@@ -204,11 +226,13 @@ The tab is made of:
 
 The modal includes:
 
-- [] The project's name and color (as a tiny circle).
+- [] The project's name, with a tiny circle in its color on its left.
 - [] An input to enter the task name with a placeholder "New task".
 - [] A "Save" button
   - [] The task name is required to add the task
 - [] Tapping or clicking outside the modal closes it.
+- [] When coming from the [Select A Task Modal](#select-a-task-modal), we go back to that modal
+- [] When coming from the [Tasks tab](#on-the-tasks-tab) of [the Project Screen](#project-screen), we go back to the Tasks tab.
 
 ### Edit a Task Modal
 
@@ -224,15 +248,89 @@ The modal includes:
 
 ### Add New Record Screen
 
-To analyze.
+I never used this. But the screen is very similar in functionality to the [Edit Record Not Being Tracked Screen](#editing-a-record-not-being-tracked).
 
 ### Edit Record Screen
 
-To analyze.
+#### Editing a record being tracked
+
+![screenshot](images/record-screen-being-tracked.jpeg)
+
+You can:
+
+- [] On top, select a completely different task throught the [Select A Task Modal](#select-a-task-modal)
+
+  - If the record was modified, clicking the "Back" button or the browser back will show a modal to confirm if we want to discard the changes or keep editing.
+
+  ![screenshot](images/record-screen-changes-not-saved.jpeg)
+
+- [] Edit the date and start time
+  - [] Rule: The start date and time must be greater than the current time.
+- [] A "Save" button at the bottom to save the record's modifications.
+
+#### Editing a record not being tracked
+
+![screenshot](images/record-screen-tracked-same-day.jpeg)
+
+You can:
+
+- [] On the top of the screen, use the "Back" button on left or "Delete" button on the right.
+
+  - If the record was modified, clicking the "Back" button or the browser back will show a modal to confirm if we want to discard the changes or keep editing.
+
+  ![screenshot](images/record-screen-changes-not-saved.jpeg)
+
+- [] Next, select a completely different task or project throught the [Select A Task Or Project Modal](#project-selection-modal)
+  - A change of task or project doesn't save the selection until you press the "Save" button.
+- [] The tracked time is displayed in large letters and centered.
+- [] Edit the date, start time and end time
+- [] A "Save" button at the bottom to save the record's modifications.
+
+![screenshot](images/record-screen-tracked-differnet-days.jpeg)
+
+- [] Edit the record as a multi-day record, e.g. the records starts on day N time X and ends on day N+1 time Y.
+  - [] Rule: The start date and time must be greater than the end date and time.
 
 ### Tasks Screen
 
 To analyze.
+
+### Select A Task Modal
+
+![screenshot](images/select-a-task-modal.jpeg)
+
+When coming from the [Record Screen](#edit-record-screen),
+
+- [] The project's name and color (as a tiny circle on its left).
+  - On the left, a "Back" button to display the [Project Selection Modal](#project-selection-modal)
+- [] A button "+ Add a new task"
+- [] A list of tasks:
+  - without the total tracked time
+  - with the uncheck/checked circle box for indicating ongoing or completed tasks.
+- [] Selecting a different task updates the record-assigned task and brings us back to the [Record Screen](#edit-record-screen)
+
+![screenshot](images/select-a-task-modal-2.jpeg)
+
+When coming from the [Project Selection Modal](#project-selection-modal), itself from the [Timeline Screen](#timeline-screen),
+
+- [] The project's name and color (as a tiny circle on its left).
+  - On the left, a "Back" button to display the [Project Selection Modal](#project-selection-modal)
+- [] A button "+ Add a new task" to bring the [Add A New Task Modal](#add-new-task-modal).
+- [] A list of tasks:
+  - with the uncheck/checked circle box for indicating ongoing or completed tasks.
+  - with the total tracked time inside a button that can start a new record for the task. Clicking one of those brings us back to the [Timeline Screen](#timeline-screen).
+
+### Bottom Menu Modal
+
+![screenshot](images/bottom-menu-modal.jpeg)
+
+It contains a link to:
+
+- [] the [Timeline Screen](#timeline-screen)
+- [] the [Reports Screen](#reports-screen)
+- [] the [Timers Screen](#timers-screen)
+- [] the [Calendar Screen](#calendar-screen)
+- [] After a separator, the [Settings Screen](#settings-screen)
 
 ### Settings Screen
 
@@ -244,7 +342,19 @@ To analyze.
 
 ### Reports Screen
 
-To analyze.
+![screenshot](images/report-screen-default.jpeg)
+
+![screenshot](images/report-screen-modal-date-range-selection.jpeg)
+
+![screenshot](images/report-duration-screen-default.jpeg)
+
+![screenshot](images/report-duration-screen-modal-date-selection.jpeg)
+
+![screenshot](images/report-duration-screen-selected-month.jpeg)
+
+![screenshot](images/report-projects-screen-default.jpeg)
+
+![screenshot](images/report-projects-screen-select-pie-share.jpeg)
 
 ### Timers Screen
 
