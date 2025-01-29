@@ -342,19 +342,62 @@ To analyze.
 
 ### Reports Screen
 
+#### Default Screen
+
 ![screenshot](images/report-screen-default.jpeg)
 
-![screenshot](images/report-screen-modal-date-range-selection.jpeg)
+We have:
+
+- [] At the top, a button untitled "Lifetime" with the time range with the date of the first record to the last record.
+
+  - Selecting it brings a date range picker with predefined options (Today, Last 7 days, Last 30 days, Last 180 days, Last 365 days, Lifetime) or you can select a "From" date and a "To" date.
+
+  ![screenshot](images/report-screen-modal-date-range-selection.jpeg)
+
+- [] An average daily tracked duration calculated on the tine range selected.
+- [] A column bar chart section under the title "Duration per [*scale*] with
+
+  - The portion of the tracked time per project with the project color
+  - The X scale differs from the time range selected:
+    - For Today, Last 7 days, Last 30 days or a custom time range greater than 30 days, the scale is a day.
+    - For Last 180 days or a custom time range between 31 days and 180 days, the scale is a week.
+    - For Last 365 days, Lifetime or a custom time range greater than 181 days, the scale is a month.
+  - Clicking the chart brings us to [Reports Duration Screen](#reports-duration-screen)
+
+- [] Then, we have a pie chart section under the title "Projects" with
+  - the total tracked time
+  - the portion of the tracked time per project with the project color
+  - Clicking the chart brings us to [Reports Projects Screen](#reports-projects-screen)
+- [] Finally, the total number of projects and tasks is displayed
+
+### Reports Duration Screen
 
 ![screenshot](images/report-duration-screen-default.jpeg)
 
-![screenshot](images/report-duration-screen-modal-date-selection.jpeg)
+- [] The top menu allow to go back to the [Reports Default Screen](#reports-screen).
+- [] Then, you can select a different time range.
+- [] The time range is exactly the same as the [Reports Default Screen](#reports-screen).
 
-![screenshot](images/report-duration-screen-selected-month.jpeg)
+  ![screenshot](images/report-duration-screen-modal-date-selection.jpeg)
+
+- [] Below the column bar chart, a list of items per scale depending on the time range selected is displayed.
+- [] Selecting an item on the chart will list the total tracked time, project per project, for the selected time range (a given day, week or month) and darken the column selected.
+
+  ![screenshot](images/report-duration-screen-selected-month.jpeg)
+
+### Reports Projects Screen
 
 ![screenshot](images/report-projects-screen-default.jpeg)
 
-![screenshot](images/report-projects-screen-select-pie-share.jpeg)
+- [] The top menu allow to go back to the [Reports Default Screen](#reports-screen).
+- [] Then, you can select a different time range.
+- [] Then, the same pie chart as on [Reports Default Screen](#reports-screen) filtered by the selected time range is displayed.
+- [] Finally, the percentage of time tracked per project is listed below the chart with, on the same line:
+  - a tiny circle of the project's color,
+  - the percentage value,
+  - the project's name.
+- [] Selecting a list item will highlight the pie chart portion.
+  ![screenshot](images/report-projects-screen-select-pie-share.jpeg)
 
 ### Timers Screen
 
