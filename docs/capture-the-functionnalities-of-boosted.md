@@ -334,11 +334,78 @@ It contains a link to:
 
 ### Settings Screen
 
-To analyze.
+#### The Settings Default Screen
+
+![screenshot](images/settings-screen-default.jpeg)
+
+#### The Backup & Restore Screen
+
+![screenshot](images/settings-screen-auto-backup-screen-default.jpeg)
+
+#### The Restore List Screen
+
+![screenshot](images/settings-screen-auto-backup-screen-restore-list-screen.jpeg)
+
+#### The Auto-Backup Frequency Selection Screen
+
+![screenshot](images/settings-screen-auto-backup-screen-frequency-selection-screen.jpeg)
+
+#### The Export Data Screen
+
+![screenshot](images/settings-screen-export-data-screen-default.jpeg)
+
+#### The Export Interval Selection Modal
+
+![screenshot](images/settings-screen-export-data-screen-select-export-interval.jpeg)
+
+#### The Export Projects Selection Modal
+
+![screenshot](images/settings-screen-export-data-screen-select-project-modal.jpeg)
+
+#### First Day of the Week Modal
+
+- [] The modal allows to select either Saturday, Sunday or Monday as first day of the week.
+  - It is possible that it is used for the [Reports Duration Screen](#reports-duration-screen).
+
+#### Terms of Use And Privacy Policy Links
+
+The Terms of Use and Privacy Policy links brings the Boosted website links.
 
 ### Calendar Screen
 
-To analyze.
+![screenshot](images/calendar-screen-3-days.jpeg)
+![screenshot](images/calendar-screen-7-days.jpeg)
+
+The calendar screen has:
+
+- [] A title "Calendar" at the top left
+- [] A vertical three dot menu at the top right that bring up the [Calendar view options modal](#calendar-view-options-modal)
+- [] A fixed column for the time of the day, by increment of 1 hour
+- [] A number of columms matching the selection in the [Calendar view options modal](#calendar-view-options-modal).
+
+#### Description Of a Day column
+
+- [] The column title is the date with
+  - Day of the week en letters,
+  - Day value,
+  - Month value in digits
+- [] The records are displayed in blocks of time in the project's color to which the record is linked.
+- [] If the record is linked to a task, we get the related project's informations to retrieve the color.
+- [] If records have overlapping times, then the records are displayed in X columms per overlapping records.
+  - Overlapping occurs when the start time of a record is before the end time of the previous record.
+    ![screenshot](images/calendar-screen-overlapping-records.jpeg)
+
+#### Calendar View Options Modal
+
+![screenshot](images/calendar-screen-select-nb-days-viewed-modal.jpeg)
+
+- [] The modal's title is "Options"
+- [] The options are:
+  - One-day view
+  - Three-day view
+  - Five-day view
+  - Seven-day view
+- [] Everything is centered
 
 ### Reports Screen
 
@@ -370,7 +437,7 @@ We have:
   - Clicking the chart brings us to [Reports Projects Screen](#reports-projects-screen)
 - [] Finally, the total number of projects and tasks is displayed
 
-### Reports Duration Screen
+#### Reports Duration Screen
 
 ![screenshot](images/report-duration-screen-default.jpeg)
 
@@ -385,7 +452,7 @@ We have:
 
   ![screenshot](images/report-duration-screen-selected-month.jpeg)
 
-### Reports Projects Screen
+#### Reports Projects Screen
 
 ![screenshot](images/report-projects-screen-default.jpeg)
 
