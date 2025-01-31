@@ -338,6 +338,21 @@ It contains a link to:
 
 ![screenshot](images/settings-screen-default.jpeg)
 
+We have:
+
+- [] A logo on top
+- [] A `h1` title "Settings" with a separator line
+- [] A link to view [The Backup & Restore Screen](#the-backup--restore-screen)
+- [] A link to view [The Export Data Screen](#the-export-data-screen)
+- [] A toggle to choose the 24-hour time format or not
+  - An example is displayed below in muted text
+- [] A "button" to pick the theme to use either Automatic, Dark and Light theme in a modal
+  ![screenshot](images/settings-screen-theme-picker-modal.jpeg)
+- [] A "button" to [pick the "First day of the week" in a modal](#first-day-of-the-week-modal)
+- [] A `h2` title "About" with a separator line
+- [] A link to Terms of Use terms
+- [] A link to Privacy Policy terms
+
 #### The Backup & Restore Screen
 
 ![screenshot](images/settings-screen-auto-backup-screen-default.jpeg)
@@ -354,13 +369,48 @@ It contains a link to:
 
 ![screenshot](images/settings-screen-export-data-screen-default.jpeg)
 
+The screen is structured as follows:
+
+- [] A image showing the export will save the data from the phone or computer to a CSV file.
+- [] A button "Export data to CSV" that generates the export file.
+- [] A button "Export interval" with in muted text the select interval
+- [] A button "Select projects" with in muted text with only selected projects (includes the tiny coloured circle) or "All active projects"
+
 #### The Export Interval Selection Modal
 
 ![screenshot](images/settings-screen-export-data-screen-select-export-interval.jpeg)
 
+We have:
+
+- [] A title "Export interval"
+- [] 3 predefined intervals:
+  - Last 7 days
+  - Last 14 days
+  - Last 30 days
+  - I'd like to add the "Last calendar month" which I often use.
+- [] After a separator line, we can define a custom interval with a "from" and "to" date.
+  - The default "from" value is the date 7 days ago.
+  - The default "to" value is yesterday.
+  - On each input, you have:
+    - a left arrow icon that decrement the date by one day
+    - a right arrow icon that increment the date by one day
+- [] A "DONE" allows to closes the modal
+
 #### The Export Projects Selection Modal
 
 ![screenshot](images/settings-screen-export-data-screen-select-project-modal.jpeg)
+
+In this modal, we have:
+
+- [] a fixed title "Select projects" and a button "DONE" to close the modal.
+- [] a first item "All active projects" to include all active projects in the export.
+- [] after a separator line, a list of all active projects
+- [] after "Archived" link label, list all archived projects.
+  - By default, those are not shown and require to click the label to toggle the projects.
+- [] Each project is displayed with:
+  - a checkbox, by default checked.
+  - the tiny circle in the project's color
+  - the project name.
 
 #### First Day of the Week Modal
 
