@@ -3,16 +3,16 @@ drop table if exists "public"."projects";
 
 create table 
   projects (
-    project_id bigint primary key generated always as identity not null,
-    project_uid ??? unique not null,
+    -- project_id serial primary key generated always as identity  null,
+    project_uid uuid default public.uuid_generate_v8() primary key,
     project_name varchar(100) unique not null,
     project_hex_color varchar(7) not null,
     project_created_at timestamptz default now() not null,
     project_updated_at timestamptz null,
     project_archived_at timestamptz null,
-    project_archived not null default false,
+    project_archived boolean default false,
     project_deleted_at timestamptz null,
-    project_deleted not null default false,
+    project_deleted boolean default false
   );
 
 -- This allows to enable row level security on your tables.

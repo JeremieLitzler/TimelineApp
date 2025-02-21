@@ -4,16 +4,16 @@ drop table if exists "public"."records";
 
 create table 
   records (
-    record_id bigint primary key generated always as identity not null,
-    record_uid ??? unique not null,
-    project_id bigint references projects (project_id) on delete cascade default not null,
-    task_id bigint references tasks (task_id) on delete cascade default null,
+    -- record_id serial primary key generated always as identity not null,
+    record_uid uuid default public.uuid_generate_v8() primary key,
+    project_uid uuid references projects (project_uid) on delete cascade,
+    task_uid uuid references tasks (task_uid) on delete cascade,
     record_started_at timestamptz default now() not null,
     record_ended_at timestamptz null,
     record_created_at timestamptz default now() not null,
     record_updated_at timestamptz null,
     record_deleted_at timestamptz null,
-    record_deleted not null default false,
+    record_deleted boolean default false
   );
 
 -- This allows to enable row level security on your tables.

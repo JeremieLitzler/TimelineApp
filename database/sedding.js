@@ -106,9 +106,9 @@ const seedDatabase = async (numEntriesPerTable) => {
   } else {
     userId = testUserId
   }
-  const entitiesIds = (await seedEntities(numEntriesPerTable, userId)).map((entity) => entity.id)
-  await seedSubEntities(numEntriesPerTable, entitiesIds, userId)
-  await seedKeepAlive()
+  // const entitiesIds = (await seedEntities(numEntriesPerTable, userId)).map((entity) => entity.id)
+  // await seedSubEntities(numEntriesPerTable, entitiesIds, userId)
+  // await seedKeepAlive()
 }
 
 const seedKeepAlive = async () => {
