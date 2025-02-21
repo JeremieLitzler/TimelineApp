@@ -12,11 +12,7 @@
         "releaseRules": [
           {
             "breaking": true,
-            "release": "patch"
-          },
-          {
-            "type": "feat",
-            "release": "patch"
+            "release": "minor"
           },
           {
             "type": "docs",

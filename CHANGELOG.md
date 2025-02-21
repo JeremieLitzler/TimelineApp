@@ -1,3 +1,29 @@
+## 0.0.1 (2025-02-19)
+
+### Features
+
+* add semantic release ([#8](https://github.com/JeremieLitzler/TimelineApp/issues/8)) ([9ce25e0](https://github.com/JeremieLitzler/TimelineApp/commit/9ce25e068879408de2ddb4ebe86567271968522d))
+* init app with boilerplace v2.0.0 ([#3](https://github.com/JeremieLitzler/TimelineApp/issues/3)) ([b11fba1](https://github.com/JeremieLitzler/TimelineApp/commit/b11fba1820980f3e54e4ad17372abcec65a09fd8))
+
+### Bug Fixes
+
+* resolve issue with package-lock.json ([ce23161](https://github.com/JeremieLitzler/TimelineApp/commit/ce231615e7c3ea3a4731bfecd8dfb124507ae4ff))
+* revert tailwindcss upgrade ([b277702](https://github.com/JeremieLitzler/TimelineApp/commit/b277702c026978045a4f328310fb45e1307fa942))
+* Update .releaserc ([#8](https://github.com/JeremieLitzler/TimelineApp/issues/8)) ([c35e3e3](https://github.com/JeremieLitzler/TimelineApp/commit/c35e3e36e3b5fb10cd9987a2ce0b514216fdd73c))
+
+### Others
+
+* add specifications [#1](https://github.com/JeremieLitzler/TimelineApp/issues/1) ([6b5b300](https://github.com/JeremieLitzler/TimelineApp/commit/6b5b300c08b66f9f8ba8a12150ac25ed5c4aa49d))
+* continue capturing Boosted App functionalities ([9cf6257](https://github.com/JeremieLitzler/TimelineApp/commit/9cf6257193fc865683ae3b7eabbcba615c5a0677))
+* continue detailing timeline UI ([#1](https://github.com/JeremieLitzler/TimelineApp/issues/1)) ([979d75b](https://github.com/JeremieLitzler/TimelineApp/commit/979d75b4b38a46c1d301ece32bbb7fdb888cb7e0))
+* declare the main objectives in README ([2057e16](https://github.com/JeremieLitzler/TimelineApp/commit/2057e1663d70c06f0f09c72a29f8e87cd1064fca))
+* finish calendar screens description and add settings screens headers and captures ([8305b93](https://github.com/JeremieLitzler/TimelineApp/commit/8305b93ac5f597eb80c9d7831a4a9d09648e9372))
+* finish creating single spec files for each screen and modal ([9c9608e](https://github.com/JeremieLitzler/TimelineApp/commit/9c9608e23d2e61ace539fbb755d634d74db43ca2))
+* make progress on report screens ([eeeea1e](https://github.com/JeremieLitzler/TimelineApp/commit/eeeea1e44debc559520c01e0bf55fde7d1acb97c))
+* rename table-of-contents to README ([#1](https://github.com/JeremieLitzler/TimelineApp/issues/1)) ([c6fa6a8](https://github.com/JeremieLitzler/TimelineApp/commit/c6fa6a838f6ba7b6ff8933c44ebe0f5743b78801))
+* split single Markdown specs into files ([#1](https://github.com/JeremieLitzler/TimelineApp/issues/1)) ([14b1607](https://github.com/JeremieLitzler/TimelineApp/commit/14b1607512041b9baed9949595d3de2df822be31))
+* update the docs for settings home and export data screen and modals ([2b481df](https://github.com/JeremieLitzler/TimelineApp/commit/2b481dffe5f40692b8e2953491e1eff87d5be4b4))
+
 ## [2.1.5](https://github.com/JeremieLitzler/VueSupabaseBoilerplate/compare/v2.1.4...v2.1.5) (2025-02-18)
 
 ### Bug Fixes
