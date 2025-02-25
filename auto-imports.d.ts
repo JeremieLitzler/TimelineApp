@@ -101,7 +101,6 @@ declare global {
   const useAuthStore: typeof import('./src/stores/auth')['useAuthStore']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
-  const useEntityStore: typeof import('./src/stores/entity')['useEntityStore']
   const useErrorStore: typeof import('./src/stores/error')['useErrorStore']
   const useFormError: typeof import('./src/composables/formError')['useFormError']
   const useId: typeof import('vue')['useId']
@@ -110,10 +109,11 @@ declare global {
   const useNotification: typeof import('./src/composables/useNotification')['default']
   const usePageStore: typeof import('./src/stores/page')['usePageStore']
   const useProfileStore: typeof import('./src/stores/profile')['useProfileStore']
+  const useProjectsStore: typeof import('./src/stores/project')['useProjectsStore']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
-  const useSubEntityStore: typeof import('./src/stores/entity-sub')['useSubEntityStore']
+  const useTaskStore: typeof import('./src/stores/task')['useTaskStore']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
@@ -156,20 +156,17 @@ declare global {
   export type { Json, Database, Tables, TablesInsert, TablesUpdate, Enums, CompositeTypes } from './src/types/DatabaseTypes'
   import('./src/types/DatabaseTypes')
   // @ts-ignore
-  export type { EntityRecordWithRpc } from './src/types/EntityRecordWithRpc'
-  import('./src/types/EntityRecordWithRpc')
-  // @ts-ignore
   export type { ErrorExtended } from './src/types/ErrorExtended'
   import('./src/types/ErrorExtended')
   // @ts-ignore
   export type { ErrorNextPage } from './src/types/ErrorNextPage'
   import('./src/types/ErrorNextPage')
   // @ts-ignore
-  export type { FormDataCreateEntity } from './src/types/FormDataCreateEntity'
-  import('./src/types/FormDataCreateEntity')
+  export type { FormDataCreateProject } from './src/types/FormDataCreateProject'
+  import('./src/types/FormDataCreateProject')
   // @ts-ignore
-  export type { FormDataCreateSubEntity } from './src/types/FormDataCreateSubEntity'
-  import('./src/types/FormDataCreateSubEntity')
+  export type { FormDataCreateTask } from './src/types/FormDataCreateTask'
+  import('./src/types/FormDataCreateTask')
   // @ts-ignore
   export type { FormSelectOption } from './src/types/FormSelectOption'
   import('./src/types/FormSelectOption')
@@ -182,6 +179,9 @@ declare global {
   // @ts-ignore
   export type { PostgrestErrorExtended } from './src/types/PostgrestErrorExtended'
   import('./src/types/PostgrestErrorExtended')
+  // @ts-ignore
+  export type { ProjectRecordWithRpc } from './src/types/ProjectRecordWithRpc'
+  import('./src/types/ProjectRecordWithRpc')
   // @ts-ignore
   export type { RegistrationData } from './src/types/RegistrationData'
   import('./src/types/RegistrationData')
@@ -204,6 +204,6 @@ declare global {
   export type { SupabaseAuthErrorExtended, SupabaseAuthApiErrorExtended } from './src/types/SupabaseAuthErrorExtended'
   import('./src/types/SupabaseAuthErrorExtended')
   // @ts-ignore
-  export type { UpdateSupabaseEntityRequest } from './src/types/UpdateSupabaseEntityRequest'
+  export type { UpdateSupabaseProjectRequest } from './src/types/UpdateSupabaseEntityRequest'
   import('./src/types/UpdateSupabaseEntityRequest')
 }

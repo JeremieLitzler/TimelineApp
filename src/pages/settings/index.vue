@@ -7,11 +7,11 @@ type CacheType = {
 }
 const caches = [
   { name: 'Profiles', key: StoreCacheKey.AllProfiles },
-  { name: 'Entities', key: StoreCacheKey.AllEntities },
+  { name: 'Projects', key: StoreCacheKey.AllProjects },
 ]
 
 const profileStore = useProfileStore()
-const entityStore = useEntityStore()
+const entityStore = useProjectsStore()
 
 const purge = (cache: CacheType) => {
   console.info('purge', cache)
@@ -20,7 +20,7 @@ const purge = (cache: CacheType) => {
     console.info('purge>match', cache.key)
     profileStore.clearCache()
   }
-  if (cache.key === StoreCacheKey.AllEntities) {
+  if (cache.key === StoreCacheKey.AllProjects) {
     console.info('purge>match', cache.key)
     entityStore.clearCache()
   }

@@ -37,7 +37,7 @@ export const en = {
     sub_entity_profile_id: {
       required: 'A profile from the list must be selected.',
     },
-    sub_entity_entity_id: {
+    sub_entity_project_uid: {
       required: 'An entity from the list must be selected.',
     },
     sub_entity_description: {

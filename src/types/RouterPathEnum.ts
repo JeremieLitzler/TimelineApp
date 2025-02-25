@@ -1,7 +1,7 @@
 export enum RouterPathEnum {
   Home = '/',
-  Entities = '/entities',
-  SubEntities = '/sub-entities',
+  Projects = '/projects',
+  Tasks = '/tasks',
   Settings = '/settings',
   Profile = '/profile',
   Login = '/login',

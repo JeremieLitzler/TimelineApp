@@ -6,37 +6,37 @@ import { formatDateStrToUserFriendly } from '@/utils/date-format'
  * TODO: Passing the route path to useRoute solve the TypeScript error on accessing `slug` param
  */
 const router = useRouter()
-const { slug } = useRoute('/entities/[slug]').params
-const store = useEntityStore()
-const { entity } = storeToRefs(store)
+const { slug } = useRoute('/projects/[slug]').params
+const store = useProjectsStore()
+const { project } = storeToRefs(store)
 
 // TODO > make sure to place the watch before the async method that load the data!
 // Otherwise, the watcher never gets called
 watch(
-  () => entity.value?.name,
+  () => project.value?.project_name,
   () => {
-    console.log('watch entity', entity.value)
+    console.log('watch project', project.value)
 
-    usePageStore().pageData.title = `Entity: ${entity.value?.name || 'Not entity found'}`
+    usePageStore().pageData.title = `Project: ${project.value?.project_name || 'Not entity found'}`
   },
 )
 
-await store.getEntity(slug)
+await store.getProject(slug)
 
-const noSubEntities = computed(() => entity.value?.sub_entities?.length === 0)
+const noTasks = computed(() => project.value?.tasks?.length === 0)
 // Update logic
-const updateEntity = () => {
-  store.updateEntity()
+const updateProject = () => {
+  store.updateProject()
 }
 
 // Delete Logic
 const deleting = ref(false)
-const deleteEntity = async () => {
+const deleteProject = async () => {
   deleting.value = true
-  console.log('deleteEntity>deleting...')
-  await store.deleteEntity()
-  console.log('deleteEntity>deleted!')
-  router.push('/entities')
+  console.log('deleteProject>deleting...')
+  await store.deleteProject()
+  console.log('deleteProject>deleted!')
+  router.push('/projects')
 }
 
 // Add new sub entity logic
@@ -45,8 +45,8 @@ const openModal = ref(false)
 
 <template>
   <div class="lg:container flex flex-col justify-center items-center">
-    <FormCreateSubEntity v-model="openModal" />
-    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="deleteEntity">
+    <FormCreateTask v-model="openModal" />
+    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="deleteProject">
       <span v-if="deleting" class="animate-spin">
         <LoaderCircle />
       </span>
@@ -55,53 +55,49 @@ const openModal = ref(false)
       </span>
       Delete</Button
     >
-    <Table v-if="entity" class="mt-4 border table-container">
+    <Table v-if="project" class="mt-4 border table-container">
       <TableRow>
         <TableHead> Name </TableHead>
         <TableCell>
-          <AppInputLiveEditText type="text" v-model="entity.name" @@commit="updateEntity" />
-        </TableCell>
-      </TableRow>
-      <TableRow>
-        <TableHead> Description </TableHead>
-        <TableCell>
           <AppInputLiveEditText
-            type="textarea"
-            v-model="entity.description"
-            @@commit="updateEntity"
+            type="text"
+            v-model="project.project_name"
+            @@commit="updateProject"
           />
         </TableCell>
       </TableRow>
       <TableRow>
         <TableHead> Slug </TableHead>
         <TableCell>
-          {{ entity.slug }}
+          {{ project.project_slug }}
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableHead> Due Date </TableHead>
-        <TableCell title="Click the status icon to toggle the value">
-          <AppInputLiveEditText type="date" v-model="entity.due_date" @@commit="updateEntity" />
-        </TableCell>
-      </TableRow>
-
-      <TableRow>
-        <TableHead> Status </TableHead>
-        <!-- TODO > need to pull the valid list from the Supabase type -->
+        <TableHead> Created On </TableHead>
         <TableCell>
-          <AppInputLiveEditStatus v-model="entity.status" @@commit="updateEntity" />
+          {{ formatDateStrToUserFriendly(project.project_created_at) }}
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableHead> Last Updated On </TableHead>
+        <TableCell>
+          {{ formatDateStrToUserFriendly(project.project_updated_at) }}
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableHead> Archived? </TableHead>
+        <TableCell>
+          <AppInputLiveEditStatus v-model="project.project_archived" @@commit="updateProject" />
         </TableCell>
       </TableRow>
     </Table>
-    <section v-if="entity" class="mt-4 flex flex-col w-full">
-      <h2>Sub Entities</h2>
-      <Button v-if="!noSubEntities" @click="openModal = !openModal" class="mb-4 self-end"
-        >+ Add</Button
-      >
+    <section v-if="project" class="mt-4 flex flex-col w-full">
+      <h2>Tasks</h2>
+      <Button v-if="!noTasks" @click="openModal = !openModal" class="mb-4 self-end">+ Add</Button>
       <div class="border table-container">
-        <article v-if="noSubEntities" class="flex flex-col">
+        <article v-if="noTasks" class="flex flex-col">
           <Button @click="openModal = !openModal" class="mt-4 mr-4 mb-8 self-end">+ Add</Button>
-          <p class="text-center">No sub entity found.</p>
+          <p class="text-center">No task found.</p>
         </article>
         <Table v-else>
           <TableHeader>
@@ -112,22 +108,21 @@ const openModal = ref(false)
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="subEntity in entity.sub_entities" :key="subEntity.id">
+            <TableRow v-for="task in project.tasks" :key="task.task_uid">
               <TableCell class="p-0"
                 ><RouterLink
-                  :to="`${RouterPathEnum.SubEntities}/${subEntity.id}`"
-                  :key="subEntity.id"
+                  :to="`${RouterPathEnum.Tasks}/${task.task_uid}`"
+                  :key="task.task_uid"
                   class="text-left underline hover:bg-muted block w-full font-medium p-4"
-                  >{{ subEntity.name }}</RouterLink
+                  >{{ task.task_name }}</RouterLink
                 ></TableCell
               >
               <TableCell
                 ><AppInputLiveEditStatus
-                  v-model="subEntity.status"
+                  v-model="task.task_completed"
                   :readonly="true"
                   :show-tool-tip="false"
               /></TableCell>
-              <TableCell> {{ formatDateStrToUserFriendly(subEntity.due_date) }} </TableCell>
             </TableRow>
           </TableBody>
         </Table>

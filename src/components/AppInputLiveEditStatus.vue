@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Database } from '@/types/DatabaseTypes'
 
-const status = defineModel<Database['public']['Enums']['current_status'] | string | undefined>()
+const status = defineModel<boolean | null | undefined>()
 // TODO > From Vue 3.5, no need to use withDefaults to assign a default value to props
 const {
   readonly = false,
@@ -18,9 +18,7 @@ const emits = defineEmits<{
 const toggleValue = () => {
   if (readonly) return
 
-  if (status.value === 'completed') status.value = 'in-progress'
-  if (status.value === 'todo') status.value = 'in-progress'
-  if (status.value === 'in-progress') status.value = 'completed'
+  status.value = !status.value
   emits('@commit')
 }
 </script>
@@ -34,13 +32,8 @@ const toggleValue = () => {
       tabindex="0"
     >
       <Transition mode="out-in">
-        <span v-if="status === 'todo'" class="text-gray-400" :title="status"
-          ><CircleDotDashed
-        /></span>
-        <span v-else-if="status === 'completed'" class="text-green-400" :title="status"
-          ><CircleCheckBig
-        /></span>
-        <span v-else class="text-orange-500" :title="status"><CircleDashed /></span>
+        <span v-if="!status" class="text-gray-400" title="Not completed"><CircleDotDashed /></span>
+        <span v-else class="text-green-400" title="Completed"><CircleCheckBig /></span>
       </Transition>
     </div>
     <Info v-if="showToolTip" class="text-slate-500"></Info>

@@ -2,12 +2,11 @@ import { RouterLink } from 'vue-router'
 import type { ColumnDef } from '@tanstack/vue-table'
 import AppInputLiveEditStatus from '@/components/AppInputLiveEditStatus.vue'
 import { RouterPathEnum } from '@/types/RouterPathEnum'
-import { formatDateStrToUserFriendly } from './date-format'
-import type { EntityRecordWithRpc } from '@/types/EntityRecordWithRpc'
+import type { ProjectRecordWithRpc } from '@/types/ProjectRecordWithRpc'
 
-export const columns: ColumnDef<EntityRecordWithRpc>[] = [
+export const columns: ColumnDef<ProjectRecordWithRpc>[] = [
   {
-    accessorKey: 'name',
+    accessorKey: 'project_name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
     cell: ({ row }) => {
       // When using render functions, the way we pass children to elements is different than passing them to a custom component.
@@ -23,26 +22,19 @@ export const columns: ColumnDef<EntityRecordWithRpc>[] = [
       return h(
         RouterLink,
         {
-          to: `${RouterPathEnum.Entities}/${row.original.slug}`,
+          to: `${RouterPathEnum.Projects}/${row.original.project_slug}`,
           class: 'text-left underline hover:bg-muted block w-full font-medium',
         },
-        () => row.getValue('name'),
+        () => row.getValue('project_name'),
       )
     },
   },
   {
-    accessorKey: 'due_date',
-    header: () => h('div', { class: 'text-left' }, 'Due Date'),
-    cell: ({ row }) => {
-      return h('p', formatDateStrToUserFriendly(row.original.due_date).value)
-    },
-  },
-  {
-    accessorKey: 'status',
+    accessorKey: 'project_archived',
     header: () => h('div', { class: 'text-left' }, 'Status'),
     cell: ({ row }) => {
       return h(AppInputLiveEditStatus, {
-        modelValue: row.original.status,
+        modelValue: row.original.project_archived,
         readonly: true,
         showToolTip: false,
         pointer: false,

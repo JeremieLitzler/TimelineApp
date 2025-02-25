@@ -1,4 +1,4 @@
-export interface UpdateSupabaseEntityRequest {
+export interface UpdateSupabaseProjectRequest {
   column: string
   value: string
 }

@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { loginWithSupabase } from '@/services/supabase-auth'
-import { readKeepAliveQuery } from '@/services/supabase-queries'
+import { readKeepAliveQuery } from '@/services/supabase-keep-alive-queries'
 import type { LoginData } from '@/types/LoginData'
 const router = useRouter()
 

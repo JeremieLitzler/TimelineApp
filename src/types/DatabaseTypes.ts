@@ -9,39 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      entities: {
-        Row: {
-          created_at: string
-          description: string | null
-          due_date: string | null
-          id: number
-          name: string
-          slug: string
-          status: Database["public"]["Enums"]["current_status"]
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          due_date?: string | null
-          id?: never
-          name: string
-          slug: string
-          status?: Database["public"]["Enums"]["current_status"]
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          due_date?: string | null
-          id?: never
-          name?: string
-          slug?: string
-          status?: Database["public"]["Enums"]["current_status"]
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       keep_alive: {
         Row: {
           is_set: boolean
@@ -87,54 +54,140 @@ export type Database = {
         }
         Relationships: []
       }
-      sub_entities: {
+      projects: {
         Row: {
-          created_at: string
-          description: string
-          due_date: string | null
-          entity_id: number | null
-          id: number
-          name: string
-          profile_id: string
-          status: Database["public"]["Enums"]["current_status"]
-          updated_at: string | null
+          project_archived: boolean | null
+          project_archived_at: string | null
+          project_created_at: string
+          project_deleted: boolean | null
+          project_deleted_at: string | null
+          project_hex_color: string
+          project_name: string
+          project_slug: string
+          project_uid: string
+          project_updated_at: string | null
         }
         Insert: {
-          created_at?: string
-          description: string
-          due_date?: string | null
-          entity_id?: number | null
-          id?: never
-          name: string
-          profile_id: string
-          status?: Database["public"]["Enums"]["current_status"]
-          updated_at?: string | null
+          project_archived?: boolean | null
+          project_archived_at?: string | null
+          project_created_at?: string
+          project_deleted?: boolean | null
+          project_deleted_at?: string | null
+          project_hex_color: string
+          project_name: string
+          project_slug: string
+          project_uid?: string
+          project_updated_at?: string | null
         }
         Update: {
-          created_at?: string
-          description?: string
-          due_date?: string | null
-          entity_id?: number | null
-          id?: never
-          name?: string
-          profile_id?: string
-          status?: Database["public"]["Enums"]["current_status"]
-          updated_at?: string | null
+          project_archived?: boolean | null
+          project_archived_at?: string | null
+          project_created_at?: string
+          project_deleted?: boolean | null
+          project_deleted_at?: string | null
+          project_hex_color?: string
+          project_name?: string
+          project_slug?: string
+          project_uid?: string
+          project_updated_at?: string | null
+        }
+        Relationships: []
+      }
+      records: {
+        Row: {
+          project_uid: string | null
+          record_created_at: string
+          record_deleted: boolean | null
+          record_deleted_at: string | null
+          record_ended_at: string | null
+          record_started_at: string
+          record_uid: string
+          record_updated_at: string | null
+          task_uid: string | null
+        }
+        Insert: {
+          project_uid?: string | null
+          record_created_at?: string
+          record_deleted?: boolean | null
+          record_deleted_at?: string | null
+          record_ended_at?: string | null
+          record_started_at?: string
+          record_uid?: string
+          record_updated_at?: string | null
+          task_uid?: string | null
+        }
+        Update: {
+          project_uid?: string | null
+          record_created_at?: string
+          record_deleted?: boolean | null
+          record_deleted_at?: string | null
+          record_ended_at?: string | null
+          record_started_at?: string
+          record_uid?: string
+          record_updated_at?: string | null
+          task_uid?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "sub_entities_entity_id_fkey"
-            columns: ["entity_id"]
+            foreignKeyName: "records_project_uid_fkey"
+            columns: ["project_uid"]
             isOneToOne: false
-            referencedRelation: "entities"
-            referencedColumns: ["id"]
+            referencedRelation: "projects"
+            referencedColumns: ["project_uid"]
           },
           {
-            foreignKeyName: "sub_entities_profile_id_fkey"
-            columns: ["profile_id"]
+            foreignKeyName: "records_task_uid_fkey"
+            columns: ["task_uid"]
             isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            referencedRelation: "tasks"
+            referencedColumns: ["task_uid"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          project_uid: string | null
+          task_completed: boolean | null
+          task_completed_at: string | null
+          task_created_at: string
+          task_deleted: boolean | null
+          task_deleted_at: string | null
+          task_name: string
+          task_slug: string
+          task_uid: string
+          task_updated_at: string | null
+        }
+        Insert: {
+          project_uid?: string | null
+          task_completed?: boolean | null
+          task_completed_at?: string | null
+          task_created_at?: string
+          task_deleted?: boolean | null
+          task_deleted_at?: string | null
+          task_name: string
+          task_slug: string
+          task_uid?: string
+          task_updated_at?: string | null
+        }
+        Update: {
+          project_uid?: string | null
+          task_completed?: boolean | null
+          task_completed_at?: string | null
+          task_created_at?: string
+          task_deleted?: boolean | null
+          task_deleted_at?: string | null
+          task_name?: string
+          task_slug?: string
+          task_uid?: string
+          task_updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_project_uid_fkey"
+            columns: ["project_uid"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["project_uid"]
           },
         ]
       }
@@ -152,9 +205,17 @@ export type Database = {
         }
         Returns: Json[]
       }
+      uuid_generate_v7: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      uuid_generate_v8: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
-      current_status: "todo" | "in-progress" | "completed"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never

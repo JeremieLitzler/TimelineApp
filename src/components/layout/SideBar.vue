@@ -95,7 +95,7 @@ const topLinks: LinkProp[] = [
     icon: Home,
     label: 'Dashboard',
   },
-  { to: RouterPathEnum.Entities, icon: Files, label: 'Entities' },
+  { to: RouterPathEnum.Projects, icon: Files, label: 'Projects' },
 ]
 const settingsLinks: LinkProp[] = [
   {

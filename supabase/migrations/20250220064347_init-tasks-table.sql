@@ -7,6 +7,7 @@ create table
     task_uid uuid default public.uuid_generate_v8() primary key,
     project_uid uuid references projects (project_uid) on delete cascade,
     task_name varchar(250) unique not null,
+    task_slug varchar(250) unique not null,
     task_created_at timestamptz default now() not null,
     task_updated_at timestamptz null,
     task_completed_at timestamptz null,

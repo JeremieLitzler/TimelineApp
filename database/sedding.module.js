@@ -11,11 +11,8 @@ const initSupabase = () => {
   const supabaseKey = process.env.VITE_SUPABASE_PROJECT_SERVICE_ROLE
   console.log('supabaseUrl', supabaseUrl)
   console.log('supabaseKey', supabaseKey)
-  const supabase = createClient(
-    supabaseUrl,
-    supabaseKey,
-  )
-  return supabase;
+  const supabase = createClient(supabaseUrl, supabaseKey)
+  return supabase
 }
 
 const getTestEmail = () => {
@@ -103,7 +100,7 @@ const seedProfiles = async (supabase, { userId, firstName, lastName, userName })
 export const seedDatabase = async (numEntriesPerTable) => {
   let userId
 
-  const supabase = initSupabase();
+  const supabase = initSupabase()
   const testUserId = await PrimaryTestUserExists(supabase)
 
   if (!testUserId) {
@@ -112,8 +109,10 @@ export const seedDatabase = async (numEntriesPerTable) => {
   } else {
     userId = testUserId
   }
-  const entitiesIds = (await seedEntities(supabase,numEntriesPerTable, userId)).map((entity) => entity.id)
-  await seedSubEntities(supabase,numEntriesPerTable, entitiesIds, userId)
+  const projectsIds = (await seedProjects(supabase, numEntriesPerTable, userId)).map(
+    (entity) => entity.id,
+  )
+  await seedTasks(supabase, numEntriesPerTable, projectsIds, userId)
   await seedKeepAlive(supabase)
 }
 
@@ -128,14 +127,14 @@ const seedKeepAlive = async (supabase) => {
 
   logStep('Seeded keep_alive!')
 }
-const seedEntities = async (supabase, numEntries, userId) => {
-  logStep('Seeding entities...')
-  const entities = []
+const seedProjects = async (supabase, numEntries, userId) => {
+  logStep('Seeding projects...')
+  const projects = []
 
   for (let i = 0; i < numEntries; i++) {
     const name = faker.lorem.words(3)
 
-    entities.push({
+    projects.push({
       name: name,
       slug: name.toLocaleLowerCase().replace(/ /g, '-'),
       description: faker.lorem.paragraphs(2),
@@ -144,35 +143,35 @@ const seedEntities = async (supabase, numEntries, userId) => {
     })
   }
 
-  const { data, error } = await supabase.from('entities').insert(entities).select('id')
+  const { data, error } = await supabase.from('projects').insert(projects).select('id')
 
-  if (error) return logErrorAndExit('Entities', error)
+  if (error) return logErrorAndExit('Projects', error)
 
-  logStep('Entities seeded successfully.')
+  logStep('Projects seeded successfully.')
 
   return data
 }
 
-const seedSubEntities = async (supabase, numEntries, entitiesIds, userId) => {
-  logStep('Seeding sub entities...')
-  const subEntities = []
+const seedTasks = async (supabase, numEntries, projectsIds, userId) => {
+  logStep('Seeding sub projects...')
+  const subProjects = []
 
   for (let i = 0; i < numEntries; i++) {
-    subEntities.push({
+    subProjects.push({
       name: faker.lorem.words(3),
       status: faker.helpers.arrayElement(['todo', 'in-progress', 'completed']),
       description: faker.lorem.paragraph(),
       due_date: faker.date.future(),
       profile_id: userId,
-      entity_id: faker.helpers.arrayElement(entitiesIds),
+      project_uid: faker.helpers.arrayElement(projectsIds),
     })
   }
 
-  const { data, error } = await supabase.from('sub_entities').insert(subEntities).select('id')
+  const { data, error } = await supabase.from('tasks').insert(subProjects).select('id')
 
-  if (error) return logErrorAndExit('Sub Entities', error)
+  if (error) return logErrorAndExit('Sub Projects', error)
 
-  logStep('Sub Entities seeded successfully.')
+  logStep('Sub Projects seeded successfully.')
 
   return data
 }
