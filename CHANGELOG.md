@@ -1,3 +1,11 @@
+## [0.1.0](https://github.com/JeremieLitzler/TimelineApp/compare/v0.0.1...v0.1.0) (2025-02-21)
+
+### Features
+
+* add migrations ([#2](https://github.com/JeremieLitzler/TimelineApp/issues/2)) ([829906a](https://github.com/JeremieLitzler/TimelineApp/commit/829906a738c9f19908969c873cf0cebb28226ffc))
+* add uuidv7 and uuidv8 functions for primary keys ([#2](https://github.com/JeremieLitzler/TimelineApp/issues/2)) ([29fb184](https://github.com/JeremieLitzler/TimelineApp/commit/29fb18447e353fdbce14b559f322d36711680226))
+* finish tables definition ([#2](https://github.com/JeremieLitzler/TimelineApp/issues/2)) ([cea970f](https://github.com/JeremieLitzler/TimelineApp/commit/cea970f43205d180313255bbafb24061a9e20fa2))
+
 ## 0.0.1 (2025-02-19)
 
 ### Features
