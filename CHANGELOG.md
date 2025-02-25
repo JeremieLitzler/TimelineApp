@@ -1,3 +1,9 @@
+## [0.1.1](https://github.com/JeremieLitzler/TimelineApp/compare/v0.1.0...v0.1.1) (2025-02-25)
+
+### Bug Fixes
+
+* add missing search path to uuidv7 postgres functions ([#28](https://github.com/JeremieLitzler/TimelineApp/issues/28)) ([03b9fc8](https://github.com/JeremieLitzler/TimelineApp/commit/03b9fc8dfb2645c0d4df821529fa80dcab6b2408))
+
 ## [0.1.0](https://github.com/JeremieLitzler/TimelineApp/compare/v0.0.1...v0.1.0) (2025-02-21)
 
 ### Features
