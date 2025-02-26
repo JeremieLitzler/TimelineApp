@@ -56,76 +56,76 @@ export type Database = {
       }
       projects: {
         Row: {
-          project_archived: boolean | null
-          project_archived_at: string | null
-          project_created_at: string
-          project_deleted: boolean | null
-          project_deleted_at: string | null
-          project_hex_color: string
-          project_name: string
-          project_slug: string
+          archived: boolean | null
+          archived_at: string | null
+          created_at: string
+          deleted: boolean | null
+          deleted_at: string | null
+          hex_color: string
+          name: string
           project_uid: string
-          project_updated_at: string | null
+          slug: string
+          updated_at: string | null
         }
         Insert: {
-          project_archived?: boolean | null
-          project_archived_at?: string | null
-          project_created_at?: string
-          project_deleted?: boolean | null
-          project_deleted_at?: string | null
-          project_hex_color: string
-          project_name: string
-          project_slug: string
+          archived?: boolean | null
+          archived_at?: string | null
+          created_at?: string
+          deleted?: boolean | null
+          deleted_at?: string | null
+          hex_color: string
+          name: string
           project_uid?: string
-          project_updated_at?: string | null
+          slug: string
+          updated_at?: string | null
         }
         Update: {
-          project_archived?: boolean | null
-          project_archived_at?: string | null
-          project_created_at?: string
-          project_deleted?: boolean | null
-          project_deleted_at?: string | null
-          project_hex_color?: string
-          project_name?: string
-          project_slug?: string
+          archived?: boolean | null
+          archived_at?: string | null
+          created_at?: string
+          deleted?: boolean | null
+          deleted_at?: string | null
+          hex_color?: string
+          name?: string
           project_uid?: string
-          project_updated_at?: string | null
+          slug?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
       records: {
         Row: {
+          created_at: string
+          deleted: boolean | null
+          deleted_at: string | null
+          ended_at: string | null
           project_uid: string | null
-          record_created_at: string
-          record_deleted: boolean | null
-          record_deleted_at: string | null
-          record_ended_at: string | null
-          record_started_at: string
           record_uid: string
-          record_updated_at: string | null
+          started_at: string
           task_uid: string | null
+          updated_at: string | null
         }
         Insert: {
+          created_at?: string
+          deleted?: boolean | null
+          deleted_at?: string | null
+          ended_at?: string | null
           project_uid?: string | null
-          record_created_at?: string
-          record_deleted?: boolean | null
-          record_deleted_at?: string | null
-          record_ended_at?: string | null
-          record_started_at?: string
           record_uid?: string
-          record_updated_at?: string | null
+          started_at?: string
           task_uid?: string | null
+          updated_at?: string | null
         }
         Update: {
+          created_at?: string
+          deleted?: boolean | null
+          deleted_at?: string | null
+          ended_at?: string | null
           project_uid?: string | null
-          record_created_at?: string
-          record_deleted?: boolean | null
-          record_deleted_at?: string | null
-          record_ended_at?: string | null
-          record_started_at?: string
           record_uid?: string
-          record_updated_at?: string | null
+          started_at?: string
           task_uid?: string | null
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -146,40 +146,40 @@ export type Database = {
       }
       tasks: {
         Row: {
+          completed: boolean | null
+          completed_at: string | null
+          created_at: string
+          deleted: boolean | null
+          deleted_at: string | null
+          name: string
           project_uid: string | null
-          task_completed: boolean | null
-          task_completed_at: string | null
-          task_created_at: string
-          task_deleted: boolean | null
-          task_deleted_at: string | null
-          task_name: string
-          task_slug: string
+          slug: string
           task_uid: string
-          task_updated_at: string | null
+          updated_at: string | null
         }
         Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          deleted?: boolean | null
+          deleted_at?: string | null
+          name: string
           project_uid?: string | null
-          task_completed?: boolean | null
-          task_completed_at?: string | null
-          task_created_at?: string
-          task_deleted?: boolean | null
-          task_deleted_at?: string | null
-          task_name: string
-          task_slug: string
+          slug: string
           task_uid?: string
-          task_updated_at?: string | null
+          updated_at?: string | null
         }
         Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          deleted?: boolean | null
+          deleted_at?: string | null
+          name?: string
           project_uid?: string | null
-          task_completed?: boolean | null
-          task_completed_at?: string | null
-          task_created_at?: string
-          task_deleted?: boolean | null
-          task_deleted_at?: string | null
-          task_name?: string
-          task_slug?: string
+          slug?: string
           task_uid?: string
-          task_updated_at?: string | null
+          updated_at?: string | null
         }
         Relationships: [
           {

@@ -118,7 +118,7 @@ export const useProjectsStore = defineStore('project-store', () => {
     if (!project.value) return
 
     const { project_uid, tasks, ...ProjectProps } = project.value
-    ProjectProps.project_updated_at = toISOStringWithTimezone(new Date())
+    ProjectProps.updated_at = toISOStringWithTimezone(new Date())
     console.log('updateProject', ProjectProps)
 
     const { count, data, error, status } = await updateProjectQuery(ProjectProps, project_uid)
@@ -128,7 +128,7 @@ export const useProjectsStore = defineStore('project-store', () => {
     if (count && count > 1) {
       useErrorStore().setError({ error: Error('Many projects updated...'), customCode: 500 })
     }
-    validateCacheProject({ key: ProjectProps.project_slug, forceRefresh: true })
+    validateCacheProject({ key: ProjectProps.slug, forceRefresh: true })
     // Below replaces "validateCacheProjects(true)" as when the update is done,
     // the list isn't refreshed...
     loadProjects.clear()

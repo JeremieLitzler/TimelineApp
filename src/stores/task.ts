@@ -81,7 +81,7 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     if (!taskWithProject.value) return
 
     const { task_uid, projects, ...TaskProps } = taskWithProject.value
-    TaskProps.task_updated_at = toISOStringWithTimezone(new Date())
+    TaskProps.updated_at = toISOStringWithTimezone(new Date())
     const { count, data, error, status } = await updateTaskQuery(TaskProps, task_uid)
     if (error) {
       useErrorStore().setError({ error, customCode: status })

@@ -3,17 +3,17 @@ drop table if exists "public"."projects";
 
 create table 
   projects (
-    -- project_id serial primary key generated always as identity  null,
+    -- project_id serial primary key generated always as identity not null,
     project_uid uuid default public.uuid_generate_v8() primary key,
-    project_name varchar(100) unique not null,
-    project_slug varchar(132) unique not null,
-    project_hex_color varchar(7) not null,
-    project_created_at timestamptz default now() not null,
-    project_updated_at timestamptz null,
-    project_archived_at timestamptz null,
-    project_archived boolean default false,
-    project_deleted_at timestamptz null,
-    project_deleted boolean default false
+    "name" varchar(100) unique not null,
+    slug varchar(132) unique not null,
+    hex_color varchar(7) not null,
+    created_at timestamptz default now() not null,
+    updated_at timestamptz null,
+    archived_at timestamptz null,
+    archived boolean default false,
+    deleted_at timestamptz null,
+    deleted boolean default false
   );
 
 -- This allows to enable row level security on your tables.

@@ -1,7 +1,7 @@
 // to internationlize the faked data, use the XX_ZZ local
 // and import fake like the comment below
 // import { fakerFR_BE as faker } from '@faker-js/faker'
-import { faker } from '@faker-js/faker'
+import { da, faker } from '@faker-js/faker'
 import { createClient } from '@supabase/supabase-js'
 
 console.log('import.meta.env', import.meta.env)
@@ -106,9 +106,12 @@ const seedDatabase = async (numEntriesPerTable) => {
   } else {
     userId = testUserId
   }
-  // const projectsIds = (await seedProjects(numEntriesPerTable, userId)).map((entity) => entity.id)
-  // await seedTasks(numEntriesPerTable, projectsIds, userId)
-  // await seedKeepAlive()
+  const projectsIds = (await seedProjects(numEntriesPerTable)).map((entity) => entity.project_uid)
+  const taskIds = (await seedTasks(numEntriesPerTable, projectsIds)).map(
+    (entity) => entity.task_uid,
+  )
+  await seedRecords(numEntriesPerTable, projectsIds, taskIds)
+  await seedKeepAlive()
 }
 
 const seedKeepAlive = async () => {
@@ -122,51 +125,92 @@ const seedKeepAlive = async () => {
 
   logStep('Seeded keep_alive!')
 }
-const seedProjects = async (numEntries, userId) => {
+const seedProjects = async (numEntries) => {
   logStep('Seeding projects...')
   const projects = []
 
   for (let i = 0; i < numEntries; i++) {
     const name = faker.lorem.words(3)
+    const archived = faker.datatype.boolean()
 
     projects.push({
       name: name,
       slug: name.toLocaleLowerCase().replace(/ /g, '-'),
-      description: faker.lorem.paragraphs(2),
-      due_date: faker.date.anytime(),
-      status: faker.helpers.arrayElement(['todo', 'in-progress', 'completed']),
+      hex_color: faker.color.rgb({ casing: 'lower' }),
+      created_at: faker.date.past(),
+      archived: archived,
+      archived_at: archived ? faker.date.future() : null,
     })
   }
 
-  const { data, error } = await supabase.from('projects').insert(projects).select('id')
+  const { data, error } = await supabase.from('projects').insert(projects).select('project_uid')
 
   if (error) return logErrorAndExit('Projects', error)
 
   logStep('Projects seeded successfully.')
+  logStep('Returning following uuids:')
+  logStep(data)
 
   return data
 }
 
-const seedTasks = async (numEntries, projectsIds, userId) => {
-  logStep('Seeding sub projects...')
-  const subProjects = []
+const seedTasks = async (numEntries, projectIds) => {
+  logStep('Seeding tasks...')
+  const tasks = []
 
   for (let i = 0; i < numEntries; i++) {
-    subProjects.push({
-      name: faker.lorem.words(3),
-      status: faker.helpers.arrayElement(['todo', 'in-progress', 'completed']),
-      description: faker.lorem.paragraph(),
-      due_date: faker.date.future(),
-      profile_id: userId,
-      project_uid: faker.helpers.arrayElement(projectsIds),
+    const name = faker.lorem.words(3)
+    const completed = faker.datatype.boolean()
+    tasks.push({
+      name: name,
+      slug: name.toLocaleLowerCase().replace(/ /g, '-'),
+      project_uid: faker.helpers.arrayElement(projectIds),
+      created_at: faker.date.past(),
+      completed: completed,
+      completed_at: completed ? faker.date.future() : null,
+      updated_at: completed ? faker.date.future() : null,
     })
   }
 
-  const { data, error } = await supabase.from('tasks').insert(subProjects).select('id')
+  const { data, error } = await supabase.from('tasks').insert(tasks).select('task_uid')
 
-  if (error) return logErrorAndExit('Sub Projects', error)
+  if (error) return logErrorAndExit('Tasks', error)
 
-  logStep('Sub Projects seeded successfully.')
+  logStep('Tasks seeded successfully.')
+
+  return data
+}
+
+const seedRecords = async (numEntries, projectIds, taskIds) => {
+  logStep('Seeding records...')
+  logStep('with existing projects...')
+  logStep(projectIds)
+  logStep('With existing tasks...')
+  logStep(taskIds)
+  const records = []
+
+  for (let i = 0; i < numEntries; i++) {
+    const name = faker.lorem.words(3)
+    const linkedToTask = faker.datatype.boolean()
+    const taskIdPicked = faker.helpers.arrayElement(taskIds)
+    logStep(`linkedToTask is <${linkedToTask}>`)
+    logStep(`taskIdPicked is <${taskIdPicked}>`)
+    records.push({
+      project_uid: faker.helpers.arrayElement(projectIds),
+      task_uid: linkedToTask ? taskIdPicked : null,
+      started_at: faker.date.past(),
+      ended_at: faker.date.soon(),
+      created_at: faker.date.past(),
+      updated_at: faker.date.soon(),
+    })
+  }
+  logStep(`records are:`)
+  logStep(records)
+  const { data, error } = await supabase.from('records').insert(records).select('record_uid')
+
+  if (error) return logErrorAndExit('Records', error)
+
+  logStep('Records seeded successfully.')
 
   return data
 }

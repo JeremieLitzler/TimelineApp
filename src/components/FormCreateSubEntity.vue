@@ -7,9 +7,9 @@ import type { FormSelectOption } from '@/types/FormSelectOption'
 const { slug } = useRoute('/projects/[slug]').params
 const sheetOpen = defineModel<boolean>()
 const form = ref<FormDataCreateTask>({
-  task_name: '',
-  task_slug: '',
-  project_uid: '',
+  name: '',
+  slug: '',
+  uid: '',
 })
 
 const selectOptions = ref({
@@ -27,13 +27,13 @@ const { createTask } = useTaskStore()
 const setProjectsOptions = async () => {
   await entityStore.getProjects()
   await entityStore.getProject(slug)
-  form.value.project_uid = project.value?.project_uid.toString() || ''
+  form.value.uid = project.value?.project_uid.toString() || ''
 
   if (!projects.value) return
 
   projects.value.forEach((entityEl) => {
     selectOptions.value.projects.push({
-      label: entityEl.project_name,
+      label: entityEl.name,
       value: entityEl.project_uid,
       selected: entityEl.project_uid == project.value?.project_uid,
     })
@@ -56,8 +56,8 @@ const submitNewTask = async () => {
   await createTask(form.value)
   const parentSelected =
     projects.value &&
-    projects.value.find((element) => element.project_uid.toString() === form.value.project_uid)
-  await entityStore.refreshProject(parentSelected?.project_slug!)
+    projects.value.find((element) => element.project_uid.toString() === form.value.uid)
+  await entityStore.refreshProject(parentSelected?.slug!)
   sheetOpen.value = false
 }
 </script>
@@ -71,7 +71,7 @@ const submitNewTask = async () => {
         <app-form-field
           type="text"
           name="sub_entity_name"
-          v-model="form.task_name"
+          v-model="form.name"
           label="Name"
           :rules="{ required: true, regex: /^(.){3,255}$/ }"
         />
@@ -95,8 +95,8 @@ const submitNewTask = async () => {
         > -->
         <app-form-field
           as="select"
-          name="sub_entity_project_uid"
-          v-model="form.project_uid"
+          name="sub_entity_uid"
+          v-model="form.uid"
           label="Project"
           placeholder="Select an Project"
           rules="required"

@@ -3,8 +3,8 @@ import type { FormDataCreateTask } from '@/types/FormDataCreateTask'
 import type { QueryData } from '@supabase/supabase-js'
 
 export const createTaskQuery = async (task: FormDataCreateTask) => {
-  const { project_uid, ...task_props } = task
-  return await supabase.from('tasks').insert({ ...task_props, project_uid })
+  const { uid, ...props } = task
+  return await supabase.from('tasks').insert({ ...props, uid })
 }
 export const updateTaskQuery = async (task = {}, uid: string) => {
   const result = await supabase.from('tasks').update(task).eq('task_uid', uid)
@@ -21,8 +21,8 @@ export const taskWithParentQuery = (uid: string) =>
     *,
     projects (
       project_uid,
-      project_name,
-      project_slug
+      name,
+      slug
     )
   `,
     )

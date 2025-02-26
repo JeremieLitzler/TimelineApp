@@ -13,8 +13,8 @@ When clicking the button "+ Add New Project" on the [Project Selection Modal](pr
     - In fact, when I create a project, it means that I want to use it or create tasks for it.
     - Maybe, a modal with the following choices would be nice:
       - Go back to Projects
-      - Go to {{ project_name }} (see [Project Screen](project-screen.md))
-      - Add a task to {{ project_name }}
+      - Go to {{ name }} (see [Project Screen](project-screen.md))
+      - Add a task to {{ name }}
 
 Here is the color palette.
 

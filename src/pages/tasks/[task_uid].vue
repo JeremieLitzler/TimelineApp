@@ -9,11 +9,11 @@ const entityStore = useProjectsStore()
 const { taskWithProject } = storeToRefs(store)
 
 watch(
-  () => taskWithProject.value?.task_name,
+  () => taskWithProject.value?.name,
   () => {
     console.log('watch sub-entity', taskWithProject.value)
 
-    usePageStore().pageData.title = `Sub-Project: ${taskWithProject.value?.task_name || 'Not Sub-Project found'}`
+    usePageStore().pageData.title = `Sub-Project: ${taskWithProject.value?.name || 'Not Sub-Project found'}`
   },
 )
 
@@ -28,7 +28,7 @@ const updateTask = () => {
 // Delete Logic
 const deleting = ref(false)
 const deleteTask = async () => {
-  const parentSlug = taskWithProject.value?.projects?.project_slug
+  const parentSlug = taskWithProject.value?.projects?.slug
   deleting.value = true
   console.log('deleteTask>deleting...')
   await store.deleteTask()
@@ -56,7 +56,7 @@ const deleteTask = async () => {
           <TableCell>
             <AppInputLiveEditText
               type="text"
-              v-model="taskWithProject.task_name"
+              v-model="taskWithProject.name"
               @@commit="updateTask"
             />
           </TableCell>
@@ -64,16 +64,13 @@ const deleteTask = async () => {
         <TableRow>
           <TableHead> Slug </TableHead>
           <TableCell>
-            {{ taskWithProject.task_slug }}
+            {{ taskWithProject.slug }}
           </TableCell>
         </TableRow>
         <TableRow>
           <TableHead> Completed? </TableHead>
           <TableCell title="Click the icon to toggle the value">
-            <AppInputLiveEditStatus
-              v-model="taskWithProject.task_completed"
-              @@commit="updateTask"
-            />
+            <AppInputLiveEditStatus v-model="taskWithProject.completed" @@commit="updateTask" />
           </TableCell>
         </TableRow>
         <TableRow>
@@ -81,8 +78,8 @@ const deleteTask = async () => {
           <TableCell>
             <RouterLink
               class="underline hover:bg-muted block w-full font-medium"
-              :to="`/projects/${taskWithProject.projects?.project_slug}`"
-              >{{ taskWithProject.projects?.project_name }}</RouterLink
+              :to="`/projects/${taskWithProject.projects?.slug}`"
+              >{{ taskWithProject.projects?.name }}</RouterLink
             >
           </TableCell>
         </TableRow>

@@ -11,7 +11,7 @@ export const updateProjectQuery = async (project = {}, uid: string) => {
   return result // {count, data, error, status}
 }
 export const deleteProjectQuery = async (uid: string) => {
-  return await supabase.from('projects').delete().eq('uid', uid)
+  return await supabase.from('projects').delete().eq('project_uid', uid)
 }
 
 export const allProjectsQuery = supabase.rpc('coalesce_updated_at_or_created_at_sort', {
@@ -29,12 +29,12 @@ export const projectWithTasksBySlugQuery = (slug: string) =>
     *,
     tasks (
       task_uid,
-      task_name,
-      task_slug,
-      task_completed
+      name,
+      slug,
+      completed
     )
   `,
     )
-    .eq('project_slug', slug)
+    .eq('slug', slug)
     .single()
 export type ProjectWithTasksBySlugType = QueryData<ReturnType<typeof projectWithTasksBySlugQuery>>

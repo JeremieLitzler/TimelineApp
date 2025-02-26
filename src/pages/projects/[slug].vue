@@ -13,11 +13,11 @@ const { project } = storeToRefs(store)
 // TODO > make sure to place the watch before the async method that load the data!
 // Otherwise, the watcher never gets called
 watch(
-  () => project.value?.project_name,
+  () => project.value?.name,
   () => {
     console.log('watch project', project.value)
 
-    usePageStore().pageData.title = `Project: ${project.value?.project_name || 'Not entity found'}`
+    usePageStore().pageData.title = `Project: ${project.value?.name || 'Not entity found'}`
   },
 )
 
@@ -59,35 +59,31 @@ const openModal = ref(false)
       <TableRow>
         <TableHead> Name </TableHead>
         <TableCell>
-          <AppInputLiveEditText
-            type="text"
-            v-model="project.project_name"
-            @@commit="updateProject"
-          />
+          <AppInputLiveEditText type="text" v-model="project.name" @@commit="updateProject" />
         </TableCell>
       </TableRow>
       <TableRow>
         <TableHead> Slug </TableHead>
         <TableCell>
-          {{ project.project_slug }}
+          {{ project.slug }}
         </TableCell>
       </TableRow>
       <TableRow>
         <TableHead> Created On </TableHead>
         <TableCell>
-          {{ formatDateStrToUserFriendly(project.project_created_at) }}
+          {{ formatDateStrToUserFriendly(project.created_at) }}
         </TableCell>
       </TableRow>
       <TableRow>
         <TableHead> Last Updated On </TableHead>
         <TableCell>
-          {{ formatDateStrToUserFriendly(project.project_updated_at) }}
+          {{ formatDateStrToUserFriendly(project.updated_at) }}
         </TableCell>
       </TableRow>
       <TableRow>
         <TableHead> Archived? </TableHead>
         <TableCell>
-          <AppInputLiveEditStatus v-model="project.project_archived" @@commit="updateProject" />
+          <AppInputLiveEditStatus v-model="project.archived" @@commit="updateProject" />
         </TableCell>
       </TableRow>
     </Table>
@@ -114,12 +110,12 @@ const openModal = ref(false)
                   :to="`${RouterPathEnum.Tasks}/${task.task_uid}`"
                   :key="task.task_uid"
                   class="text-left underline hover:bg-muted block w-full font-medium p-4"
-                  >{{ task.task_name }}</RouterLink
+                  >{{ task.name }}</RouterLink
                 ></TableCell
               >
               <TableCell
                 ><AppInputLiveEditStatus
-                  v-model="task.task_completed"
+                  v-model="task.completed"
                   :readonly="true"
                   :show-tool-tip="false"
               /></TableCell>

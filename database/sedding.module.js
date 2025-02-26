@@ -163,7 +163,7 @@ const seedTasks = async (supabase, numEntries, projectsIds, userId) => {
       description: faker.lorem.paragraph(),
       due_date: faker.date.future(),
       profile_id: userId,
-      project_uid: faker.helpers.arrayElement(projectsIds),
+      uid: faker.helpers.arrayElement(projectsIds),
     })
   }
 

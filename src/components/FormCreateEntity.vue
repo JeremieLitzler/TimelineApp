@@ -6,9 +6,9 @@ import type { FormDataCreateProject } from '@/types/FormDataCreateProject'
 
 const sheetOpen = defineModel<boolean>()
 const form = ref<FormDataCreateProject>({
-  project_name: '',
-  project_slug: '',
-  project_hex_color: '',
+  name: '',
+  slug: '',
+  hex_color: '',
 })
 
 const authStore = useAuthStore()
@@ -19,17 +19,17 @@ const { createProject } = useProjectsStore()
 // TODO : make reusable functionnality between project and task
 let userEditedSlug = ref(false)
 const updateSlug = () => {
-  if (!form.value?.project_name) return
+  if (!form.value?.name) return
   if (!userEditedSlug.value) {
-    form.value.project_slug = slugify(form.value.project_name)
+    form.value.slug = slugify(form.value.name)
   }
 }
 const enterSlugEditing = () => (userEditedSlug.value = true)
 const exitSlugEditing = () => {
-  const computedSlug = slugify(form.value.project_name)
-  if (form.value.project_slug === '') {
+  const computedSlug = slugify(form.value.name)
+  if (form.value.slug === '') {
     userEditedSlug.value = false
-  } else if (form.value.project_slug !== computedSlug) {
+  } else if (form.value.slug !== computedSlug) {
     // since the slug is different from the computed slug from name
     // the auto computation of the slug is disabled
     userEditedSlug.value = true
@@ -57,15 +57,15 @@ const submitNewProject = async () => {
         <app-form-field
           type="text"
           name="entity_name"
-          v-model="form.project_name"
+          v-model="form.name"
           label="Name"
           :rules="{ required: true, regex: /^(.){3,60}$/ }"
           @input="updateSlug"
         />
         <app-form-field
           type="text"
-          name="project_slug"
-          v-model="form.project_slug"
+          name="slug"
+          v-model="form.slug"
           label="Slug"
           :rules="{ required: true, regex: /^([a-z0-9-]){3,60}$/ }"
           @focusin="enterSlugEditing"
@@ -74,8 +74,8 @@ const submitNewProject = async () => {
         <!-- TODO: finish color input -->
         <app-form-field
           type="color"
-          name="project_hex_color"
-          v-model="form.project_hex_color"
+          name="hex_color"
+          v-model="form.hex_color"
           label="Color"
           :rules="{ required: true, regex: /^(.){3,60}$/ }"
         />

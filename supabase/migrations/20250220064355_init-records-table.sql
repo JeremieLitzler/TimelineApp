@@ -8,12 +8,12 @@ create table
     record_uid uuid default public.uuid_generate_v8() primary key,
     project_uid uuid references projects (project_uid) on delete cascade,
     task_uid uuid references tasks (task_uid) on delete cascade,
-    record_started_at timestamptz default now() not null,
-    record_ended_at timestamptz null,
-    record_created_at timestamptz default now() not null,
-    record_updated_at timestamptz null,
-    record_deleted_at timestamptz null,
-    record_deleted boolean default false
+    started_at timestamptz default now() not null,
+    ended_at timestamptz null,
+    created_at timestamptz default now() not null,
+    updated_at timestamptz null,
+    deleted_at timestamptz null,
+    deleted boolean default false
   );
 
 -- This allows to enable row level security on your tables.
