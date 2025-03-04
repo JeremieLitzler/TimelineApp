@@ -32,8 +32,16 @@ const toggleValue = () => {
       tabindex="0"
     >
       <Transition mode="out-in">
-        <span v-if="!status" class="text-gray-400" title="Not completed"><CircleDotDashed /></span>
-        <span v-else class="text-green-400" title="Completed"><CircleCheckBig /></span>
+        <span
+          v-if="!status"
+          class="text-gray-400"
+          title="Project not archived"
+          aria-label="Project not archived"
+          ><CircleDotDashed
+        /></span>
+        <span v-else class="text-green-400" title="Project archived" aria-label="Project archived"
+          ><CircleCheckBig
+        /></span>
       </Transition>
     </div>
     <Info v-if="showToolTip" class="text-slate-500"></Info>

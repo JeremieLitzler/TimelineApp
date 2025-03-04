@@ -63,6 +63,12 @@ const openModal = ref(false)
         </TableCell>
       </TableRow>
       <TableRow>
+        <TableHead> Color </TableHead>
+        <TableCell>
+          <AppInputLiveEditColor v-model="project.hex_color" @@commit="updateProject" />
+        </TableCell>
+      </TableRow>
+      <TableRow>
         <TableHead> Slug </TableHead>
         <TableCell>
           {{ project.slug }}
@@ -81,7 +87,7 @@ const openModal = ref(false)
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableHead> Archived? </TableHead>
+        <TableHead> Archived </TableHead>
         <TableCell>
           <AppInputLiveEditStatus v-model="project.archived" @@commit="updateProject" />
         </TableCell>

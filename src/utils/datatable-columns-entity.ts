@@ -3,6 +3,7 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import AppInputLiveEditStatus from '@/components/AppInputLiveEditStatus.vue'
 import { RouterPathEnum } from '@/types/RouterPathEnum'
 import type { ProjectRecordWithRpc } from '@/types/ProjectRecordWithRpc'
+import AppInputLiveEditColor from '@/components/AppInputLiveEditColor.vue'
 
 export const columns: ColumnDef<ProjectRecordWithRpc>[] = [
   {
@@ -30,8 +31,20 @@ export const columns: ColumnDef<ProjectRecordWithRpc>[] = [
     },
   },
   {
+    accessorKey: 'hex_color',
+    header: () => h('div', { class: 'text-left' }, 'Color'),
+    cell: ({ row }) => {
+      return h(AppInputLiveEditColor, {
+        modelValue: row.original.hex_color,
+        readonly: true,
+        showToolTip: false,
+        pointer: false,
+      })
+    },
+  },
+  {
     accessorKey: 'archived',
-    header: () => h('div', { class: 'text-left' }, 'Status'),
+    header: () => h('div', { class: 'text-left' }, 'Archived'),
     cell: ({ row }) => {
       return h(AppInputLiveEditStatus, {
         modelValue: row.original.archived,
