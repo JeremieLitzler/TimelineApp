@@ -31,10 +31,10 @@ const updateProject = () => {
 
 // Delete Logic
 const deleting = ref(false)
-const deleteProject = async () => {
+const softDeleteProject = async () => {
   deleting.value = true
   console.log('deleteProject>deleting...')
-  await store.deleteProject()
+  await store.softDeleteProject()
   console.log('deleteProject>deleted!')
   router.push('/projects')
 }
@@ -46,7 +46,7 @@ const openModal = ref(false)
 <template>
   <div class="lg:container flex flex-col justify-center items-center">
     <FormCreateTask v-model="openModal" />
-    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="deleteProject">
+    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="softDeleteProject">
       <span v-if="deleting" class="animate-spin">
         <LoaderCircle />
       </span>

@@ -146,6 +146,13 @@ export const useProjectsStore = defineStore('project-store', () => {
     loadProjects.clear()
   }
 
+  const softDeleteProject = async () => {
+    if (!project.value) return
+
+    project.value.deleted = true
+    project.value.deleted_at = toISOStringWithTimezone(new Date())
+    updateProject()
+  }
   return {
     project,
     projects,
@@ -158,5 +165,6 @@ export const useProjectsStore = defineStore('project-store', () => {
     createProject,
     updateProject,
     deleteProject,
+    softDeleteProject,
   }
 })
