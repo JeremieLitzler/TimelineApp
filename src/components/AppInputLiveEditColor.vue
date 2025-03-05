@@ -6,11 +6,14 @@ const hex_color = defineModel<string | null | undefined>()
 const {
   readonly = false,
   showToolTip = true,
+  showIcon = true,
   pointer = true,
 } = defineProps<{
   readonly?: boolean
   showToolTip?: boolean
+  showIcon?: boolean
   pointer?: boolean
+  placeholder?: string
 }>()
 const emits = defineEmits<{
   (event: '@commit'): void
@@ -40,6 +43,7 @@ const stopEditing = () => {
 </script>
 <template>
   <div class="flex flex-row justify-between items-center">
+    <p v-if="placeholder && !isEditing">{{ placeholder }}</p>
     <p
       class="rounded-xl"
       :style="`height: 1.5rem; width: 1.5rem; background-color:${hex_color}`"
@@ -52,7 +56,7 @@ const stopEditing = () => {
       <span class="pr-2"> Pick your color </span>
       <input type="color" v-model="hex_color" @blur="stopEditing" />
     </label>
-    <PencilLine v-if="!isEditing && !readonly" @click="startEditing" class="pencil" />
+    <PencilLine v-if="!isEditing && !readonly && showIcon" @click="startEditing" class="pencil" />
   </div>
 </template>
 

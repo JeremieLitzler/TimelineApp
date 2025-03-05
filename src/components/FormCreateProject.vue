@@ -5,11 +5,12 @@ import { Form as VeeForm } from 'vee-validate'
 import type { FormDataCreateProject } from '@/types/FormDataCreateProject'
 
 const sheetOpen = defineModel<boolean>()
-const form = ref<FormDataCreateProject>({
+const initialForm = {
   name: '',
   slug: '',
-  hex_color: '',
-})
+  hex_color: '#1d4ed8',
+}
+const form = ref<FormDataCreateProject>({ ...initialForm })
 
 const authStore = useAuthStore()
 const { profile: currentUser } = storeToRefs(authStore)
@@ -41,10 +42,12 @@ const exitSlugEditing = () => {
     return
   }
 }
+
 // Handle new Project creation
 const submitNewProject = async () => {
-  await createProject(form.value)
+  await createProject({ ...form.value })
   sheetOpen.value = false
+  form.value = initialForm
 }
 </script>
 <template>
@@ -56,7 +59,7 @@ const submitNewProject = async () => {
       <vee-form @submit="submitNewProject">
         <app-form-field
           type="text"
-          name="entity_name"
+          name="name"
           v-model="form.name"
           label="Name"
           :rules="{ required: true, regex: /^(.){3,60}$/ }"
@@ -72,13 +75,13 @@ const submitNewProject = async () => {
           @blur="exitSlugEditing"
         />
         <!-- TODO: finish color input -->
-        <app-form-field
-          type="color"
-          name="hex_color"
-          v-model="form.hex_color"
-          label="Color"
-          :rules="{ required: true, regex: /^(.){3,60}$/ }"
-        />
+        <app-form-field as="color" label="Color" name="hex_color" v-model="form.hex_color">
+          <AppInputLiveEditColor
+            v-model="form.hex_color"
+            :show-icon="false"
+            placeholder="Change your color by click the circle ⏩"
+          />
+        </app-form-field>
         <button type="submit" class="btn btn-primary">Create</button>
       </vee-form>
     </SheetContent>
