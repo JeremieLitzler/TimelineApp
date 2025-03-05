@@ -19,6 +19,7 @@ export const allProjectsQuery = supabase.rpc('coalesce_updated_at_or_created_at_
   selected_columns: '*',
   sort_direction: 'DESC',
   nulls_position: 'LAST',
+  where_clause: 'deleted = false',
 }) as unknown as PostgrestSingleResponse<ProjectRecordWithRpc[]>
 export type AllProjectsType = QueryData<typeof allProjectsQuery>
 export const projectWithTasksBySlugQuery = (slug: string) =>

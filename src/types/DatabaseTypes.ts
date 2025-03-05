@@ -202,6 +202,7 @@ export type Database = {
           selected_columns?: string
           sort_direction?: string
           nulls_position?: string
+          where_clause?: string
         }
         Returns: Json[]
       }
