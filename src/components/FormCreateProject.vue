@@ -17,32 +17,13 @@ const { profile: currentUser } = storeToRefs(authStore)
 const { createProject } = useProjectsStore()
 
 // Fill in the slug as the name is typed
-// TODO : make reusable functionnality between project and task
-let userEditedSlug = ref(false)
-const updateSlug = () => {
-  if (!form.value?.name) return
-  if (!userEditedSlug.value) {
-    form.value.slug = slugify(form.value.name)
-  }
-}
-const enterSlugEditing = () => (userEditedSlug.value = true)
-const exitSlugEditing = () => {
-  const computedSlug = slugify(form.value.name)
-  if (form.value.slug === '') {
-    userEditedSlug.value = false
-  } else if (form.value.slug !== computedSlug) {
-    // since the slug is different from the computed slug from name
-    // the auto computation of the slug is disabled
-    userEditedSlug.value = true
-    return
-  } else {
-    // since the slug is the same from the computed slug from name
-    // the auto computation of the slug is enabled
-    userEditedSlug.value = false
-    return
-  }
-}
-
+const { slug, enterSlugEditing, exitSlugEditing, updateSlug } = useSlug(form)
+watch(
+  () => slug.value,
+  () => {
+    form.value.slug = slug.value
+  },
+)
 // Handle new Project creation
 const submitNewProject = async () => {
   await createProject({ ...form.value })

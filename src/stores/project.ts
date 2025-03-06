@@ -153,6 +153,7 @@ export const useProjectsStore = defineStore('project-store', () => {
     project.value.deleted_at = toISOStringWithTimezone(new Date())
     updateProject()
   }
+
   return {
     project,
     projects,

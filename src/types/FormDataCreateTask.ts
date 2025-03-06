@@ -1,5 +1,5 @@
-export interface FormDataCreateTask {
-  name: string
-  slug: string
-  uid: string
+import type { IFormDataCreateBase } from '@/types/IFormDataCreateBase'
+
+export interface FormDataCreateTask extends IFormDataCreateBase {
+  project_uid: string
 }

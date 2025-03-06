@@ -4,13 +4,14 @@ import { Form as VeeForm } from 'vee-validate'
 import type { FormDataCreateTask } from '@/types/FormDataCreateTask'
 import type { FormSelectOption } from '@/types/FormSelectOption'
 
-const { slug } = useRoute('/projects/[slug]').params
+const { slug: projectSlug } = useRoute('/projects/[slug]').params
 const sheetOpen = defineModel<boolean>()
-const form = ref<FormDataCreateTask>({
+const initialForm = {
   name: '',
   slug: '',
-  uid: '',
-})
+  project_uid: '',
+}
+const form = ref<FormDataCreateTask>(initialForm)
 
 const selectOptions = ref({
   projects: [] as FormSelectOption[],
@@ -19,23 +20,23 @@ const selectOptions = ref({
 
 const authStore = useAuthStore()
 const { profile: currentUser } = storeToRefs(authStore)
-const entityStore = useProjectsStore()
-const { projects, project } = storeToRefs(entityStore)
+const projectStore = useProjectsStore()
+const { projects, project } = storeToRefs(projectStore)
 const profileStore = useProfileStore()
 const { profiles } = storeToRefs(profileStore)
 const { createTask } = useTaskStore()
 const setProjectsOptions = async () => {
-  await entityStore.getProjects()
-  await entityStore.getProject(slug)
-  form.value.uid = project.value?.project_uid.toString() || ''
+  await projectStore.getProjects()
+  await projectStore.getProject(projectSlug)
+  form.value.project_uid = project.value?.project_uid.toString() || ''
 
   if (!projects.value) return
 
-  projects.value.forEach((entityEl) => {
+  projects.value.forEach((projectEl) => {
     selectOptions.value.projects.push({
-      label: entityEl.name,
-      value: entityEl.project_uid,
-      selected: entityEl.project_uid == project.value?.project_uid,
+      label: projectEl.name,
+      value: projectEl.project_uid,
+      selected: projectEl.project_uid == project.value?.project_uid,
     })
   })
 }
@@ -52,12 +53,21 @@ const setProfilesOptions = async () => {
 
 await Promise.all([setProjectsOptions(), setProfilesOptions()])
 
+// Fill in the slug as the name is typed
+const { slug: slugTask, enterSlugEditing, exitSlugEditing, updateSlug } = useSlug(form)
+watch(
+  () => slugTask.value,
+  () => {
+    form.value.slug = slugTask.value
+  },
+)
+
 const submitNewTask = async () => {
   await createTask(form.value)
   const parentSelected =
     projects.value &&
-    projects.value.find((element) => element.project_uid.toString() === form.value.uid)
-  await entityStore.refreshProject(parentSelected?.slug!)
+    projects.value.find((element) => element.project_uid.toString() === form.value.project_uid)
+  await projectStore.refreshProject(parentSelected?.slug!)
   sheetOpen.value = false
 }
 </script>
@@ -65,50 +75,42 @@ const submitNewTask = async () => {
   <Sheet v-model:open="sheetOpen">
     <SheetContent>
       <SheetHeader>
-        <SheetTitle>Let's create a new Sub Project</SheetTitle>
+        <SheetTitle>Let's create a new task</SheetTitle>
       </SheetHeader>
       <vee-form @submit="submitNewTask">
         <app-form-field
           type="text"
-          name="sub_entity_name"
+          name="name"
           v-model="form.name"
           label="Name"
           :rules="{ required: true, regex: /^(.){3,255}$/ }"
+          @input="updateSlug"
         />
-        <!-- <app-form-field
-          class=""
-          as="select"
-          name="sub_entity_profile_id"
-          v-model="form.profile_id"
-          label="Assignee"
-          placeholder="Select an Assignee"
-          rules="required"
-        >
-          <option value="" disabled>Select a profile</option>
-          <option
-            v-for="profile in selectOptions.profiles"
-            :key="profile.value"
-            :value="profile.value"
-          >
-            {{ profile.label }}
-          </option></app-form-field
-        > -->
+        <app-form-field
+          type="text"
+          name="slug"
+          v-model="form.slug"
+          label="Slug"
+          :rules="{ required: true, regex: /^([a-z0-9-]){3,60}$/ }"
+          @focusin="enterSlugEditing"
+          @blur="exitSlugEditing"
+        />
         <app-form-field
           as="select"
-          name="sub_entity_uid"
-          v-model="form.uid"
+          name="project_uid"
+          v-model="form.project_uid"
           label="Project"
           placeholder="Select an Project"
           rules="required"
         >
-          <option value="" disabled>Select an entity</option>
+          <option value="" disabled>Select a project</option>
           <option
-            v-for="entityEl in selectOptions.projects"
-            :key="entityEl.value.toString()"
-            :value="entityEl.value.toString()"
-            :selected="entityEl.selected"
+            v-for="projectEl in selectOptions.projects"
+            :key="projectEl.value.toString()"
+            :value="projectEl.value.toString()"
+            :selected="projectEl.selected"
           >
-            {{ entityEl.label }}
+            {{ projectEl.label }}
           </option>
         </app-form-field>
         <button type="submit" class="btn btn-primary">Create</button>

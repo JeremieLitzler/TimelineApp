@@ -81,6 +81,11 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     if (!taskWithProject.value) return
 
     const { task_uid, projects, ...TaskProps } = taskWithProject.value
+    if (taskWithProject.value.completed) {
+      TaskProps.completed_at = toISOStringWithTimezone(new Date())
+    } else {
+      TaskProps.completed_at = null
+    }
     TaskProps.updated_at = toISOStringWithTimezone(new Date())
     const { count, data, error, status } = await updateTaskQuery(TaskProps, task_uid)
     if (error) {
@@ -101,6 +106,13 @@ export const useTaskStore = defineStore('Tasks-store', () => {
       console.log('deleteTask>no error')
     }
   }
+  const softDeleteTask = async () => {
+    if (!taskWithProject.value) return
+
+    taskWithProject.value.deleted = true
+    taskWithProject.value.deleted_at = toISOStringWithTimezone(new Date())
+    updateTask()
+  }
 
   return {
     taskWithProject,
@@ -110,5 +122,6 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     createTask,
     updateTask,
     deleteTask,
+    softDeleteTask,
   }
 })

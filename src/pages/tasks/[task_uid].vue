@@ -27,11 +27,11 @@ const updateTask = () => {
 
 // Delete Logic
 const deleting = ref(false)
-const deleteTask = async () => {
+const softDeleteTask = async () => {
   const parentSlug = taskWithProject.value?.projects?.slug
   deleting.value = true
   console.log('deleteTask>deleting...')
-  await store.deleteTask()
+  await store.softDeleteTask()
   console.log('deleteTask>deleted!')
   await entityStore.refreshProject(parentSlug!)
   router.push(`/projects/${parentSlug}`)
@@ -40,7 +40,7 @@ const deleteTask = async () => {
 
 <template>
   <div class="lg:container flex flex-col justify-center items-center">
-    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="deleteTask">
+    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="softDeleteTask">
       <span v-if="deleting" class="mr-0 animate-spin">
         <LoaderCircle />
       </span>
@@ -74,6 +74,12 @@ const deleteTask = async () => {
           </TableCell>
         </TableRow>
         <TableRow>
+          <TableHead> Completed On </TableHead>
+          <TableCell>
+            {{ formatDateStrToUserFriendly(taskWithProject.completed_at) }}
+          </TableCell>
+        </TableRow>
+        <TableRow>
           <TableHead> Project </TableHead>
           <TableCell>
             <RouterLink
@@ -81,6 +87,18 @@ const deleteTask = async () => {
               :to="`/projects/${taskWithProject.projects?.slug}`"
               >{{ taskWithProject.projects?.name }}</RouterLink
             >
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableHead> Created On </TableHead>
+          <TableCell>
+            {{ formatDateStrToUserFriendly(taskWithProject.created_at) }}
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableHead> Last Updated On </TableHead>
+          <TableCell>
+            {{ formatDateStrToUserFriendly(taskWithProject.updated_at) }}
           </TableCell>
         </TableRow>
       </Table>
