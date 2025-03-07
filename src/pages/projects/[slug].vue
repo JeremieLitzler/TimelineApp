@@ -9,6 +9,7 @@ const router = useRouter()
 const { slug } = useRoute('/projects/[slug]').params
 const store = useProjectsStore()
 const { project } = storeToRefs(store)
+const nonDeletedTasks = computed(() => project.value?.tasks.filter((task) => !task.deleted))
 
 // TODO > make sure to place the watch before the async method that load the data!
 // Otherwise, the watcher never gets called
@@ -110,7 +111,7 @@ const openModal = ref(false)
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="task in project.tasks" :key="task.task_uid">
+            <TableRow v-for="task in nonDeletedTasks" :key="task.task_uid">
               <TableCell class="p-0"
                 ><RouterLink
                   :to="`${RouterPathEnum.Tasks}/${task.task_uid}`"

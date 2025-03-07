@@ -103,7 +103,7 @@ export const useProjectsStore = defineStore('project-store', () => {
     validateCacheProject({ key: slug, forceRefresh })
   }
   const refreshProject = async (slug: string) => {
-    getProject(slug, true)
+    await getProject(slug, true)
   }
   const createProject = async (project: FormDataCreateProject) => {
     const { error, status } = await createProjectQuery(project)

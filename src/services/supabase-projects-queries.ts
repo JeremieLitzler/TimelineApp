@@ -32,9 +32,10 @@ export const projectWithTasksBySlugQuery = (slug: string) =>
       task_uid,
       name,
       slug,
-      completed
-    )
-  `,
+      completed,
+      deleted
+      )
+      `,
     )
     .eq('slug', slug)
     .single()
