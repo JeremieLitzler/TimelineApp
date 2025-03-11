@@ -4,6 +4,9 @@ import { required, email, url, min, between, length, max, regex } from '@vee-val
 import { localize } from '@vee-validate/i18n'
 import { en } from '@/i18n/vee-validate-en'
 import { fr } from '@/i18n/vee-validate-fr'
+import { taskSlugForProjectAvailable } from '@/services/supabase-tasks-queries'
+import type { UniqueConstraintTask } from '@/types/UniqueTaskConstraint'
+import { projectSlugAvailable } from '@/services/supabase-projects-queries'
 
 interface UniqueRuleArgs {
   prop: string
@@ -20,8 +23,15 @@ const veeValidatePlugin = {
     defineRule('min', min)
     defineRule('max', max)
     defineRule('regex', regex)
-    defineRule('unique', async <T, A>(value: T, args: A) => {
-      throw new Error('Not implemented')
+    defineRule('uniqueSlugProject', async (value: string) => {
+      // console.log('veeValidatePlugin > uniqueSlugTask', value, args)
+      const result = await projectSlugAvailable(value)
+      return result
+    })
+    defineRule('uniqueSlugTask', async (value: string, args: UniqueConstraintTask) => {
+      // console.log('veeValidatePlugin > uniqueSlugTask', value, args)
+      const result = await taskSlugForProjectAvailable({ projectUid: args.projectUid, slug: value })
+      return result
     })
 
     configure({

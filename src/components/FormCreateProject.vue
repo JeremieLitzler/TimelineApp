@@ -51,7 +51,11 @@ const submitNewProject = async () => {
           name="slug"
           v-model="form.slug"
           label="Slug"
-          :rules="{ required: true, regex: /^([a-z0-9-]){3,60}$/ }"
+          :rules="{
+            required: true,
+            regex: /^([a-z0-9-]){3,60}$/,
+            uniqueSlugProject: true,
+          }"
           @focusin="enterSlugEditing"
           @blur="exitSlugEditing"
         />

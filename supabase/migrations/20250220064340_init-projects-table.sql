@@ -5,7 +5,7 @@ create table
   projects (
     -- project_id serial primary key generated always as identity not null,
     project_uid uuid default public.uuid_generate_v8() primary key,
-    "name" varchar(100) unique not null,
+    "name" varchar(100) not null,
     slug varchar(132) unique not null,
     hex_color varchar(7) not null,
     created_at timestamptz default now() not null,

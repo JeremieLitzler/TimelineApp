@@ -40,3 +40,21 @@ export const projectWithTasksBySlugQuery = (slug: string) =>
     .eq('slug', slug)
     .single()
 export type ProjectWithTasksBySlugType = QueryData<ReturnType<typeof projectWithTasksBySlugQuery>>
+
+export const projectSlugAvailable = async (slug: string) => {
+  if (!slug) {
+    console.warn(
+      `Calling projectSlugAvailable with slug as undefined (<${slug}>) > returning`,
+      true,
+    )
+    return true
+  }
+  const { data, error } = await supabase.from('projects').select('project_uid').eq('slug', slug)
+
+  if (error) {
+    console.error('Error querying projectSlugAvailable:', error.message)
+    throw error
+  }
+  const result = data.length === 0
+  return result
+}

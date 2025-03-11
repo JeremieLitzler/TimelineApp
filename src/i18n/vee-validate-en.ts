@@ -8,7 +8,9 @@ export const en = {
     min: 'The {field} must be 0:{min} characters long',
     max: 'The {field} must be 0:{min} characters long',
     regex: 'The {field} doesn´t match the expected format',
-    unique: 'The {field} is already taken.',
+    uniqueSlugProject: 'A project already exists with this slug. Please adjust the slug.',
+    uniqueSlugTask:
+      'A task already exists with this slug and project. Please adjust the slug or change project.',
   },
   fields: {
     confirmPassword: {

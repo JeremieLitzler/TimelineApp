@@ -6,8 +6,8 @@ create table
     -- task_id serial primary key generated always as identity not null,
     task_uid uuid default public.uuid_generate_v8() primary key,
     project_uid uuid references projects (project_uid) on delete cascade,
-    "name" varchar(250) unique not null,
-    slug varchar(250) unique not null,
+    "name" varchar(250) not null,
+    slug varchar(250) not null,
     created_at timestamptz default now() not null,
     updated_at timestamptz null,
     completed_at timestamptz null,
@@ -15,6 +15,8 @@ create table
     deleted_at timestamptz null,
     deleted boolean default false
   );
+
+CREATE UNIQUE INDEX tasks_project_uid_slug_uniq ON tasks (project_uid, slug);
 
 -- This allows to enable row level security on your tables.
 -- See https://supabase.com/docs/guides/database/postgres/row-level-security#enabling-row-level-security

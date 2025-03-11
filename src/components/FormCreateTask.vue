@@ -53,6 +53,12 @@ const setProfilesOptions = async () => {
 
 await Promise.all([setProjectsOptions(), setProfilesOptions()])
 
+onUnmounted(() => {
+  console.log('Called onUnmounted')
+
+  form.value = initialForm
+})
+
 // Fill in the slug as the name is typed
 const { slug: slugTask, enterSlugEditing, exitSlugEditing, updateSlug } = useSlug(form)
 watch(
@@ -91,7 +97,11 @@ const submitNewTask = async () => {
           name="slug"
           v-model="form.slug"
           label="Slug"
-          :rules="{ required: true, regex: /^([a-z0-9-]){3,60}$/ }"
+          :rules="{
+            required: true,
+            regex: /^([a-z0-9-]){3,60}$/,
+            uniqueSlugTask: { projectUid: form.project_uid, slug: slugTask },
+          }"
           @focusin="enterSlugEditing"
           @blur="exitSlugEditing"
         />
