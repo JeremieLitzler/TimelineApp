@@ -31,7 +31,8 @@ export const projectWithTasksBySlugQuery = (slug: string) =>
       task_uid,
       task_name,
       task_slug,
-      task_completed
+      task_completed, 
+      task_deleted
     )
   `,
     )
