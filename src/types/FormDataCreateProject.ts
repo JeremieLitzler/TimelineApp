@@ -1,5 +1,5 @@
-export interface FormDataCreateProject {
-  project_name: string
-  project_slug: string
-  project_hex_color: string
+import type { IFormDataCreateBase } from '@/types/IFormDataCreateBase'
+
+export interface FormDataCreateProject extends IFormDataCreateBase {
+  hex_color: string
 }

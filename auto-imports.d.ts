@@ -113,6 +113,7 @@ declare global {
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
+  const useSlug: typeof import('./src/composables/slug')['useSlug']
   const useTaskStore: typeof import('./src/stores/task')['useTaskStore']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
   const watch: typeof import('vue')['watch']
@@ -170,6 +171,9 @@ declare global {
   // @ts-ignore
   export type { FormSelectOption } from './src/types/FormSelectOption'
   import('./src/types/FormSelectOption')
+  // @ts-ignore
+  export type { IFormDataCreateBase } from './src/types/IFormDataCreateBase'
+  import('./src/types/IFormDataCreateBase')
   // @ts-ignore
   export type { LinkProp } from './src/types/LinkProp'
   import('./src/types/LinkProp')

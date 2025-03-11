@@ -3,10 +3,11 @@ import type { ColumnDef } from '@tanstack/vue-table'
 import AppInputLiveEditStatus from '@/components/AppInputLiveEditStatus.vue'
 import { RouterPathEnum } from '@/types/RouterPathEnum'
 import type { ProjectRecordWithRpc } from '@/types/ProjectRecordWithRpc'
+import AppInputLiveEditColor from '@/components/AppInputLiveEditColor.vue'
 
 export const columns: ColumnDef<ProjectRecordWithRpc>[] = [
   {
-    accessorKey: 'project_name',
+    accessorKey: 'name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
     cell: ({ row }) => {
       // When using render functions, the way we pass children to elements is different than passing them to a custom component.
@@ -22,19 +23,31 @@ export const columns: ColumnDef<ProjectRecordWithRpc>[] = [
       return h(
         RouterLink,
         {
-          to: `${RouterPathEnum.Projects}/${row.original.project_slug}`,
+          to: `${RouterPathEnum.Projects}/${row.original.slug}`,
           class: 'text-left underline hover:bg-muted block w-full font-medium',
         },
-        () => row.getValue('project_name'),
+        () => row.getValue('name'),
       )
     },
   },
   {
-    accessorKey: 'project_archived',
-    header: () => h('div', { class: 'text-left' }, 'Status'),
+    accessorKey: 'hex_color',
+    header: () => h('div', { class: 'text-left' }, 'Color'),
+    cell: ({ row }) => {
+      return h(AppInputLiveEditColor, {
+        modelValue: row.original.hex_color,
+        readonly: true,
+        showToolTip: false,
+        pointer: false,
+      })
+    },
+  },
+  {
+    accessorKey: 'archived',
+    header: () => h('div', { class: 'text-left' }, 'Archived'),
     cell: ({ row }) => {
       return h(AppInputLiveEditStatus, {
-        modelValue: row.original.project_archived,
+        modelValue: row.original.archived,
         readonly: true,
         showToolTip: false,
         pointer: false,

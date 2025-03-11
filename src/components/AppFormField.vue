@@ -27,9 +27,21 @@
 
 <script setup lang="ts">
 interface AppFormFieldProps {
+  /**
+   * Type of input (text, number, date, color, etc...)
+   */
   as?: string
+  /**
+   * Input name
+   */
   name: string
+  /**
+   * Label value
+   */
   label: string
+  /**
+   * Input value
+   */
   modelValue?: string
 }
 

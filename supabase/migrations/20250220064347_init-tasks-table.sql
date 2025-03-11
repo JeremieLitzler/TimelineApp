@@ -6,14 +6,14 @@ create table
     -- task_id serial primary key generated always as identity not null,
     task_uid uuid default public.uuid_generate_v8() primary key,
     project_uid uuid references projects (project_uid) on delete cascade,
-    task_name varchar(250) unique not null,
-    task_slug varchar(250) unique not null,
-    task_created_at timestamptz default now() not null,
-    task_updated_at timestamptz null,
-    task_completed_at timestamptz null,
-    task_completed boolean default false,
-    task_deleted_at timestamptz null,
-    task_deleted boolean default false
+    "name" varchar(250) unique not null,
+    slug varchar(250) unique not null,
+    created_at timestamptz default now() not null,
+    updated_at timestamptz null,
+    completed_at timestamptz null,
+    completed boolean default false,
+    deleted_at timestamptz null,
+    deleted boolean default false
   );
 
 -- This allows to enable row level security on your tables.

@@ -9,16 +9,15 @@ const router = useRouter()
 const { slug } = useRoute('/projects/[slug]').params
 const store = useProjectsStore()
 const { project } = storeToRefs(store)
-
-const nonDeletedTasks = computed(() => project.value?.tasks.filter((task) => !task.task_deleted))
+const nonDeletedTasks = computed(() => project.value?.tasks.filter((task) => !task.deleted))
 // TODO > make sure to place the watch before the async method that load the data!
 // Otherwise, the watcher never gets called
 watch(
-  () => project.value?.project_name,
+  () => project.value?.name,
   () => {
     console.log('watch project', project.value)
 
-    usePageStore().pageData.title = `Project: ${project.value?.project_name || 'Not entity found'}`
+    usePageStore().pageData.title = `Project: ${project.value?.name || 'Not entity found'}`
   },
 )
 
@@ -32,10 +31,10 @@ const updateProject = () => {
 
 // Delete Logic
 const deleting = ref(false)
-const deleteProject = async () => {
+const softDeleteProject = async () => {
   deleting.value = true
   console.log('deleteProject>deleting...')
-  await store.deleteProject()
+  await store.softDeleteProject()
   console.log('deleteProject>deleted!')
   router.push('/projects')
 }
@@ -47,7 +46,7 @@ const openModal = ref(false)
 <template>
   <div class="lg:container flex flex-col justify-center items-center">
     <FormCreateTask v-model="openModal" />
-    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="deleteProject">
+    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="softDeleteProject">
       <span v-if="deleting" class="animate-spin">
         <LoaderCircle />
       </span>
@@ -60,35 +59,37 @@ const openModal = ref(false)
       <TableRow>
         <TableHead> Name </TableHead>
         <TableCell>
-          <AppInputLiveEditText
-            type="text"
-            v-model="project.project_name"
-            @@commit="updateProject"
-          />
+          <AppInputLiveEditText type="text" v-model="project.name" @@commit="updateProject" />
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableHead> Color </TableHead>
+        <TableCell>
+          <AppInputLiveEditColor v-model="project.hex_color" @@commit="updateProject" />
         </TableCell>
       </TableRow>
       <TableRow>
         <TableHead> Slug </TableHead>
         <TableCell>
-          {{ project.project_slug }}
+          {{ project.slug }}
         </TableCell>
       </TableRow>
       <TableRow>
         <TableHead> Created On </TableHead>
         <TableCell>
-          {{ formatDateStrToUserFriendly(project.project_created_at) }}
+          {{ formatDateStrToUserFriendly(project.created_at) }}
         </TableCell>
       </TableRow>
       <TableRow>
         <TableHead> Last Updated On </TableHead>
         <TableCell>
-          {{ formatDateStrToUserFriendly(project.project_updated_at) }}
+          {{ formatDateStrToUserFriendly(project.updated_at) }}
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableHead> Archived? </TableHead>
+        <TableHead> Archived </TableHead>
         <TableCell>
-          <AppInputLiveEditStatus v-model="project.project_archived" @@commit="updateProject" />
+          <AppInputLiveEditStatus v-model="project.archived" @@commit="updateProject" />
         </TableCell>
       </TableRow>
     </Table>
@@ -115,12 +116,12 @@ const openModal = ref(false)
                   :to="`${RouterPathEnum.Tasks}/${task.task_uid}`"
                   :key="task.task_uid"
                   class="text-left underline hover:bg-muted block w-full font-medium p-4"
-                  >{{ task.task_name }}</RouterLink
+                  >{{ task.name }}</RouterLink
                 ></TableCell
               >
               <TableCell
                 ><AppInputLiveEditStatus
-                  v-model="task.task_completed"
+                  v-model="task.completed"
                   :readonly="true"
                   :show-tool-tip="false"
               /></TableCell>

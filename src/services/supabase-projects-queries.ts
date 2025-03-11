@@ -11,7 +11,7 @@ export const updateProjectQuery = async (project = {}, uid: string) => {
   return result // {count, data, error, status}
 }
 export const deleteProjectQuery = async (uid: string) => {
-  return await supabase.from('projects').delete().eq('uid', uid)
+  return await supabase.from('projects').delete().eq('project_uid', uid)
 }
 
 export const allProjectsQuery = supabase.rpc('coalesce_updated_at_or_created_at_sort', {
@@ -19,6 +19,7 @@ export const allProjectsQuery = supabase.rpc('coalesce_updated_at_or_created_at_
   selected_columns: '*',
   sort_direction: 'DESC',
   nulls_position: 'LAST',
+  where_clause: 'deleted = false',
 }) as unknown as PostgrestSingleResponse<ProjectRecordWithRpc[]>
 export type AllProjectsType = QueryData<typeof allProjectsQuery>
 export const projectWithTasksBySlugQuery = (slug: string) =>
@@ -29,13 +30,13 @@ export const projectWithTasksBySlugQuery = (slug: string) =>
     *,
     tasks (
       task_uid,
-      task_name,
-      task_slug,
-      task_completed, 
-      task_deleted
+      name,
+      slug,
+      completed,
+      deleted
+      )
+      `,
     )
-  `,
-    )
-    .eq('project_slug', slug)
+    .eq('slug', slug)
     .single()
 export type ProjectWithTasksBySlugType = QueryData<ReturnType<typeof projectWithTasksBySlugQuery>>

@@ -9,11 +9,11 @@ const entityStore = useProjectsStore()
 const { taskWithProject } = storeToRefs(store)
 
 watch(
-  () => taskWithProject.value?.task_name,
+  () => taskWithProject.value?.name,
   () => {
     console.log('watch sub-entity', taskWithProject.value)
 
-    usePageStore().pageData.title = `Sub-Project: ${taskWithProject.value?.task_name || 'Not Sub-Project found'}`
+    usePageStore().pageData.title = `Sub-Project: ${taskWithProject.value?.name || 'Not Sub-Project found'}`
   },
 )
 
@@ -27,11 +27,11 @@ const updateTask = () => {
 
 // Delete Logic
 const deleting = ref(false)
-const deleteTask = async () => {
-  const parentSlug = taskWithProject.value?.projects?.project_slug
+const softDeleteTask = async () => {
+  const parentSlug = taskWithProject.value?.projects?.slug
   deleting.value = true
   console.log('deleteTask>deleting...')
-  await store.deleteTask()
+  await store.softDeleteTask()
   console.log('deleteTask>deleted!')
   await entityStore.refreshProject(parentSlug!)
   router.push(`/projects/${parentSlug}`)
@@ -40,7 +40,7 @@ const deleteTask = async () => {
 
 <template>
   <div class="lg:container flex flex-col justify-center items-center">
-    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="deleteTask">
+    <Button variant="destructive" class="self-end mt-4 w-full max-w-20" @click="softDeleteTask">
       <span v-if="deleting" class="mr-0 animate-spin">
         <LoaderCircle />
       </span>
@@ -56,7 +56,7 @@ const deleteTask = async () => {
           <TableCell>
             <AppInputLiveEditText
               type="text"
-              v-model="taskWithProject.task_name"
+              v-model="taskWithProject.name"
               @@commit="updateTask"
             />
           </TableCell>
@@ -64,16 +64,19 @@ const deleteTask = async () => {
         <TableRow>
           <TableHead> Slug </TableHead>
           <TableCell>
-            {{ taskWithProject.task_slug }}
+            {{ taskWithProject.slug }}
           </TableCell>
         </TableRow>
         <TableRow>
           <TableHead> Completed? </TableHead>
           <TableCell title="Click the icon to toggle the value">
-            <AppInputLiveEditStatus
-              v-model="taskWithProject.task_completed"
-              @@commit="updateTask"
-            />
+            <AppInputLiveEditStatus v-model="taskWithProject.completed" @@commit="updateTask" />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableHead> Completed On </TableHead>
+          <TableCell>
+            {{ formatDateStrToUserFriendly(taskWithProject.completed_at) }}
           </TableCell>
         </TableRow>
         <TableRow>
@@ -81,9 +84,21 @@ const deleteTask = async () => {
           <TableCell>
             <RouterLink
               class="underline hover:bg-muted block w-full font-medium"
-              :to="`/projects/${taskWithProject.projects?.project_slug}`"
-              >{{ taskWithProject.projects?.project_name }}</RouterLink
+              :to="`/projects/${taskWithProject.projects?.slug}`"
+              >{{ taskWithProject.projects?.name }}</RouterLink
             >
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableHead> Created On </TableHead>
+          <TableCell>
+            {{ formatDateStrToUserFriendly(taskWithProject.created_at) }}
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableHead> Last Updated On </TableHead>
+          <TableCell>
+            {{ formatDateStrToUserFriendly(taskWithProject.updated_at) }}
           </TableCell>
         </TableRow>
       </Table>
