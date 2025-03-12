@@ -19,7 +19,7 @@ export const useTaskStore = defineStore('Tasks-store', () => {
   const taskWithProject = ref<TaskWithParentType | null>(null)
   const TaskLastFetchTime = ref<CacheValidationKeyInfo>({})
 
-  const getTaskKey = (id: string) => `subProject-id-${id}`
+  const getTaskKey = (uid: string) => `task-uid-${uid}`
 
   const validateCacheTask = ({ key: id, forceRefresh }: CacheValidationRefreshRequest) => {
     validateCache<

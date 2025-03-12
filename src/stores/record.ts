@@ -1,0 +1,71 @@
+import type { CacheValidationKeyInfo } from '@/types/CacheValidationInfo'
+import { timeStampExpired, validateCache } from '@/utils/cache-validation'
+import {
+  allRecordsWithProjectOrTaskQuery,
+  type AllRecordsWithProjectOrTaskType,
+} from '@/services/supabase-records-queries'
+import type { PostgrestError } from '@supabase/supabase-js'
+import { useMemoize } from '@vueuse/core'
+
+export const useRecordStore = defineStore('Records-store', () => {
+  const GET_METHODS_EXPIRATION = 900 // 15 min
+  const _recordsLastFetchTime = ref<CacheValidationKeyInfo>({})
+  const records = ref<AllRecordsWithProjectOrTaskType | null>()
+
+  const _validateCacheRecords = async (forceRefresh: boolean = false) =>
+    validateCache<
+      typeof records,
+      typeof allRecordsWithProjectOrTaskQuery,
+      typeof _loadRecords,
+      PostgrestError
+    >({
+      key: StoreCacheKey.AllRecords,
+      loaderFn: _loadRecords,
+      query: allRecordsWithProjectOrTaskQuery,
+      reference: records,
+      lastFetchInfo: {
+        ..._recordsLastFetchTime.value[StoreCacheKey.AllRecords],
+        forceRefresh,
+      },
+    })
+  const _forceRefreshOnRecords = () => {
+    return timeStampExpired({
+      timeStamp: _recordsLastFetchTime.value[StoreCacheKey.AllRecords].timeStamp,
+      invalidateAfterSeconds: GET_METHODS_EXPIRATION,
+    })
+  }
+  const clearCache = () => {
+    console.log('called clearCache')
+    _loadRecords.clear()
+    console.log('cleared records')
+    // console.log('cleared individual records')
+  }
+  const _loadRecords = useMemoize(async (key: string) => {
+    const { data, error, status } = await allRecordsWithProjectOrTaskQuery
+
+    if (error) {
+      useErrorStore().setError({ error, customCode: status })
+    } else {
+      _recordsLastFetchTime.value[StoreCacheKey.AllRecords] = { timeStamp: Date.now() }
+    }
+
+    return data
+  })
+  const _groupByDate = () => {
+    // Take all records and group them into a dictionnary with the key being the date
+    // And the value being an array of records.
+    //
+    // The key is the date in "YYYY-mm-DD" format
+  }
+  const getRecords = async () => {
+    records.value = null
+    records.value = await _loadRecords(StoreCacheKey.AllRecords)
+    _validateCacheRecords(_forceRefreshOnRecords())
+  }
+
+  return {
+    records,
+    clearCache,
+    getRecords,
+  }
+})

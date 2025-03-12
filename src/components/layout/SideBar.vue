@@ -51,11 +51,11 @@ import { SideBarActionsEnum } from '@/types/SideBarActionsEnum'
 import type { SideBarLinkAction } from '@/types/SideBarLinkAction'
 import router from '@/router'
 import { useWindowSize } from '@vueuse/core'
-import Home from '../ui/icon/Home.vue'
 import Files from '../ui/icon/Files.vue'
 import UserRoundCog from '../ui/icon/UserRoundCog.vue'
 import LogOut from '../ui/icon/LogOut.vue'
 import Settings2 from '../ui/icon/Settings2.vue'
+import Clock8 from '../ui/icon/Clock8.vue'
 
 console.log('SideBar>script:setup...')
 
@@ -92,8 +92,8 @@ const { profile } = storeToRefs(authStore)
 const topLinks: LinkProp[] = [
   {
     to: RouterPathEnum.Home,
-    icon: Home,
-    label: 'Dashboard',
+    icon: Clock8,
+    label: 'Timeline',
   },
   { to: RouterPathEnum.Projects, icon: Files, label: 'Projects' },
 ]

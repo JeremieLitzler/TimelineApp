@@ -95,7 +95,7 @@ const seedProfiles = async ({ userId, firstName, lastName, userName }) => {
 
   logStep(`Primary test user <${userId}> created successfully.`)
 }
-const seedDatabase = async (numEntriesPerTable) => {
+const seedDatabase = async ({ countProjects, countTasks, countRecords }) => {
   let userId
 
   const testUserId = await PrimaryTestUserExists()
@@ -106,11 +106,9 @@ const seedDatabase = async (numEntriesPerTable) => {
   } else {
     userId = testUserId
   }
-  const projectsIds = (await seedProjects(numEntriesPerTable)).map((entity) => entity.project_uid)
-  const taskIds = (await seedTasks(numEntriesPerTable, projectsIds)).map(
-    (entity) => entity.task_uid,
-  )
-  await seedRecords(numEntriesPerTable, projectsIds, taskIds)
+  const projectsIds = (await seedProjects(countProjects)).map((entity) => entity.project_uid)
+  const taskIds = (await seedTasks(countTasks, projectsIds)).map((entity) => entity.task_uid)
+  await seedRecords(countRecords, projectsIds, taskIds)
   await seedKeepAlive()
 }
 
@@ -215,6 +213,4 @@ const seedRecords = async (numEntries, projectIds, taskIds) => {
   return data
 }
 
-const numEntriesPerTable = 10
-
-seedDatabase(numEntriesPerTable)
+seedDatabase({ countProjects: 10, countTasks: 50, countRecords: 200 })

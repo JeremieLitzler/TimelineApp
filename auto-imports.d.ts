@@ -110,6 +110,7 @@ declare global {
   const usePageStore: typeof import('./src/stores/page')['usePageStore']
   const useProfileStore: typeof import('./src/stores/profile')['useProfileStore']
   const useProjectsStore: typeof import('./src/stores/project')['useProjectsStore']
+  const useRecordStore: typeof import('./src/stores/record')['useRecordStore']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
@@ -207,6 +208,9 @@ declare global {
   // @ts-ignore
   export type { SupabaseAuthErrorExtended, SupabaseAuthApiErrorExtended } from './src/types/SupabaseAuthErrorExtended'
   import('./src/types/SupabaseAuthErrorExtended')
+  // @ts-ignore
+  export type { UniqueConstraintTask } from './src/types/UniqueTaskConstraint'
+  import('./src/types/UniqueTaskConstraint')
   // @ts-ignore
   export type { UpdateSupabaseProjectRequest } from './src/types/UpdateSupabaseEntityRequest'
   import('./src/types/UpdateSupabaseEntityRequest')
