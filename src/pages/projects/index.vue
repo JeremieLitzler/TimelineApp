@@ -11,12 +11,12 @@ usePageStore().pageData.title = 'Projects'
 
 import { columns } from '@/utils/datatable-columns-entity'
 
-const entityStore = useProjectsStore()
-const { projects } = storeToRefs(entityStore)
+const projectStore = useProjectsStore()
+const { projects } = storeToRefs(projectStore)
 // `projects` is reactive from the store.
 // as soon as the `getProjects` is called and done,
 // the projects are loaded
-await entityStore.getProjects()
+await projectStore.getProjects()
 
 // Add new sub entity logic
 const openModal = ref(false)
