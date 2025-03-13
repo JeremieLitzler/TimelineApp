@@ -46,15 +46,23 @@ declare global {
   const TableRow: typeof import('./src/components/ui/table/index')['TableRow']
   const UserLoginRequest: typeof import('./src/types/UserLoginRequest')['default']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
+  const afterAll: typeof import('vitest')['afterAll']
+  const afterEach: typeof import('vitest')['afterEach']
+  const assert: typeof import('vitest')['assert']
   const avatarVariant: typeof import('./src/components/ui/avatar/index')['avatarVariant']
+  const beforeAll: typeof import('vitest')['beforeAll']
+  const beforeEach: typeof import('vitest')['beforeEach']
   const buttonVariants: typeof import('./src/components/ui/button/index')['buttonVariants']
+  const chai: typeof import('vitest')['chai']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const defineStore: typeof import('pinia')['defineStore']
+  const describe: typeof import('vitest')['describe']
   const effectScope: typeof import('vue')['effectScope']
+  const expect: typeof import('vitest')['expect']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const h: typeof import('vue')['h']
@@ -63,6 +71,7 @@ declare global {
   const isReactive: typeof import('vue')['isReactive']
   const isReadonly: typeof import('vue')['isReadonly']
   const isRef: typeof import('vue')['isRef']
+  const it: typeof import('vitest')['it']
   const markRaw: typeof import('vue')['markRaw']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
@@ -91,6 +100,8 @@ declare global {
   const shallowRef: typeof import('vue')['shallowRef']
   const sheetVariants: typeof import('./src/components/ui/sheet/index')['sheetVariants']
   const storeToRefs: typeof import('pinia')['storeToRefs']
+  const suite: typeof import('vitest')['suite']
+  const test: typeof import('vitest')['test']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']
@@ -117,101 +128,10 @@ declare global {
   const useSlug: typeof import('./src/composables/slug')['useSlug']
   const useTaskStore: typeof import('./src/stores/task')['useTaskStore']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
+  const vi: typeof import('vitest')['vi']
+  const vitest: typeof import('vitest')['vitest']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
   const watchSyncEffect: typeof import('vue')['watchSyncEffect']
-}
-// for type re-export
-declare global {
-  // @ts-ignore
-  export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
-  import('vue')
-  // @ts-ignore
-  export type { AvatarVariants } from './src/components/ui/avatar/index'
-  import('./src/components/ui/avatar/index')
-  // @ts-ignore
-  export type { ButtonVariants } from './src/components/ui/button/index'
-  import('./src/components/ui/button/index')
-  // @ts-ignore
-  export type { SheetVariants } from './src/components/ui/sheet/index'
-  import('./src/components/ui/sheet/index')
-  // @ts-ignore
-  export type { AvatarProfile } from './src/types/AvatarProfile'
-  import('./src/types/AvatarProfile')
-  // @ts-ignore
-  export type { AvatarProfileLink } from './src/types/AvatarProfileLink'
-  import('./src/types/AvatarProfileLink')
-  // @ts-ignore
-  export type { CacheValidation } from './src/types/CacheValidation'
-  import('./src/types/CacheValidation')
-  // @ts-ignore
-  export type { CacheValidationKeyInfo, CacheValidationInfo } from './src/types/CacheValidationInfo'
-  import('./src/types/CacheValidationInfo')
-  // @ts-ignore
-  export type { CacheValidationRefreshProfileRequest } from './src/types/CacheValidationRefreshProfileRequest'
-  import('./src/types/CacheValidationRefreshProfileRequest')
-  // @ts-ignore
-  export type { CacheValidationRefreshRequest } from './src/types/CacheValidationRefreshRequest'
-  import('./src/types/CacheValidationRefreshRequest')
-  // @ts-ignore
-  export type { Json, Database, Tables, TablesInsert, TablesUpdate, Enums, CompositeTypes } from './src/types/DatabaseTypes'
-  import('./src/types/DatabaseTypes')
-  // @ts-ignore
-  export type { ErrorExtended } from './src/types/ErrorExtended'
-  import('./src/types/ErrorExtended')
-  // @ts-ignore
-  export type { ErrorNextPage } from './src/types/ErrorNextPage'
-  import('./src/types/ErrorNextPage')
-  // @ts-ignore
-  export type { FormDataCreateProject } from './src/types/FormDataCreateProject'
-  import('./src/types/FormDataCreateProject')
-  // @ts-ignore
-  export type { FormDataCreateTask } from './src/types/FormDataCreateTask'
-  import('./src/types/FormDataCreateTask')
-  // @ts-ignore
-  export type { FormSelectOption } from './src/types/FormSelectOption'
-  import('./src/types/FormSelectOption')
-  // @ts-ignore
-  export type { IFormDataCreateBase } from './src/types/IFormDataCreateBase'
-  import('./src/types/IFormDataCreateBase')
-  // @ts-ignore
-  export type { LinkProp } from './src/types/LinkProp'
-  import('./src/types/LinkProp')
-  // @ts-ignore
-  export type { LoginData } from './src/types/LoginData'
-  import('./src/types/LoginData')
-  // @ts-ignore
-  export type { PostgrestErrorExtended } from './src/types/PostgrestErrorExtended'
-  import('./src/types/PostgrestErrorExtended')
-  // @ts-ignore
-  export type { ProjectRecordWithRpc } from './src/types/ProjectRecordWithRpc'
-  import('./src/types/ProjectRecordWithRpc')
-  // @ts-ignore
-  export type { RegistrationData } from './src/types/RegistrationData'
-  import('./src/types/RegistrationData')
-  // @ts-ignore
-  export type { RequestProfile } from './src/types/RequestProfile'
-  import('./src/types/RequestProfile')
-  // @ts-ignore
-  export type { RouterPathEnum } from './src/types/RouterPathEnum'
-  import('./src/types/RouterPathEnum')
-  // @ts-ignore
-  export type { SideBarActionsEnum } from './src/types/SideBarActionsEnum'
-  import('./src/types/SideBarActionsEnum')
-  // @ts-ignore
-  export type { SideBarLinkAction } from './src/types/SideBarLinkAction'
-  import('./src/types/SideBarLinkAction')
-  // @ts-ignore
-  export type { StoreCacheKey } from './src/types/StoreCacheKeys'
-  import('./src/types/StoreCacheKeys')
-  // @ts-ignore
-  export type { SupabaseAuthErrorExtended, SupabaseAuthApiErrorExtended } from './src/types/SupabaseAuthErrorExtended'
-  import('./src/types/SupabaseAuthErrorExtended')
-  // @ts-ignore
-  export type { UniqueConstraintTask } from './src/types/UniqueTaskConstraint'
-  import('./src/types/UniqueTaskConstraint')
-  // @ts-ignore
-  export type { UpdateSupabaseProjectRequest } from './src/types/UpdateSupabaseEntityRequest'
-  import('./src/types/UpdateSupabaseEntityRequest')
 }
