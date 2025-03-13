@@ -6,7 +6,23 @@
  * @param {Date} to The end date.
  * @returns {string} The elapsed time in "hh:MM:ss" format.
  */
-export const calculateElapsedTime = (from: Date, to: Date): string => {
+export const calculateElapsedTime = (
+  fromDateStr?: string,
+  toDateStr?: string | null | undefined,
+): string | null | undefined => {
+  if (!fromDateStr) {
+    return null
+  }
+  // Convert string inputs to Date objects
+  const from = new Date(fromDateStr)
+  let to = new Date(toDateStr ?? '')
+
+  // Check if from date is valid
+  if (isNaN(from.getTime())) {
+    return null
+  }
+  if (toDateStr === undefined || isNaN(to.getTime())) to = new Date(Date.now())
+
   if (from > to) {
     throw new Error('Cannot calculate elapsed time if from greater than to')
   }
