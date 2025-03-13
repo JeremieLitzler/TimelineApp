@@ -7,8 +7,6 @@ const recordStore = useRecordStore()
 const { records } = storeToRefs(recordStore)
 
 await recordStore.getRecords()
-
-const updateTask = () => console.log('updateTask to code...')
 </script>
 <template>
   <section>
@@ -27,17 +25,7 @@ const updateTask = () => console.log('updateTask to code...')
   <section>
     <!-- List grouped by date from here -->
     <h2>Today</h2>
-    <article v-for="record in records" :key="record.record_uid">
-      <!-- Record component -->
-      <p>{{ record.projects?.hex_color }}</p>
-      <p>{{ record.projects?.name }}</p>
-      <p>{{ record.projects?.slug }}</p>
-      <p>{{ record.tasks?.name }}</p>
-      <template v-if="record.tasks">
-        <AppInputLiveEditStatus v-model="record.tasks.completed" @@commit="updateTask" />
-      </template>
-      <p>{{ record.started_at }} > {{ record.ended_at }}</p>
-    </article>
+    <AppRecordTile v-for="record in records" :key="record.record_uid" :record> </AppRecordTile>
   </section>
 </template>
 
