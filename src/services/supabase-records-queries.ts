@@ -58,3 +58,12 @@ export const allRecordsWithProjectOrTaskQuery = supabase
   .eq('deleted', false)
 
 export type AllRecordsWithProjectOrTaskType = QueryData<typeof allRecordsWithProjectOrTaskQuery>
+//// This type will infer the type of a single element within the
+//// AllRecordsWithProjectOrTaskType array. If AllRecordsWithProjectOrTaskType is not an
+//// array type, it will default to the never type.
+// export type SingleRecordWithProjectOrTaskType = AllRecordsWithProjectOrTaskType extends (infer T)[] ? T : never;
+//
+//// However, if you know that AllRecordsWithProjectOrTaskType is always an array, you can
+//// simply use the following approach for clarity
+//// This method directly indexes into the array type to get the type of its elements.
+export type SingleRecordWithProjectOrTaskType = AllRecordsWithProjectOrTaskType[number]

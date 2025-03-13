@@ -44,14 +44,14 @@ const stopEditing = () => {
 <template>
   <div class="flex flex-row justify-between items-center">
     <p v-if="placeholder && !isEditing">{{ placeholder }}</p>
-    <p
+    <AppColoredDot
       class="rounded-xl"
-      :style="`height: 1.5rem; width: 1.5rem; background-color:${hex_color}`"
+      :hex-color="hex_color"
       v-show="!isEditing"
       @click="startEditing"
       @focus="startEditing"
       tabindex="0"
-    ></p>
+    />
     <label ref="colorPickerEl" v-show="isEditing" @blur="stopEditing" class="flex items-center">
       <span class="pr-2"> Pick your color </span>
       <input type="color" v-model="hex_color" @blur="stopEditing" />
