@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
 import { RouterPathEnum } from '@/types/RouterPathEnum'
-import { calculateElapsedTime } from '@/utils/time-calculator'
-
-const { record } = defineProps<{
-  record: SingleRecordWithProjectOrTaskType
+const { record = null } = defineProps<{
+  record: SingleRecordWithProjectOrTaskType | null
 }>()
 
-const updateTask = () => console.log('updateTask to code...')
+const emits = defineEmits<{
+  (event: '@stop'): void
+}>()
+
+const completeTask = () => {
+  // update the task to completed
+  // stop recording
+  emits('@stop')
+}
 </script>
 <template>
-  <article class="mb-4">
+  <div v-if="record" class="flex flex-col">
     <!-- Record component -->
     <RouterLink
       :to="`${RouterPathEnum.Projects}/${record.projects?.slug}`"
@@ -19,13 +25,18 @@ const updateTask = () => console.log('updateTask to code...')
       <AppColoredDot :hex-color="record.projects?.hex_color" height=".5rem" width=".5rem" />
       <p>{{ record.projects?.name }}</p>
     </RouterLink>
+
     <template v-if="record.tasks">
-      <AppInputLiveEditStatus v-model="record.tasks.completed" @@commit="updateTask" />
-      <p>{{ record.tasks?.name }}</p>
+      <div class="mt-4 flex gap-2">
+        <AppInputLiveEditStatus
+          v-model="record.tasks.completed"
+          @@commit="completeTask"
+          :show-tool-tip="false"
+        />
+        <p>{{ record.tasks?.name }}</p>
+      </div>
     </template>
-    <p>{{ calculateElapsedTime(record.started_at, record.ended_at) }}</p>
-    <hr />
-  </article>
+  </div>
 </template>
 
 <style scoped></style>

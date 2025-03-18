@@ -37,7 +37,7 @@ const toggleValue = () => {
           class="text-gray-400"
           title="Project not archived"
           aria-label="Project not archived"
-          ><CircleDotDashed
+          ><Circle
         /></span>
         <span v-else class="text-green-400" title="Project archived" aria-label="Project archived"
           ><CircleCheckBig
