@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
+import type { Record } from '@/types/Record'
 import { RouterPathEnum } from '@/types/RouterPathEnum'
 const { record = null } = defineProps<{
-  record: SingleRecordWithProjectOrTaskType | null
+  record: SingleRecordWithProjectOrTaskType | Record | null
 }>()
 
 const emits = defineEmits<{

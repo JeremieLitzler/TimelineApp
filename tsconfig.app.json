@@ -20,6 +20,6 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["vitest/globals"]
+    "lib": ["esnext", "dom"]
   }
 }

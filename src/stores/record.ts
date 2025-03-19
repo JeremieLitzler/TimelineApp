@@ -63,9 +63,13 @@ export const useRecordStore = defineStore('Records-store', () => {
     _validateCacheRecords(_forceRefreshOnRecords())
   }
 
+  const addRecord = () => {}
+  const updateRecord = () => {}
   return {
     records,
     clearCache,
     getRecords,
+    addRecord,
+    updateRecord,
   }
 })

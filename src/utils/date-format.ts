@@ -19,7 +19,7 @@ export const formatDateStrToUserFriendly = (dtStr: string | null | undefined) =>
   formatDateStr(dtStr, 'ddd D MMM YYYY HH:mm:ss')
 
 export const dateToSupabaseDateString = (datetime: Date) => {
-  const format: string = 'YYYY-MM-DDTHH:mm:ss.SSS+ZZ:ZZ'
+  const format: string = 'YYYY-MM-DDTHH:mm:ss.SSS+ZZ'
   const formattedDateString = formatDateToStr(datetime, format)
   return formattedDateString
 }

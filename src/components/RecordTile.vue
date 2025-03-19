@@ -1,17 +1,26 @@
 <script setup lang="ts">
 import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
+import type { Record } from '@/types/Record'
 
-const { record = null } = defineProps<{
-  record: SingleRecordWithProjectOrTaskType | null
+const { record = null, recording = false } = defineProps<{
+  record: SingleRecordWithProjectOrTaskType | Record | null
+  recording?: boolean
 }>()
-const recording = ref(false)
-const stopRecording = (record: SingleRecordWithProjectOrTaskType | null) => {
-  recording.value = false
+const emits = defineEmits<{
+  (
+    event: '@track-new-record',
+    sourceRecord: SingleRecordWithProjectOrTaskType | Record | null,
+  ): void
+  (event: '@stop-recording'): void
+}>()
+
+const stopRecording = (record: SingleRecordWithProjectOrTaskType | Record | null) => {
   console.log(record)
+  emits('@stop-recording')
 }
-const trackNewRecord = (record: SingleRecordWithProjectOrTaskType | null) => {
-  recording.value = true
+const trackNewRecord = (record: SingleRecordWithProjectOrTaskType | Record | null) => {
   console.log(record)
+  emits('@track-new-record', record)
 }
 </script>
 <template>

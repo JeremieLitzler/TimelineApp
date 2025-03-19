@@ -74,6 +74,7 @@ declare module 'vue' {
     SheetTrigger: typeof import('./src/components/ui/sheet/SheetTrigger.vue')['default']
     SideBar: typeof import('./src/components/layout/SideBar.vue')['default']
     SideBarLinks: typeof import('./src/components/layout/SideBarLinks.vue')['default']
+    Square: typeof import('./src/components/ui/icon/Square.vue')['default']
     Table: typeof import('./src/components/ui/table/Table.vue')['default']
     TableBody: typeof import('./src/components/ui/table/TableBody.vue')['default']
     TableCaption: typeof import('./src/components/ui/table/TableCaption.vue')['default']

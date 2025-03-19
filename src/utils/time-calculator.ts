@@ -7,7 +7,7 @@
  * @returns {string} The elapsed time in "hh:MM:ss" format.
  */
 export const calculateElapsedTime = (
-  fromDateStr?: string,
+  fromDateStr?: string | null,
   toDateStr?: string | null | undefined,
 ): string | null | undefined => {
   if (!fromDateStr) {
