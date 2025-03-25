@@ -23,6 +23,7 @@ declare global {
   const Notification: typeof import('./src/types/Notification')['default']
   const NotificationAddRequest: typeof import('./src/types/NotificationAddRequest')['default']
   const PropsAppLoginForm: typeof import('./src/types/PropsAppLoginForm')['default']
+  const Record: typeof import('./src/types/Record')['Record']
   const RouterPathEnum: typeof import('./src/types/RouterPathEnum')['RouterPathEnum']
   const Separator: typeof import('./src/components/ui/separator/index')['Separator']
   const Sheet: typeof import('./src/components/ui/sheet/index')['Sheet']
@@ -189,6 +190,12 @@ declare global {
   export type { IFormDataCreateBase } from './src/types/IFormDataCreateBase'
   import('./src/types/IFormDataCreateBase')
   // @ts-ignore
+  export type { IProject } from './src/types/IProject'
+  import('./src/types/IProject')
+  // @ts-ignore
+  export type { ITask } from './src/types/ITask'
+  import('./src/types/ITask')
+  // @ts-ignore
   export type { LinkProp } from './src/types/LinkProp'
   import('./src/types/LinkProp')
   // @ts-ignore
@@ -200,6 +207,12 @@ declare global {
   // @ts-ignore
   export type { ProjectRecordWithRpc } from './src/types/ProjectRecordWithRpc'
   import('./src/types/ProjectRecordWithRpc')
+  // @ts-ignore
+  export type { Record } from './src/types/Record'
+  import('./src/types/Record')
+  // @ts-ignore
+  export type { RecordRequestNew } from './src/types/RecordRequestNew'
+  import('./src/types/RecordRequestNew')
   // @ts-ignore
   export type { RegistrationData } from './src/types/RegistrationData'
   import('./src/types/RegistrationData')

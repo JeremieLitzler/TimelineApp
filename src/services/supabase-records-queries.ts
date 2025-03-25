@@ -1,14 +1,21 @@
 import { supabase } from '@/lib/supabaseClient'
+import type { RecordRequestNew } from '@/types/RecordRequestNew'
 import type { QueryData } from '@supabase/supabase-js'
 
-// export const createTaskQuery = async (task: FormDataCreateTask) => {
-//   const { project_uid, ...props } = task
-//   return await supabase.from('tasks').insert({ ...props, project_uid })
-// }
-// export const updateTaskQuery = async (task = {}, uid: string) => {
-//   const result = await supabase.from('tasks').update(task).eq('task_uid', uid)
-//   return result // {count, data, error, status}
-// }
+export const createRecordQuery = async (record: RecordRequestNew) => {
+  const { projects, tasks, ...NewRecordProps } = record
+  const newRecord = {
+    ...NewRecordProps,
+    project_uid: projects?.project_uid,
+    task_uid: tasks?.task_uid,
+  }
+  return await supabase.from('records').insert(newRecord)
+}
+export const updateRecordQuery = async (record = {}, uid: string) => {
+  console.log('supabase-records-queries > updateRecordQuery called...')
+  const result = await supabase.from('records').update(record).eq('record_uid', uid)
+  return result // {count, data, error, status}
+}
 // export const deleteTaskQuery = async (uid: string) => {
 //   return await supabase.from('tasks').delete().eq('task_uid', uid)
 // }
@@ -41,19 +48,20 @@ export const allRecordsWithProjectOrTaskQuery = supabase
   .from('records')
   .select(
     `
-    *,
-    projects!inner (
-      name,
-      hex_color,
-      slug,
-      archived
-    ),
-    tasks (
-      task_uid,
-      name,
-      completed
-    )
-  `,
+      *,
+      projects!inner (
+        project_uid,
+        name,
+        hex_color,
+        slug,
+        archived
+      ),
+      tasks (
+        task_uid,
+        name,
+        completed
+      )
+    `,
   )
   .eq('deleted', false)
 

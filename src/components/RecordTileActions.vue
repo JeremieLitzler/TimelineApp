@@ -1,45 +1,67 @@
 <script setup lang="ts">
 import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
 import type { Record } from '@/types/Record'
-import { formatDateToStr } from '@/utils/date-format'
+import type { RecordRequestNew } from '@/types/RecordRequestNew'
+import { formatDateToStr, toISOStringWithTimezone } from '@/utils/date-format'
 import { calculateElapsedTime } from '@/utils/time-calculator'
 
-const { record = null, recording = false } = defineProps<{
-  record: SingleRecordWithProjectOrTaskType | Record | null
+const {
+  record = null,
+  newRecord = null,
+  recording = false,
+} = defineProps<{
+  record?: SingleRecordWithProjectOrTaskType | Record | null
+  newRecord: RecordRequestNew | null | undefined
   recording?: boolean
 }>()
 
 const emits = defineEmits<{
   (event: '@stop', record: SingleRecordWithProjectOrTaskType | Record | null): void
-  (event: '@start', record: SingleRecordWithProjectOrTaskType | Record | null): void
+  (event: '@start', record: RecordRequestNew): void
 }>()
 
 let intervalId = ref<number | NodeJS.Timeout>(0)
-const elapsingTime = ref<string | null | undefined>(null)
+const elapsingTime = ref<string>('00:00:00')
 const updateElapsingTime = () => {
   const now = new Date(Date.now())
-  const nowDtStr = formatDateToStr(now, 'YYYY-MM-DDTHH:mm:ss.SSS')
-  const elapasedTime = calculateElapsedTime(nowDtStr.value, record?.started_at)
+  const nowDtStr: string | undefined = formatDateToStr(now, 'YYYY-MM-DDTHH:mm:ss.SSS').value
   console.log(
-    'evaluating new elapsingTime:',
-    elapasedTime,
+    'evaluating new elapsingTime with:',
     'nowDtStr: ',
-    nowDtStr.value,
+    nowDtStr,
     'record.started_at: ',
-    record?.started_at,
+    newRecord?.started_at,
   )
+  const elapasedTime = calculateElapsedTime(newRecord?.started_at, nowDtStr)
+  console.log('elapasedTime', elapasedTime)
+
+  elapsingTime.value = elapasedTime ?? elapsingTime.value
 }
 
 if (recording) {
   // track the intervalId...
+  console.log('start setInterval')
+
   intervalId.value = setInterval(updateElapsingTime, 1000)
 }
-const startRecording = () => {
-  console.log('record > project', record?.projects)
-  console.log('record > task', record?.tasks)
-  emits('@start', record)
+const startingNewRecord = ref(false)
+const recordStore = useRecordStore()
+const startRecording = async () => {
+  startingNewRecord.value = true
+  const newRecord: RecordRequestNew = {
+    started_at: toISOStringWithTimezone(new Date()),
+    projects: record?.projects,
+    tasks: record?.tasks,
+  }
+  startingNewRecord.value = false
+  emits('@start', newRecord)
 }
-const stopRecording = () => {
+
+const stopRecording = async () => {
+  // console.log('stopRecording for', record)
+  newRecord!.ended_at = toISOStringWithTimezone(new Date())
+  await recordStore.addRecord(newRecord!)
+  // console.log('updatedRecord', updatedRecord)
   clearInterval(intervalId.value)
   emits('@stop', record)
 }
@@ -47,14 +69,18 @@ onBeforeUnmount(() => {
   clearInterval(intervalId.value)
 })
 </script>
-<template v-if="record">
-  <div v-if="recording">
-    <p>{{ elapsingTime }}</p>
-    <Button class="rounded-3xl capitalize" @click="stopRecording"><Square /> stop</Button>
-  </div>
-  <Button v-else class="rounded-3xl" @click="startRecording"
-    ><Play /> {{ calculateElapsedTime(record?.started_at, record?.ended_at) }}</Button
-  >
+<template>
+  <template v-if="newRecord">
+    <div v-if="recording">
+      <p class="text-2xl mb-2">{{ elapsingTime }}</p>
+      <Button class="rounded-3xl capitalize" @click="stopRecording"><Square /> stop</Button>
+    </div>
+  </template>
+  <template v-else-if="record">
+    <Button class="rounded-3xl" @click="startRecording"
+      ><Play /> {{ calculateElapsedTime(record?.started_at, record?.ended_at) }}</Button
+    >
+  </template>
 </template>
 
 <style scoped></style>

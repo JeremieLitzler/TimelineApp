@@ -71,8 +71,8 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     })
     validateCacheTask({ key: id, forceRefresh })
   }
-  const createTask = async (subProject: FormDataCreateTask) => {
-    const { error, status } = await createTaskQuery(subProject)
+  const createTask = async (newTask: FormDataCreateTask) => {
+    const { error, status } = await createTaskQuery(newTask)
     if (error) {
       useErrorStore().setError({ error, customCode: status })
     }

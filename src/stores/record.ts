@@ -2,10 +2,16 @@ import type { CacheValidationKeyInfo } from '@/types/CacheValidationInfo'
 import { timeStampExpired, validateCache } from '@/utils/cache-validation'
 import {
   allRecordsWithProjectOrTaskQuery,
+  createRecordQuery,
+  updateRecordQuery,
   type AllRecordsWithProjectOrTaskType,
+  type SingleRecordWithProjectOrTaskType,
 } from '@/services/supabase-records-queries'
 import type { PostgrestError } from '@supabase/supabase-js'
 import { useMemoize } from '@vueuse/core'
+import type { RecordRequestNew } from '@/types/RecordRequestNew'
+import { toISOStringWithTimezone } from '@/utils/date-format'
+import type { Record } from '@/types/Record'
 
 export const useRecordStore = defineStore('Records-store', () => {
   const GET_METHODS_EXPIRATION = 900 // 15 min
@@ -63,8 +69,29 @@ export const useRecordStore = defineStore('Records-store', () => {
     _validateCacheRecords(_forceRefreshOnRecords())
   }
 
-  const addRecord = () => {}
-  const updateRecord = () => {}
+  const addRecord = async (newRecord: RecordRequestNew) => {
+    const { data, error, status } = await createRecordQuery(newRecord)
+    if (error) {
+      useErrorStore().setError({ error, customCode: status })
+    }
+    return data
+  }
+  const updateRecord = async (updatedRecord: SingleRecordWithProjectOrTaskType | Record) => {
+    const { projects, tasks, record_uid, ...RecordProps } = updatedRecord
+    RecordProps.ended_at = toISOStringWithTimezone(new Date())
+    RecordProps.updated_at = toISOStringWithTimezone(new Date())
+    const { count, data, error, status } = await updateRecordQuery(RecordProps, record_uid!)
+    if (error) {
+      useErrorStore().setError({ error, customCode: status })
+    }
+    if (count && count > 1) {
+      useErrorStore().setError({ error: Error('Many records updated...'), customCode: 500 })
+    }
+    console.log('saved new record end date...')
+
+    _validateCacheRecords(true)
+    return data
+  }
   return {
     records,
     clearCache,

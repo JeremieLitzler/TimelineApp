@@ -1,3 +1,5 @@
+import type { forEachChild } from 'typescript'
+
 /**
  * Calculates the elapsed time between two dates and formats it as "hh:MM:ss".
  * Handles negative time differences by taking the absolute value.
@@ -11,6 +13,7 @@ export const calculateElapsedTime = (
   toDateStr?: string | null | undefined,
 ): string | null | undefined => {
   if (!fromDateStr) {
+    console.log('calculateElapsedTime > fromDateStr is', fromDateStr)
     return null
   }
   // Convert string inputs to Date objects
@@ -19,6 +22,7 @@ export const calculateElapsedTime = (
 
   // Check if from date is valid
   if (isNaN(from.getTime())) {
+    console.log('calculateElapsedTime > isNaN(from.getTime()) is NaN')
     return null
   }
   if (toDateStr === undefined || isNaN(to.getTime())) to = new Date(Date.now())
@@ -26,6 +30,8 @@ export const calculateElapsedTime = (
   if (from > to) {
     throw new Error('Cannot calculate elapsed time if from greater than to')
   }
+  // console.log('calculateElapsedTime> from and to', from, to)
+
   const timeDifferenceMS = Math.abs(to.getTime() - from.getTime())
 
   // Convert milliseconds to seconds, minutes, and hours
