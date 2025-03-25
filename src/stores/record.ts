@@ -74,6 +74,7 @@ export const useRecordStore = defineStore('Records-store', () => {
     if (error) {
       useErrorStore().setError({ error, customCode: status })
     }
+    _validateCacheRecords(true)
     return data
   }
   const updateRecord = async (updatedRecord: SingleRecordWithProjectOrTaskType | Record) => {
