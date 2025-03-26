@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
+import type { RecordRequestNew } from '@/types/RecordRequestNew'
+
 usePageStore().pageData.title = 'Timeline'
 
 const recordStore = useRecordStore()

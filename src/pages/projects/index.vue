@@ -18,7 +18,7 @@ const { projects } = storeToRefs(projectStore)
 // the projects are loaded
 await projectStore.getProjects()
 
-// Add new sub entity logic
+// Handles adding new project
 const openModal = ref(false)
 </script>
 

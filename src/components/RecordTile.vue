@@ -28,10 +28,28 @@ const trackNewRecord = (record: RecordRequestNew) => {
   console.log(record)
   emits('@track-new-record', record)
 }
+
+// Handles editing a record
+const openRecordEditModal = ref(false)
+const editedRecordUid = ref<string | undefined>(undefined)
+const editedRecordProjectUid = ref<string | undefined>(undefined)
+const editedRecordTaskUid = ref<string | undefined>(undefined)
+const prepareEditingRecord = (
+  record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null,
+) => {
+  editedRecordUid.value = ''
+  editedRecordProjectUid.value = record?.projects?.project_uid
+  editedRecordTaskUid.value = record?.tasks?.task_uid
+  openRecordEditModal.value = true
+}
 </script>
 <template>
   <hr />
-  <article v-if="record || newRecord" class="mb-4 mt-4 flex justify-between">
+  <article
+    v-if="record || newRecord"
+    class="pb-4 pt-4 flex justify-between hover:border-gray-700 border-transparent border-2"
+    @click="prepareEditingRecord(newRecord)"
+  >
     <template v-if="record">
       <RecordTileDetails :record @@stop="stopRecording" />
     </template>
@@ -46,6 +64,12 @@ const trackNewRecord = (record: RecordRequestNew) => {
       @@start="trackNewRecord"
     />
   </article>
+  <FormEditRecord
+    v-model="openRecordEditModal"
+    :record_uid="editedRecordUid"
+    :project_uid="editedRecordProjectUid"
+    :task_uid="editedRecordTaskUid"
+  />
 </template>
 
 <style scoped></style>

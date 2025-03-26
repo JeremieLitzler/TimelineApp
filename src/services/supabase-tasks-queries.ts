@@ -1,7 +1,8 @@
 import { supabase } from '@/lib/supabaseClient'
 import type { FormDataCreateTask } from '@/types/FormDataCreateTask'
+import type { TaskRecordWithRpc } from '@/types/TaskRecordWithRpc'
 import type { UniqueConstraintTask } from '@/types/UniqueTaskConstraint'
-import type { QueryData } from '@supabase/supabase-js'
+import type { PostgrestSingleResponse, QueryData } from '@supabase/supabase-js'
 
 export const createTaskQuery = async (task: FormDataCreateTask) => {
   const { project_uid, ...props } = task
@@ -14,6 +15,20 @@ export const updateTaskQuery = async (task = {}, uid: string) => {
 export const deleteTaskQuery = async (uid: string) => {
   return await supabase.from('tasks').delete().eq('task_uid', uid)
 }
+
+export const allTasksQuery = supabase.rpc('coalesce_updated_at_or_created_at_sort', {
+  target_table: 'tasks',
+  selected_columns: '*',
+  sort_direction: 'DESC',
+  nulls_position: 'LAST',
+  where_clause: 'deleted = false',
+}) as unknown as PostgrestSingleResponse<TaskRecordWithRpc[]>
+export type AllTasksType = QueryData<typeof allTasksQuery>
+
+export const tasksByProjectQuery = (project_uid: string) =>
+  supabase.from('tasks').select(`task_uid, name`).eq('project_uid', project_uid).order('name')
+export type TasksByProjectType = QueryData<ReturnType<typeof tasksByProjectQuery>>
+
 export const taskWithParentQuery = (uid: string) =>
   supabase
     .from('tasks')
