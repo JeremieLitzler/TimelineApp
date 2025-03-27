@@ -107,8 +107,10 @@ const seedDatabase = async ({ countProjects, countTasks, countRecords }) => {
     userId = testUserId
   }
   const projectsIds = (await seedProjects(countProjects)).map((entity) => entity.project_uid)
-  const taskIds = (await seedTasks(countTasks, projectsIds)).map((entity) => entity.task_uid)
-  await seedRecords(countRecords, projectsIds, taskIds)
+  const projectTaskUids = (await seedTasks(countTasks, projectsIds)).map((entity) => {
+    return { task_uid: entity.task_uid, project_uid: entity.project_uid }
+  })
+  await seedRecords(countRecords, projectTaskUids)
   await seedKeepAlive()
 }
 
@@ -170,32 +172,29 @@ const seedTasks = async (numEntries, projectIds) => {
     })
   }
 
-  const { data, error } = await supabase.from('tasks').insert(tasks).select('task_uid')
+  const { data, error } = await supabase.from('tasks').insert(tasks).select('task_uid, project_uid')
 
   if (error) return logErrorAndExit('Tasks', error)
 
   logStep('Tasks seeded successfully.')
-
   return data
 }
 
-const seedRecords = async (numEntries, projectIds, taskIds) => {
+const seedRecords = async (numEntries, projectTasksIds) => {
   logStep('Seeding records...')
-  logStep('with existing projects...')
-  logStep(projectIds)
-  logStep('With existing tasks...')
-  logStep(taskIds)
+  logStep('With existing project/task couples...')
+  logStep(projectTasksIds)
   const records = []
 
   for (let i = 0; i < numEntries; i++) {
     const name = faker.lorem.words(3)
     const linkedToTask = faker.datatype.boolean()
-    const taskIdPicked = faker.helpers.arrayElement(taskIds)
+    const projectTaskIdPicked = faker.helpers.arrayElement(projectTasksIds)
     logStep(`linkedToTask is <${linkedToTask}>`)
-    logStep(`taskIdPicked is <${taskIdPicked}>`)
+    logStep(`projectTaskIdPicked is <${JSON.stringify(projectTaskIdPicked)}>`)
     records.push({
-      project_uid: faker.helpers.arrayElement(projectIds),
-      task_uid: linkedToTask ? taskIdPicked : null,
+      project_uid: projectTaskIdPicked.project_uid,
+      task_uid: linkedToTask ? projectTaskIdPicked.task_uid : null,
       started_at: faker.date.past(),
       ended_at: faker.date.soon(),
       created_at: faker.date.past(),
