@@ -4,7 +4,7 @@ import type { Record } from '@/types/Record'
 import type { RecordRequestNew } from '@/types/RecordRequestNew'
 import { RouterPathEnum } from '@/types/RouterPathEnum'
 const { record = null } = defineProps<{
-  record: SingleRecordWithProjectOrTaskType | RecordRequestNew | Record | null
+  record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null
 }>()
 
 const emits = defineEmits<{

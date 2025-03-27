@@ -1,26 +1,20 @@
 <script setup lang="ts">
 import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
-import type { Record } from '@/types/Record'
 import type { RecordRequestNew } from '@/types/RecordRequestNew'
 
-const {
-  record = null,
-  newRecord = null,
-  recording = false,
-} = defineProps<{
-  record?: SingleRecordWithProjectOrTaskType | Record | null
-  newRecord?: RecordRequestNew | null | undefined
+const { record = null, recording = false } = defineProps<{
+  record?: SingleRecordWithProjectOrTaskType | RecordRequestNew | null
   recording?: boolean
 }>()
 const emits = defineEmits<{
   (
     event: '@track-new-record',
-    sourceRecord: SingleRecordWithProjectOrTaskType | Record | null,
+    sourceRecord: SingleRecordWithProjectOrTaskType | RecordRequestNew | null,
   ): void
   (event: '@stop-recording'): void
 }>()
 
-const stopRecording = (record: SingleRecordWithProjectOrTaskType | Record | null) => {
+const stopRecording = (record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null) => {
   console.log(record)
   emits('@stop-recording')
 }
@@ -46,30 +40,14 @@ const prepareEditingRecord = (
 <template>
   <hr />
   <article
-    v-if="record || newRecord"
+    v-if="record"
     class="pb-4 pt-4 flex justify-between hover:border-gray-700 border-transparent border-2"
-    @click="prepareEditingRecord(newRecord)"
+    @click="prepareEditingRecord(record)"
   >
-    <template v-if="record">
-      <RecordTileDetails :record @@stop="stopRecording" />
-    </template>
-    <template v-else>
-      <RecordTileDetails :record="newRecord" @@stop="stopRecording" />
-    </template>
-    <RecordTileActions
-      :record
-      :new-record
-      :recording
-      @@stop="stopRecording"
-      @@start="trackNewRecord"
-    />
+    <RecordTileDetails :record @@stop="stopRecording" />
+    <RecordTileActions :record :recording @@stop="stopRecording" @@start="trackNewRecord" />
   </article>
-  <FormEditRecord
-    v-model="openRecordEditModal"
-    :record_uid="editedRecordUid"
-    :project_uid="editedRecordProjectUid"
-    :task_uid="editedRecordTaskUid"
-  />
+  <FormEditRecord v-model="openRecordEditModal" :record />
 </template>
 
 <style scoped></style>

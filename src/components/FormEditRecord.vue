@@ -1,25 +1,21 @@
 <script setup lang="ts">
 import { Form as VeeForm } from 'vee-validate'
 
+import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
 import type { FormDataEditRecord } from '@/types/FormDataEditRecord'
 import type { FormSelectOption } from '@/types/FormSelectOption'
+import type { RecordRequestNew } from '@/types/RecordRequestNew'
+import { formatDateStr } from '@/utils/date-format'
 
-const {
-  record_uid,
-  project_uid = undefined,
-  task_uid = undefined,
-} = defineProps<{
-  record_uid: string | undefined
-  project_uid: string | undefined
-  task_uid: string | undefined
+const { record = null } = defineProps<{
+  record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null
 }>()
 const sheetOpen = defineModel<boolean>()
 const initialForm = {
-  started_at: '',
-  ended_at: '',
-  record_uid: record_uid,
-  project_uid: project_uid,
-  task_uid: task_uid,
+  started_at: formatDateStr(record?.started_at, 'yyyy-MM-dd').value ?? new Date(Date.now()),
+  ended_at: formatDateStr(record?.ended_at, 'yyyy-MM-dd').value ?? '',
+  project_uid: record?.projects?.project_uid,
+  task_uid: record?.tasks?.task_uid,
 }
 const form = ref<FormDataEditRecord>(initialForm)
 
@@ -41,19 +37,22 @@ const setProjectsOptions = async () => {
     selectOptions.value.projects.push({
       label: projectEl.name,
       value: projectEl.project_uid,
-      selected: projectEl.project_uid == project_uid,
+      selected: projectEl.project_uid == form.value.project_uid,
     })
   })
 }
 const setTasksOptions = async () => {
-  await taskStore.getTasksByProject(project_uid)
+  if (form.value.project_uid === undefined) {
+    return
+  }
+  await taskStore.getTasksByProject(form.value.project_uid)
   if (!tasksByProject.value) return
 
   tasksByProject.value.forEach((taskEl) => {
     selectOptions.value.tasks.push({
       label: taskEl.name,
       value: taskEl.task_uid,
-      selected: taskEl.task_uid == task_uid,
+      selected: taskEl.task_uid == form.value.task_uid,
     })
   })
 }
@@ -138,7 +137,7 @@ const submitRecordChanges = async () => {
             {{ taskEl.label }}
           </option>
         </app-form-field>
-        <button type="submit" class="btn btn-primary">Create</button>
+        <button type="submit" class="btn btn-primary">Save</button>
       </vee-form>
     </SheetContent>
   </Sheet>

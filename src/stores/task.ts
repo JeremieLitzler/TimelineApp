@@ -144,7 +144,7 @@ export const useTaskStore = defineStore('Tasks-store', () => {
       return null
     }
     tasksByProject.value = null
-    tasksByProject.value = await loadTasksByProject(StoreCacheKey.AllTasksByProject)
+    tasksByProject.value = await loadTasksByProject(project_uid)
     validateCacheAllTasksByProject(
       _forceRefreshCache(_getTasksByProjectCacheKey(project_uid)),
       project_uid,

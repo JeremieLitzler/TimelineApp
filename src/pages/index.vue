@@ -35,7 +35,6 @@ const trackNewRecord = (record: RecordRequestNew) => {
     <h2>Today</h2>
     <RecordTile
       v-for="record in records"
-      :key="record.record_uid"
       :record
       @@track-new-record="trackNewRecord"
       @@stop-recording="recordBeingTracked = false"

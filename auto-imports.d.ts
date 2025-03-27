@@ -184,8 +184,8 @@ declare global {
   export type { FormDataCreateTask } from './src/types/FormDataCreateTask'
   import('./src/types/FormDataCreateTask')
   // @ts-ignore
-  export type { FormDataRecord } from './src/types/FormDataRecord'
-  import('./src/types/FormDataRecord')
+  export type { FormDataEditRecord } from './src/types/FormDataEditRecord'
+  import('./src/types/FormDataEditRecord')
   // @ts-ignore
   export type { FormSelectOption } from './src/types/FormSelectOption'
   import('./src/types/FormSelectOption')

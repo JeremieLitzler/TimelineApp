@@ -49,6 +49,8 @@ export const useRecordStore = defineStore('Records-store', () => {
   const _loadRecords = useMemoize(async (key: string) => {
     const { data, error, status } = await allRecordsWithProjectOrTaskQuery
 
+    // console.log(data)
+
     if (error) {
       useErrorStore().setError({ error, customCode: status })
     } else {

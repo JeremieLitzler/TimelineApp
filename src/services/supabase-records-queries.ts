@@ -48,20 +48,20 @@ export const allRecordsWithProjectOrTaskQuery = supabase
   .from('records')
   .select(
     `
-      *,
-      projects!inner (
-        project_uid,
-        name,
-        hex_color,
-        slug,
-        archived
+    *,
+    projects!inner (
+      project_uid,
+      name,
+      hex_color,
+      slug,
+      archived
       ),
       tasks (
         task_uid,
         name,
         completed
-      )
-    `,
+        )
+        `,
   )
   .eq('deleted', false)
   .order('created_at', { ascending: false })

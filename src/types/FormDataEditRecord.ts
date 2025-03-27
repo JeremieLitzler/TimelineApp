@@ -1,6 +1,3 @@
-import type { IProject } from './IProject'
-import type { ITask } from './ITask'
-
 export interface FormDataEditRecord {
   started_at: string
   ended_at: string

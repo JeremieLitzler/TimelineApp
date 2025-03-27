@@ -37,7 +37,6 @@ declare module 'vue' {
     CircleDashed: typeof import('./src/components/ui/icon/CircleDashed.vue')['default']
     CircleDotDashed: typeof import('./src/components/ui/icon/CircleDotDashed.vue')['default']
     Clock8: typeof import('./src/components/ui/icon/Clock8.vue')['default']
-    copy: typeof import('./src/components/FormCreateTask copy.vue')['default']
     DataTable: typeof import('./src/components/ui/data-table/DataTable.vue')['default']
     Files: typeof import('./src/components/ui/icon/Files.vue')['default']
     FormCreateProject: typeof import('./src/components/FormCreateProject.vue')['default']
