@@ -13,6 +13,7 @@ const { record = null, recording = false } = defineProps<{
 const emits = defineEmits<{
   (event: '@stop', record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null): void
   (event: '@start', record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null): void
+  (event: '@edit', record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null): void
 }>()
 
 let intervalId = ref<number | NodeJS.Timeout>(0)
@@ -65,13 +66,18 @@ onBeforeUnmount(() => {
 })
 </script>
 <template>
-  <div v-if="recording">
-    <p class="text-2xl mb-2">{{ elapsingTime }}</p>
-    <Button class="rounded-3xl capitalize" @click="stopRecording"><Square /> stop</Button>
+  <div class="flex items-end">
+    <Button class="rounded-3xl mr-4" @click="$emit('@edit', record)">
+      <PencilLine />
+    </Button>
+    <div v-if="recording">
+      <p class="text-2xl mb-2">{{ elapsingTime }}</p>
+      <Button class="rounded-3xl capitalize z-50" @click="stopRecording"><Square /> stop</Button>
+    </div>
+    <Button v-else class="rounded-3xl z-50" @click="startRecording"
+      ><Play /> {{ calculateElapsedTime(record?.started_at, record?.ended_at) }}</Button
+    >
   </div>
-  <Button v-else class="rounded-3xl" @click="startRecording"
-    ><Play /> {{ calculateElapsedTime(record?.started_at, record?.ended_at) }}</Button
-  >
 </template>
 
 <style scoped></style>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
 import type { RecordRequestNew } from '@/types/RecordRequestNew'
+import { hexToRgb, getContrastColor } from '@/utils/color-helper'
 
 const { record = null, recording = false } = defineProps<{
   record?: SingleRecordWithProjectOrTaskType | RecordRequestNew | null
@@ -13,6 +14,12 @@ const emits = defineEmits<{
   ): void
   (event: '@stop-recording'): void
 }>()
+
+const textColorOnRecording = computed(() => {
+  const contrastColor = getContrastColor(hexToRgb(record?.projects?.hex_color), 4.5)
+  console.log('textColorOnRecording', contrastColor)
+  return contrastColor
+})
 
 const stopRecording = (record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null) => {
   console.log(record)
@@ -41,11 +48,19 @@ const prepareEditingRecord = (
   <hr />
   <article
     v-if="record"
-    class="pb-4 pt-4 flex justify-between hover:border-gray-700 border-transparent border-2"
-    @click="prepareEditingRecord(record)"
+    class="p-4 -z-10 flex justify-between hover:border-gray-700 border-transparent border-2 rounded-md"
+    :style="
+      recording ? { backgroundColor: record.projects?.hex_color, color: textColorOnRecording } : {}
+    "
   >
     <RecordTileDetails :record @@stop="stopRecording" />
-    <RecordTileActions :record :recording @@stop="stopRecording" @@start="trackNewRecord" />
+    <RecordTileActions
+      :record
+      :recording
+      @@stop="stopRecording"
+      @@start="trackNewRecord"
+      @@edit="prepareEditingRecord"
+    />
   </article>
   <FormEditRecord v-model="openRecordEditModal" :record />
 </template>

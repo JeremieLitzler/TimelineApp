@@ -24,7 +24,7 @@ const trackNewRecord = (record: RecordRequestNew) => {
       <h2>Tracking</h2>
       <RecordTile
         :key="`${newRecord?.projects?.project_uid}-${newRecord?.tasks?.task_uid}-${newRecord?.started_at}`"
-        :new-record
+        :record="newRecord"
         :recording="recordBeingTracked"
         @@stop-recording="recordBeingTracked = false"
       />
