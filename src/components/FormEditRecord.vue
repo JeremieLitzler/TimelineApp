@@ -6,18 +6,25 @@ import type { FormDataEditRecord } from '@/types/FormDataEditRecord'
 import type { FormSelectOption } from '@/types/FormSelectOption'
 import type { RecordRequestNew } from '@/types/RecordRequestNew'
 import { formatDateStr } from '@/utils/date-format'
+import { DateFormatPresets } from '@/enums/DateFormatPresets'
+import { useElapsedTime } from '@/composables/timeElapsed'
 
 const { record = null } = defineProps<{
   record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null
 }>()
 const sheetOpen = defineModel<boolean>()
 const initialForm = {
-  started_at: formatDateStr(record?.started_at, 'yyyy-MM-dd').value ?? new Date(Date.now()),
-  ended_at: formatDateStr(record?.ended_at, 'yyyy-MM-dd').value ?? '',
+  started_at:
+    formatDateStr(record?.started_at, DateFormatPresets.InputDateTimeLocalFull).value ??
+    new Date(Date.now()),
+  ended_at: formatDateStr(record?.ended_at, DateFormatPresets.InputDateTimeLocalFull).value ?? '',
   project_uid: record?.projects?.project_uid,
   task_uid: record?.tasks?.task_uid,
 }
 const form = ref<FormDataEditRecord>(initialForm)
+
+const { evaluate } = useElapsedTime()
+const recordTimeElapsed = computed(() => evaluate(form.value.started_at, form.value.ended_at))
 
 const selectOptions = ref({
   projects: [] as FormSelectOption[],
@@ -67,7 +74,7 @@ onUnmounted(() => {
 
 const submitRecordChanges = async () => {
   if (form.value.record_uid) {
-    // existing record => save it
+    console.log('existing record => save it')
     await recordStore.updateRecord(form.value)
   } else {
     // unsaved record => update state
@@ -86,17 +93,17 @@ const submitRecordChanges = async () => {
       <SheetHeader>
         <SheetTitle>Record</SheetTitle>
       </SheetHeader>
-      <p>00:00:00</p>
+      <p class="text-2xl text-center font-bold mt-8">{{ recordTimeElapsed }}</p>
       <vee-form @submit="submitRecordChanges">
         <app-form-field
-          type="date"
+          type="datetime-local"
           name="started_at"
           v-model="form.started_at"
           label="Start"
           :rules="{ required: true }"
         />
         <app-form-field
-          type="date"
+          type="datetime-local"
           name="ended_at"
           v-model="form.ended_at"
           label="End"

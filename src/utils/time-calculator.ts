@@ -4,8 +4,8 @@ import type { forEachChild } from 'typescript'
  * Calculates the elapsed time between two dates and formats it as "hh:MM:ss".
  * Handles negative time differences by taking the absolute value.
  *
- * @param {Date} from The start date.
- * @param {Date} to The end date.
+ * @param {string | null} fromDateStr The start date.
+ * @param {string | null | undefined} toDateStr The end date.
  * @returns {string} The elapsed time in "hh:MM:ss" format.
  */
 export const calculateElapsedTime = (

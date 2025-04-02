@@ -65,6 +65,7 @@ export const allRecordsWithProjectOrTaskQuery = supabase
   )
   .eq('deleted', false)
   .order('created_at', { ascending: false })
+  .limit(20)
 
 export type AllRecordsWithProjectOrTaskType = QueryData<typeof allRecordsWithProjectOrTaskQuery>
 //// This type will infer the type of a single element within the

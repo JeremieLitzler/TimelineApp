@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useElapsedTime } from '@/composables/timeElapsed'
+import { DateFormatPresets } from '@/enums/DateFormatPresets'
 import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
 import type { Record } from '@/types/Record'
 import type { RecordRequestNew } from '@/types/RecordRequestNew'
@@ -17,21 +19,16 @@ const emits = defineEmits<{
 }>()
 
 let intervalId = ref<number | NodeJS.Timeout>(0)
-const elapsingTime = ref<string>('00:00:00')
+const { evaluate } = useElapsedTime()
+const elapsingTime = ref<string | null | undefined>('00:00:00')
 const updateElapsingTime = () => {
   const now = new Date(Date.now())
-  const nowDtStr: string | undefined = formatDateToStr(now, 'YYYY-MM-DDTHH:mm:ss.SSS').value
-  console.log(
-    'evaluating new elapsingTime with:',
-    'nowDtStr: ',
-    nowDtStr,
-    'record.started_at: ',
-    record?.started_at,
-  )
-  const elapasedTime = calculateElapsedTime(record?.started_at, nowDtStr)
-  console.log('elapasedTime', elapasedTime)
-
-  elapsingTime.value = elapasedTime ?? elapsingTime.value
+  const nowDtStr: string | undefined = formatDateToStr(
+    now,
+    DateFormatPresets.InputDateTimeLocalFull,
+  ).value
+  const elapasedTime = evaluate(record?.started_at, nowDtStr)
+  elapsingTime.value = elapasedTime.value
 }
 
 if (recording) {

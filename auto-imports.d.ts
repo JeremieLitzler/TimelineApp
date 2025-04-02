@@ -184,6 +184,9 @@ declare global {
   export type { FormDataCreateTask } from './src/types/FormDataCreateTask'
   import('./src/types/FormDataCreateTask')
   // @ts-ignore
+  export type { FormDataEditRecord } from './src/types/FormDataEditRecord'
+  import('./src/types/FormDataEditRecord')
+  // @ts-ignore
   export type { FormSelectOption } from './src/types/FormSelectOption'
   import('./src/types/FormSelectOption')
   // @ts-ignore
@@ -234,6 +237,9 @@ declare global {
   // @ts-ignore
   export type { SupabaseAuthErrorExtended, SupabaseAuthApiErrorExtended } from './src/types/SupabaseAuthErrorExtended'
   import('./src/types/SupabaseAuthErrorExtended')
+  // @ts-ignore
+  export type { TaskRecordWithRpc } from './src/types/TaskRecordWithRpc'
+  import('./src/types/TaskRecordWithRpc')
   // @ts-ignore
   export type { UniqueConstraintTask } from './src/types/UniqueTaskConstraint'
   import('./src/types/UniqueTaskConstraint')
