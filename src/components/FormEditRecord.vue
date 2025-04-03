@@ -18,6 +18,7 @@ const initialForm = {
     formatDateStr(record?.started_at, DateFormatPresets.InputDateTimeLocalFull).value ??
     new Date(Date.now()),
   ended_at: formatDateStr(record?.ended_at, DateFormatPresets.InputDateTimeLocalFull).value ?? '',
+  record_uid: record?.record_uid,
   project_uid: record?.projects?.project_uid,
   task_uid: record?.tasks?.task_uid,
 }

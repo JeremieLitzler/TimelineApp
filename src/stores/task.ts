@@ -20,9 +20,9 @@ import type { TaskRecordWithRpc } from '@/types/TaskRecordWithRpc'
 
 export const useTaskStore = defineStore('Tasks-store', () => {
   const GET_METHODS_EXPIRATION = 900 // 15 min
-  const tasks = ref<TaskRecordWithRpc[] | null>()
-  const tasksByProject = ref<TasksByProjectType | null>()
-  const taskWithProject = ref<TaskWithParentType | null>(null)
+  const allTasks = ref<TaskRecordWithRpc[] | null>()
+  const allTasksByProject = ref<TasksByProjectType | null>()
+  const oneTaskWithProject = ref<TaskWithParentType | null>(null)
   const _taskLastFetchTime = ref<CacheValidationKeyInfo>({})
 
   const getTaskKey = (uid: string) => `task-uid-${uid}`
@@ -41,14 +41,14 @@ export const useTaskStore = defineStore('Tasks-store', () => {
   }
   const validateCacheTask = ({ key: id, forceRefresh }: CacheValidationRefreshRequest) => {
     validateCache<
-      typeof taskWithProject,
+      typeof oneTaskWithProject,
       typeof taskWithParentQuery,
       typeof loadTask,
       PostgrestError
     >({
       key: getTaskKey(id as string),
       filter: id,
-      reference: taskWithProject,
+      reference: oneTaskWithProject,
       query: taskWithParentQuery,
       loaderFn: loadTask,
       lastFetchInfo: {
@@ -75,8 +75,8 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     },
   )
   const getTask = async (id: string) => {
-    taskWithProject.value = null
-    taskWithProject.value = await loadTask(id)
+    oneTaskWithProject.value = null
+    oneTaskWithProject.value = await loadTask(id)
     const forceRefresh = timeStampExpired({
       timeStamp: _taskLastFetchTime.value[getTaskKey(id)].timeStamp,
       invalidateAfterSeconds: GET_METHODS_EXPIRATION,
@@ -84,11 +84,11 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     validateCacheTask({ key: id, forceRefresh })
   }
   const validateCacheAllTasksOnly = async (forceRefresh: boolean = false) =>
-    validateCache<typeof tasks, typeof allTasksQuery, typeof loadTasks, PostgrestError>({
+    validateCache<typeof allTasks, typeof allTasksQuery, typeof loadTasks, PostgrestError>({
       key: StoreCacheKey.AllTasksOnly,
       loaderFn: loadTasks,
       query: allTasksQuery,
-      reference: tasks,
+      reference: allTasks,
       lastFetchInfo: {
         ..._taskLastFetchTime.value[StoreCacheKey.AllTasksOnly],
         forceRefresh,
@@ -106,8 +106,8 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     return data
   })
   const getTasks = async () => {
-    tasks.value = null
-    tasks.value = await loadTasks(StoreCacheKey.AllTasksOnly)
+    allTasks.value = null
+    allTasks.value = await loadTasks(StoreCacheKey.AllTasksOnly)
     validateCacheAllTasksOnly(_forceRefreshCache(StoreCacheKey.AllTasksOnly))
   }
   const validateCacheAllTasksByProject = async (
@@ -115,11 +115,16 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     project_uid: string,
   ) => {
     const key = _getTasksByProjectCacheKey(project_uid)
-    validateCache<typeof tasks, typeof allTasksQuery, typeof loadTasks, PostgrestError>({
+    validateCache<
+      typeof allTasksByProject,
+      typeof tasksByProjectQuery,
+      typeof loadTasksByProject,
+      PostgrestError
+    >({
       key,
-      loaderFn: loadTasks,
-      query: allTasksQuery,
-      reference: tasks,
+      loaderFn: loadTasksByProject,
+      query: tasksByProjectQuery,
+      reference: allTasksByProject,
       lastFetchInfo: {
         ..._taskLastFetchTime.value[key],
         forceRefresh,
@@ -143,8 +148,8 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     if (!project_uid) {
       return null
     }
-    tasksByProject.value = null
-    tasksByProject.value = await loadTasksByProject(project_uid)
+    allTasksByProject.value = null
+    allTasksByProject.value = await loadTasksByProject(project_uid)
     validateCacheAllTasksByProject(
       _forceRefreshCache(_getTasksByProjectCacheKey(project_uid)),
       project_uid,
@@ -158,10 +163,10 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     }
   }
   const updateTask = async () => {
-    if (!taskWithProject.value) return
+    if (!oneTaskWithProject.value) return
 
-    const { task_uid, projects, ...TaskProps } = taskWithProject.value
-    if (taskWithProject.value.completed) {
+    const { task_uid, projects, ...TaskProps } = oneTaskWithProject.value
+    if (oneTaskWithProject.value.completed) {
       TaskProps.completed_at = toISOStringWithTimezone(new Date())
     } else {
       TaskProps.completed_at = null
@@ -177,9 +182,9 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     validateCacheTask({ key: task_uid, forceRefresh: true })
   }
   const deleteTask = async () => {
-    if (!taskWithProject.value) return
+    if (!oneTaskWithProject.value) return
 
-    const { error } = await deleteTaskQuery(taskWithProject.value.task_uid)
+    const { error } = await deleteTaskQuery(oneTaskWithProject.value.task_uid)
     if (error) {
       useErrorStore().setError({ error })
     } else {
@@ -187,17 +192,17 @@ export const useTaskStore = defineStore('Tasks-store', () => {
     }
   }
   const softDeleteTask = async () => {
-    if (!taskWithProject.value) return
+    if (!oneTaskWithProject.value) return
 
-    taskWithProject.value.deleted = true
-    taskWithProject.value.deleted_at = toISOStringWithTimezone(new Date())
+    oneTaskWithProject.value.deleted = true
+    oneTaskWithProject.value.deleted_at = toISOStringWithTimezone(new Date())
     updateTask()
   }
 
   return {
-    taskWithProject,
-    tasks,
-    tasksByProject,
+    taskWithProject: oneTaskWithProject,
+    tasks: allTasks,
+    tasksByProject: allTasksByProject,
     loadTask,
     clearCache,
     getTask,

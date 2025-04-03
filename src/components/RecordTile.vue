@@ -15,6 +15,11 @@ const emits = defineEmits<{
   (event: '@stop-recording'): void
 }>()
 
+/**
+ * Lazy load the modal since it is on all record tiles...
+ */
+const FormDataEditRecordLazy = defineAsyncComponent(() => import('@/components/FormEditRecord.vue'))
+
 const textColorOnRecording = computed(() => {
   const contrastColor = getContrastColor(hexToRgb(record?.projects?.hex_color), 4.5)
   console.log('textColorOnRecording', contrastColor)
@@ -62,7 +67,7 @@ const prepareEditingRecord = (
       @@edit="prepareEditingRecord"
     />
   </article>
-  <FormEditRecord v-model="openRecordEditModal" :record />
+  <FormDataEditRecordLazy v-model="openRecordEditModal" :record />
 </template>
 
 <style scoped></style>
