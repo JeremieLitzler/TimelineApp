@@ -186,19 +186,35 @@ const seedRecords = async (numEntries, projectTasksIds) => {
   logStep(projectTasksIds)
   const records = []
 
+  let previousStartedAt = null
   for (let i = 0; i < numEntries; i++) {
     const name = faker.lorem.words(3)
     const linkedToTask = faker.datatype.boolean()
     const projectTaskIdPicked = faker.helpers.arrayElement(projectTasksIds)
     logStep(`linkedToTask is <${linkedToTask}>`)
     logStep(`projectTaskIdPicked is <${JSON.stringify(projectTaskIdPicked)}>`)
+
+    let endedAt, startedAt
+
+    if (i === 0) {
+      endedAt = new Date() // Current time for the first item
+    } else {
+      endedAt = previousStartedAt // Set to previous item's started_at
+    }
+
+    // Calculate started_at by subtracting random seconds from ended_at
+    const randomSeconds = faker.number.int({ min: 60, max: 14400 }) // Between 1 minute and 1 day
+    startedAt = new Date(endedAt.getTime() - randomSeconds * 1000)
+
+    previousStartedAt = startedAt // Store for the next iteration
+
     records.push({
       project_uid: projectTaskIdPicked.project_uid,
       task_uid: linkedToTask ? projectTaskIdPicked.task_uid : null,
-      started_at: faker.date.past(),
-      ended_at: faker.date.soon(),
-      created_at: faker.date.past(),
-      updated_at: faker.date.soon(),
+      started_at: startedAt,
+      ended_at: endedAt,
+      created_at: startedAt,
+      updated_at: endedAt,
     })
   }
   logStep(`records are:`)

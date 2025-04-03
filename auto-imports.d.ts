@@ -113,6 +113,7 @@ declare global {
   const useAuthStore: typeof import('./src/stores/auth')['useAuthStore']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
+  const useElapsedTime: typeof import('./src/composables/timeElapsed')['useElapsedTime']
   const useErrorStore: typeof import('./src/stores/error')['useErrorStore']
   const useFormError: typeof import('./src/composables/formError')['useFormError']
   const useId: typeof import('vue')['useId']
