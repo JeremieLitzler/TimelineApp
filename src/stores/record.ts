@@ -95,11 +95,21 @@ export const useRecordStore = defineStore('Records-store', () => {
     _validateCacheRecords(true)
     return data
   }
+
+  const deleteRecord = async (record: SingleRecordWithProjectOrTaskType | Record) => {
+    const softDeleteRecord = {
+      ...record,
+      deleted: true,
+      deleted_at: toISOStringWithTimezone(new Date()),
+    }
+    await updateRecord(softDeleteRecord)
+  }
   return {
     records,
     clearCache,
     getRecords,
     addRecord,
     updateRecord,
+    deleteRecord,
   }
 })
