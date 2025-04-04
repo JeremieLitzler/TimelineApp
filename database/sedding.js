@@ -106,8 +106,10 @@ const seedDatabase = async ({ countProjects, countTasks, countRecords }) => {
   } else {
     userId = testUserId
   }
-  const projectsIds = (await seedProjects(countProjects)).map((entity) => entity.project_uid)
-  const projectTaskUids = (await seedTasks(countTasks, projectsIds)).map((entity) => {
+  const projects = (await seedProjects(countProjects)).map((entity) => {
+    return { project_uid: entity.project_uid, project_name: entity.name }
+  })
+  const projectTaskUids = (await seedTasks(countTasks, projects)).map((entity) => {
     return { task_uid: entity.task_uid, project_uid: entity.project_uid }
   })
   await seedRecords(countRecords, projectTaskUids)
@@ -130,7 +132,7 @@ const seedProjects = async (numEntries) => {
   const projects = []
 
   for (let i = 0; i < numEntries; i++) {
-    const name = faker.lorem.words(3)
+    const name = `Project ${i.toString().padStart(3, '0')}`
     const archived = faker.datatype.boolean()
 
     projects.push({
@@ -143,7 +145,10 @@ const seedProjects = async (numEntries) => {
     })
   }
 
-  const { data, error } = await supabase.from('projects').insert(projects).select('project_uid')
+  const { data, error } = await supabase
+    .from('projects')
+    .insert(projects)
+    .select('project_uid, name')
 
   if (error) return logErrorAndExit('Projects', error)
 
@@ -154,17 +159,18 @@ const seedProjects = async (numEntries) => {
   return data
 }
 
-const seedTasks = async (numEntries, projectIds) => {
+const seedTasks = async (numEntries, projects) => {
   logStep('Seeding tasks...')
   const tasks = []
 
   for (let i = 0; i < numEntries; i++) {
-    const name = faker.lorem.words(3)
+    const projectPicked = faker.helpers.arrayElement(projects)
+    const name = `Task ${i.toString().padStart(4, '0')} of ${projectPicked.project_name}`
     const completed = faker.datatype.boolean()
     tasks.push({
       name: name,
       slug: name.toLocaleLowerCase().replace(/ /g, '-'),
-      project_uid: faker.helpers.arrayElement(projectIds),
+      project_uid: projectPicked.project_uid,
       created_at: faker.date.past(),
       completed: completed,
       completed_at: completed ? faker.date.future() : null,
@@ -228,4 +234,4 @@ const seedRecords = async (numEntries, projectTasksIds) => {
   return data
 }
 
-seedDatabase({ countProjects: 10, countTasks: 50, countRecords: 200 })
+seedDatabase({ countProjects: 100, countTasks: 1000, countRecords: 2500 })
