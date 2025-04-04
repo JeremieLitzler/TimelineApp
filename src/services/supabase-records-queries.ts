@@ -16,9 +16,9 @@ export const updateRecordQuery = async (record = {}, uid: string) => {
   const result = await supabase.from('records').update(record).eq('record_uid', uid)
   return result // {count, data, error, status}
 }
-// export const deleteTaskQuery = async (uid: string) => {
-//   return await supabase.from('tasks').delete().eq('task_uid', uid)
-// }
+export const softDeleteRecordQuery = async (uid: string) => {
+  await supabase.from('tasks').select('*').update().eq('task_uid', uid)
+}
 
 /**
  * The following doesn't work.

@@ -28,7 +28,13 @@ export const calculateElapsedTime = (
   if (toDateStr === undefined || isNaN(to.getTime())) to = new Date(Date.now())
 
   if (from > to) {
-    throw new Error('Cannot calculate elapsed time if from greater than to')
+    // throw new Error(
+    //   `Cannot calculate elapsed time if from greater than to. from=<${fromDateStr}> ; to=<${toDateStr}>`,
+    // )
+    console.warn(
+      `Cannot calculate elapsed time if from greater than to. from=<${fromDateStr}> ; to=<${toDateStr}>`,
+    )
+    return 'Start is greater than End. Please adjust values.'
   }
   // console.log('calculateElapsedTime> from and to', from, to)
 
