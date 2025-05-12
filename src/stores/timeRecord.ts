@@ -5,15 +5,14 @@ import {
   createRecordQuery,
   updateRecordQuery,
   type AllRecordsWithProjectOrTaskType,
-  type SingleRecordWithProjectOrTaskType,
+  type TimeRecordWithProjectOrTaskType,
 } from '@/services/supabase-records-queries'
 import type { PostgrestError } from '@supabase/supabase-js'
 import { useMemoize } from '@vueuse/core'
-import type { RecordRequestNew } from '@/types/RecordRequestNew'
 import { toISOStringWithTimezone } from '@/utils/date-format'
-import type { Record } from '@/types/Record'
+import type { TimeRecord } from '@/types/TimeRecord'
 
-export const useRecordStore = defineStore('Records-store', () => {
+export const useRecordStore = defineStore('Time-records-store', () => {
   const GET_METHODS_EXPIRATION = 900 // 15 min
   const _recordsLastFetchTime = ref<CacheValidationKeyInfo>({})
   const records = ref<AllRecordsWithProjectOrTaskType | null>()
@@ -71,7 +70,7 @@ export const useRecordStore = defineStore('Records-store', () => {
     _validateCacheRecords(_forceRefreshOnRecords())
   }
 
-  const addRecord = async (newRecord: RecordRequestNew) => {
+  const addRecord = async (newRecord: TimeRecordRequestNew) => {
     const { data, error, status } = await createRecordQuery(newRecord)
     if (error) {
       useErrorStore().setError({ error, customCode: status })
@@ -79,7 +78,7 @@ export const useRecordStore = defineStore('Records-store', () => {
     _validateCacheRecords(true)
     return data
   }
-  const updateRecord = async (updatedRecord: SingleRecordWithProjectOrTaskType | Record) => {
+  const updateRecord = async (updatedRecord: TimeRecordWithProjectOrTaskType | TimeRecord) => {
     const { projects, tasks, record_uid, ...RecordProps } = updatedRecord
     RecordProps.ended_at = toISOStringWithTimezone(new Date())
     RecordProps.updated_at = toISOStringWithTimezone(new Date())

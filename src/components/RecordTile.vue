@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
-import type { RecordRequestNew } from '@/types/RecordRequestNew'
+import type { TimeRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
+import type { TimeRecordRequestNew } from '@/types/TimeRecordRequestNew'
 import { hexToRgb, getContrastColor } from '@/utils/color-helper'
 
 const { record = null, recording = false } = defineProps<{
-  record?: SingleRecordWithProjectOrTaskType | RecordRequestNew | null
+  record?: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null
   recording?: boolean
 }>()
 const emits = defineEmits<{
   (
     event: '@track-new-record',
-    sourceRecord: SingleRecordWithProjectOrTaskType | RecordRequestNew | null,
+    sourceRecord: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null,
   ): void
   (event: '@stop-recording'): void
 }>()
@@ -21,11 +21,11 @@ const textColorOnRecording = computed(() => {
   return contrastColor
 })
 
-const stopRecording = (record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null) => {
+const stopRecording = (record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null) => {
   console.log(record)
   emits('@stop-recording')
 }
-const trackNewRecord = (record: RecordRequestNew) => {
+const trackNewRecord = (record: TimeRecordRequestNew) => {
   console.log(record)
   emits('@track-new-record', record)
 }
@@ -36,7 +36,7 @@ const editedRecordUid = ref<string | undefined>(undefined)
 const editedRecordProjectUid = ref<string | undefined>(undefined)
 const editedRecordTaskUid = ref<string | undefined>(undefined)
 const prepareEditingRecord = (
-  record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null,
+  record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null,
 ) => {
   editedRecordUid.value = ''
   editedRecordProjectUid.value = record?.projects?.project_uid

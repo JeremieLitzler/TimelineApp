@@ -1,21 +1,20 @@
 <script setup lang="ts">
 import { useElapsedTime } from '@/composables/timeElapsed'
 import { DateFormatPresets } from '@/enums/DateFormatPresets'
-import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
-import type { Record } from '@/types/Record'
-import type { RecordRequestNew } from '@/types/RecordRequestNew'
+import type { TimeRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
+import type { TimeRecordRequestNew } from '@/types/TimeRecordRequestNew'
 import { formatDateToStr, toISOStringWithTimezone } from '@/utils/date-format'
 import { calculateElapsedTime } from '@/utils/time-calculator'
 
 const { record = null, recording = false } = defineProps<{
-  record?: SingleRecordWithProjectOrTaskType | RecordRequestNew | null
+  record?: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null
   recording?: boolean
 }>()
 
 const emits = defineEmits<{
-  (event: '@stop', record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null): void
-  (event: '@start', record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null): void
-  (event: '@edit', record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null): void
+  (event: '@stop', record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null): void
+  (event: '@start', record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null): void
+  (event: '@edit', record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null): void
 }>()
 
 let intervalId = ref<number | NodeJS.Timeout>(0)
@@ -41,7 +40,7 @@ const startingNewRecord = ref(false)
 const recordStore = useRecordStore()
 const startRecording = async () => {
   startingNewRecord.value = true
-  const newRecord: RecordRequestNew = {
+  const newRecord: TimeRecordRequestNew = {
     started_at: toISOStringWithTimezone(new Date()),
     projects: record?.projects,
     tasks: record?.tasks,
@@ -53,7 +52,7 @@ const startRecording = async () => {
 const stopRecording = async () => {
   // console.log('stopRecording for', record)
   record!.ended_at = toISOStringWithTimezone(new Date())
-  await recordStore.addRecord(record as RecordRequestNew)
+  await recordStore.addRecord(record as TimeRecordRequestNew)
   // console.log('updatedRecord', updatedRecord)
   clearInterval(intervalId.value)
   emits('@stop', record)

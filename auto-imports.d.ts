@@ -17,13 +17,13 @@ declare global {
   const CardFooter: typeof import('./src/components/ui/card/index')['CardFooter']
   const CardHeader: typeof import('./src/components/ui/card/index')['CardHeader']
   const CardTitle: typeof import('./src/components/ui/card/index')['CardTitle']
+  const Constants: typeof import('./src/types/DatabaseTypes')['Constants']
   const EffectScope: typeof import('vue')['EffectScope']
   const Input: typeof import('./src/components/ui/input/index')['Input']
   const Label: typeof import('./src/components/ui/label/index')['Label']
   const Notification: typeof import('./src/types/Notification')['default']
   const NotificationAddRequest: typeof import('./src/types/NotificationAddRequest')['default']
   const PropsAppLoginForm: typeof import('./src/types/PropsAppLoginForm')['default']
-  const Record: typeof import('./src/types/Record')['Record']
   const RouterPathEnum: typeof import('./src/types/RouterPathEnum')['RouterPathEnum']
   const Separator: typeof import('./src/components/ui/separator/index')['Separator']
   const Sheet: typeof import('./src/components/ui/sheet/index')['Sheet']
@@ -45,25 +45,18 @@ declare global {
   const TableHead: typeof import('./src/components/ui/table/index')['TableHead']
   const TableHeader: typeof import('./src/components/ui/table/index')['TableHeader']
   const TableRow: typeof import('./src/components/ui/table/index')['TableRow']
+  const TimeRecord: typeof import('./src/types/TimeRecord')['TimeRecord']
   const UserLoginRequest: typeof import('./src/types/UserLoginRequest')['default']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
-  const afterAll: (typeof import('vitest'))['afterAll']
-  const afterEach: (typeof import('vitest'))['afterEach']
-  const assert: (typeof import('vitest'))['assert']
   const avatarVariant: typeof import('./src/components/ui/avatar/index')['avatarVariant']
-  const beforeAll: (typeof import('vitest'))['beforeAll']
-  const beforeEach: (typeof import('vitest'))['beforeEach']
   const buttonVariants: typeof import('./src/components/ui/button/index')['buttonVariants']
-  const chai: (typeof import('vitest'))['chai']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
   const customRef: typeof import('vue')['customRef']
   const defineAsyncComponent: typeof import('vue')['defineAsyncComponent']
   const defineComponent: typeof import('vue')['defineComponent']
   const defineStore: typeof import('pinia')['defineStore']
-  const describe: (typeof import('vitest'))['describe']
   const effectScope: typeof import('vue')['effectScope']
-  const expect: (typeof import('vitest'))['expect']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const h: typeof import('vue')['h']
@@ -72,7 +65,6 @@ declare global {
   const isReactive: typeof import('vue')['isReactive']
   const isReadonly: typeof import('vue')['isReadonly']
   const isRef: typeof import('vue')['isRef']
-  const it: (typeof import('vitest'))['it']
   const markRaw: typeof import('vue')['markRaw']
   const nextTick: typeof import('vue')['nextTick']
   const onActivated: typeof import('vue')['onActivated']
@@ -101,8 +93,6 @@ declare global {
   const shallowRef: typeof import('vue')['shallowRef']
   const sheetVariants: typeof import('./src/components/ui/sheet/index')['sheetVariants']
   const storeToRefs: typeof import('pinia')['storeToRefs']
-  const suite: (typeof import('vitest'))['suite']
-  const test: (typeof import('vitest'))['test']
   const toRaw: typeof import('vue')['toRaw']
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']
@@ -113,6 +103,7 @@ declare global {
   const useAuthStore: typeof import('./src/stores/auth')['useAuthStore']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
+  const useElapsedTime: typeof import('./src/composables/timeElapsed')['useElapsedTime']
   const useErrorStore: typeof import('./src/stores/error')['useErrorStore']
   const useFormError: typeof import('./src/composables/formError')['useFormError']
   const useId: typeof import('vue')['useId']
@@ -122,15 +113,13 @@ declare global {
   const usePageStore: typeof import('./src/stores/page')['usePageStore']
   const useProfileStore: typeof import('./src/stores/profile')['useProfileStore']
   const useProjectsStore: typeof import('./src/stores/project')['useProjectsStore']
-  const useRecordStore: typeof import('./src/stores/record')['useRecordStore']
+  const useRecordStore: typeof import('./src/stores/timeRecord')['useRecordStore']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
   const useSlots: typeof import('vue')['useSlots']
   const useSlug: typeof import('./src/composables/slug')['useSlug']
   const useTaskStore: typeof import('./src/stores/task')['useTaskStore']
   const useTemplateRef: typeof import('vue')['useTemplateRef']
-  const vi: (typeof import('vitest'))['vi']
-  const vitest: (typeof import('vitest'))['vitest']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
@@ -211,12 +200,6 @@ declare global {
   export type { ProjectRecordWithRpc } from './src/types/ProjectRecordWithRpc'
   import('./src/types/ProjectRecordWithRpc')
   // @ts-ignore
-  export type { Record } from './src/types/Record'
-  import('./src/types/Record')
-  // @ts-ignore
-  export type { RecordRequestNew } from './src/types/RecordRequestNew'
-  import('./src/types/RecordRequestNew')
-  // @ts-ignore
   export type { RegistrationData } from './src/types/RegistrationData'
   import('./src/types/RegistrationData')
   // @ts-ignore
@@ -240,6 +223,12 @@ declare global {
   // @ts-ignore
   export type { TaskRecordWithRpc } from './src/types/TaskRecordWithRpc'
   import('./src/types/TaskRecordWithRpc')
+  // @ts-ignore
+  export type { TimeRecord } from './src/types/TimeRecord'
+  import('./src/types/TimeRecord')
+  // @ts-ignore
+  export type { TimeRecordRequestNew } from './src/types/TimeRecordRequestNew'
+  import('./src/types/TimeRecordRequestNew')
   // @ts-ignore
   export type { UniqueConstraintTask } from './src/types/UniqueTaskConstraint'
   import('./src/types/UniqueTaskConstraint')

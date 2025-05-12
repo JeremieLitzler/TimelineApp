@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { Form as VeeForm } from 'vee-validate'
 
-import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
+import type { TimeRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
 import type { FormDataEditRecord } from '@/types/FormDataEditRecord'
 import type { FormSelectOption } from '@/types/FormSelectOption'
-import type { RecordRequestNew } from '@/types/RecordRequestNew'
+import type { TimeRecordRequestNew } from '@/types/TimeRecordRequestNew'
 import { formatDateStr } from '@/utils/date-format'
 import { DateFormatPresets } from '@/enums/DateFormatPresets'
 import { useElapsedTime } from '@/composables/timeElapsed'
 
 const { record = null } = defineProps<{
-  record: SingleRecordWithProjectOrTaskType | RecordRequestNew | null
+  record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null
 }>()
 const sheetOpen = defineModel<boolean>()
 const initialForm = {

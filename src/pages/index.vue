@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { SingleRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
-import type { RecordRequestNew } from '@/types/RecordRequestNew'
+import type { TimeRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
+import type { TimeRecordRequestNew } from '@/types/TimeRecordRequestNew'
 
 usePageStore().pageData.title = 'Timeline'
 
@@ -10,8 +10,8 @@ const { records } = storeToRefs(recordStore)
 await recordStore.getRecords()
 
 const recordBeingTracked = ref(false)
-const newRecord = ref<RecordRequestNew | null>(null)
-const trackNewRecord = (record: RecordRequestNew) => {
+const newRecord = ref<TimeRecordRequestNew | null>(null)
+const trackNewRecord = (record: TimeRecordRequestNew) => {
   if (record) {
     newRecord.value = record
     recordBeingTracked.value = !recordBeingTracked.value
