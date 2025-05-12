@@ -57,6 +57,8 @@ describe('time-calculator > calculateElapsedTime', () => {
   it('should throw error because from greater than to', () => {
     const startDate = '2025-03-13T01:30:00'
     const endDate = '2025-03-13T00:00:00'
+    // TODO: adjust this test.
+    // On Apr 4 2025, I changed the behavior: return string instead throw ex.
     expect(() => calculateElapsedTime(startDate, endDate)).toThrowError('Cannot calculate elapsed')
   })
 })

@@ -18,6 +18,7 @@ const initialForm = {
     formatDateStr(record?.started_at, DateFormatPresets.InputDateTimeLocalFull).value ??
     new Date(Date.now()),
   ended_at: formatDateStr(record?.ended_at, DateFormatPresets.InputDateTimeLocalFull).value ?? '',
+  record_uid: record?.record_uid,
   project_uid: record?.projects?.project_uid,
   task_uid: record?.tasks?.task_uid,
 }
@@ -52,6 +53,8 @@ const setTasksOptions = async () => {
   if (form.value.project_uid === undefined) {
     return
   }
+  console.log('getting tasks for', form.value.project_uid)
+
   await taskStore.getTasksByProject(form.value.project_uid)
   if (!tasksByProject.value) return
 
@@ -72,18 +75,27 @@ onUnmounted(() => {
   form.value = initialForm
 })
 
+const refreshTaskSelect = async () => {
+  console.log('refreshTaskSelect...')
+  selectOptions.value.tasks = []
+  await setTasksOptions()
+}
+
 const submitRecordChanges = async () => {
   if (form.value.record_uid) {
     console.log('existing record => save it')
     await recordStore.updateRecord(form.value)
   } else {
-    // unsaved record => update state
-    // recordStore.updateUnsavedRecord(form.value)
+    console.info('Record is not yet in the database...')
   }
-  // const parentSelected =
-  //   projects.value &&
-  //   projects.value.find((element) => element.project_uid.toString() === form.value.project_uid)
-  // await projectStore.refreshProject(parentSelected?.slug!)
+  sheetOpen.value = false
+}
+
+const deleteRecord = async () => {
+  if (form.value.record_uid) {
+    console.log('existing record => delete it')
+    await recordStore.deleteRecord(form.value)
+  }
   sheetOpen.value = false
 }
 </script>
@@ -116,6 +128,7 @@ const submitRecordChanges = async () => {
           label="Project"
           placeholder="Select an Project"
           rules="required"
+          @change="refreshTaskSelect"
         >
           <option value="" disabled>Select a project</option>
           <option
@@ -146,6 +159,7 @@ const submitRecordChanges = async () => {
         </app-form-field>
         <button type="submit" class="btn btn-primary">Save</button>
       </vee-form>
+      <button v-if="record?.record_uid" class="btn btn-danger" @click="deleteRecord">Delete</button>
     </SheetContent>
   </Sheet>
 </template>
