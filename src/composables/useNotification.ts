@@ -9,7 +9,7 @@ export default function useNotification() {
   const addNotification = ({
     message,
     timeout = 5000,
-    type = NotificationType.Info,
+    type = NotificationType.VALUES.info,
   }: NotificationAddRequest) => {
     const notificationId = uniqueIdHelper().newUniqueId
     notifications.value.push({ id: notificationId, message, type })

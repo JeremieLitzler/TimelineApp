@@ -1,7 +1,7 @@
-import { NotificationType } from '@/enums/NotificationType';
+import { type NotificationType } from '@/enums/NotificationType'
 
 export default interface Notification {
-  message: string;
-  timeout?: number | null;
-  type: NotificationType;
+  message: string
+  timeout?: number | null
+  type: NotificationType
 }

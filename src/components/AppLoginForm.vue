@@ -82,7 +82,7 @@ const login = async () => {
   if (!captchaPassed.value) {
     useNotification().addNotification({
       message: captchaErrorMessage.value,
-      type: NotificationType.Error,
+      type: NotificationType.VALUES.error,
     })
   } else {
     emits('@login', {
