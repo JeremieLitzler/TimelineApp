@@ -95,7 +95,7 @@ export const useRecordStore = defineStore('Time-records-store', () => {
     return data
   }
 
-  const deleteRecord = async (record: SingleRecordWithProjectOrTaskType | Record) => {
+  const deleteRecord = async (record: TimeRecordWithProjectOrTaskType | TimeRecord) => {
     const softDeleteRecord = {
       ...record,
       deleted: true,
