@@ -14,11 +14,13 @@ export const createRecordQuery = async (record: TimeRecordRequestNew) => {
 export const updateRecordQuery = async (record = {}, uid: string) => {
   console.log('supabase-records-queries > updateRecordQuery called...')
   const result = await supabase.from('records').update(record).eq('record_uid', uid)
+  console.log('updateRecordQuery>result', result.data, result.status)
+
   return result // {count, data, error, status}
 }
-export const softDeleteRecordQuery = async (uid: string) => {
-  await supabase.from('tasks').select('*').update().eq('task_uid', uid)
-}
+// export const softDeleteRecordQuery = async (uid: string) => {
+//   await supabase.from('tasks').select('*').update().eq('task_uid', uid)
+// }
 
 /**
  * The following doesn't work.

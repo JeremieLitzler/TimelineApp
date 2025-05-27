@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { TimeRecordWithProjectOrTaskType } from '@/services/supabase-records-queries'
+import type {
+  AllRecordsWithProjectOrTaskType,
+  TimeRecordWithProjectOrTaskType,
+} from '@/services/supabase-records-queries'
 import type { TimeRecordRequestNew } from '@/types/TimeRecordRequestNew'
 
 usePageStore().pageData.title = 'Timeline'
@@ -16,6 +19,24 @@ const trackNewRecord = (record: TimeRecordRequestNew) => {
     newRecord.value = record
     recordBeingTracked.value = !recordBeingTracked.value
   }
+}
+
+const handleRecordDeleted = (record: TimeRecordWithProjectOrTaskType) => {
+  const deletedRecordIndex = records.value?.findIndex((r) => r.record_uid === record.record_uid)
+  if (deletedRecordIndex !== -1) {
+    records.value?.splice(deletedRecordIndex!, 1)
+  }
+  // recordStore.getRecords()
+}
+const handleRecordUpdated = (record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew) => {
+  recordStore.getRecords()
+}
+
+const handleStopRecording = async () => {
+  console.log('Timeline page>handleStopRecording called...')
+
+  recordBeingTracked.value = false
+  await recordStore.getRecords()
 }
 </script>
 <template>
@@ -37,7 +58,9 @@ const trackNewRecord = (record: TimeRecordRequestNew) => {
       v-for="record in records"
       :record
       @@track-new-record="trackNewRecord"
-      @@stop-recording="recordBeingTracked = false"
+      @@stop-recording="handleStopRecording"
+      @@record-deleted="handleRecordDeleted(record)"
+      @@record-updated="handleRecordUpdated"
     >
     </RecordTile>
   </section>

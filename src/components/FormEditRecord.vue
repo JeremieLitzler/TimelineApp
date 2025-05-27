@@ -12,6 +12,12 @@ import { useElapsedTime } from '@/composables/timeElapsed'
 const { record = null } = defineProps<{
   record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null
 }>()
+
+const emits = defineEmits<{
+  (event: '@updated', record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew): void
+  (event: '@deleted'): void
+}>()
+
 const sheetOpen = defineModel<boolean>()
 const initialForm = {
   started_at:
@@ -89,14 +95,18 @@ const submitRecordChanges = async () => {
     console.info('Record is not yet in the database...')
   }
   sheetOpen.value = false
+  emits('@updated', form.value)
 }
 
 const deleteRecord = async () => {
   if (form.value.record_uid) {
     console.log('existing record => delete it')
     await recordStore.deleteRecord(form.value)
+    console.log('existing record => deleted!')
   }
   sheetOpen.value = false
+  console.log('FormDataEditRecord > emitting deleted!')
+  emits('@deleted')
 }
 </script>
 <template>
@@ -105,6 +115,7 @@ const deleteRecord = async () => {
       <SheetHeader>
         <SheetTitle>Record</SheetTitle>
       </SheetHeader>
+      <p class="text-muted">uid: {{ record?.record_uid }}</p>
       <p class="text-2xl text-center font-bold mt-8">{{ recordTimeElapsed }}</p>
       <vee-form @submit="submitRecordChanges">
         <app-form-field

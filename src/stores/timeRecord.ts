@@ -8,31 +8,31 @@ import {
   type TimeRecordWithProjectOrTaskType,
 } from '@/services/supabase-records-queries'
 import type { PostgrestError } from '@supabase/supabase-js'
-import { useMemoize } from '@vueuse/core'
+// import { useMemoize } from '@vueuse/core'
 import { toISOStringWithTimezone } from '@/utils/date-format'
 import type { TimeRecord } from '@/types/TimeRecord'
 
 export const useRecordStore = defineStore('Time-records-store', () => {
   const GET_METHODS_EXPIRATION = 900 // 15 min
   const _recordsLastFetchTime = ref<CacheValidationKeyInfo>({})
-  const records = ref<AllRecordsWithProjectOrTaskType | null>()
+  const records = ref<AllRecordsWithProjectOrTaskType | TimeRecordWithProjectOrTaskType[] | null>()
 
-  const _validateCacheRecords = async (forceRefresh: boolean = false) =>
-    validateCache<
-      typeof records,
-      typeof allRecordsWithProjectOrTaskQuery,
-      typeof _loadRecords,
-      PostgrestError
-    >({
-      key: StoreCacheKey.AllRecords,
-      loaderFn: _loadRecords,
-      query: allRecordsWithProjectOrTaskQuery,
-      reference: records,
-      lastFetchInfo: {
-        ..._recordsLastFetchTime.value[StoreCacheKey.AllRecords],
-        forceRefresh,
-      },
-    })
+  // const _validateCacheRecords = async (forceRefresh: boolean = false) =>
+  //   validateCache<
+  //     typeof records,
+  //     typeof allRecordsWithProjectOrTaskQuery,
+  //     typeof _loadRecords,
+  //     PostgrestError
+  //   >({
+  //     key: StoreCacheKey.AllRecords,
+  //     loaderFn: _loadRecords,
+  //     query: allRecordsWithProjectOrTaskQuery,
+  //     reference: records,
+  //     lastFetchInfo: {
+  //       ..._recordsLastFetchTime.value[StoreCacheKey.AllRecords],
+  //       forceRefresh,
+  //     },
+  //   })
   const _forceRefreshOnRecords = () => {
     return timeStampExpired({
       timeStamp: _recordsLastFetchTime.value[StoreCacheKey.AllRecords].timeStamp,
@@ -41,11 +41,11 @@ export const useRecordStore = defineStore('Time-records-store', () => {
   }
   const clearCache = () => {
     console.log('called clearCache')
-    _loadRecords.clear()
+    // _loadRecords.clear()
     console.log('cleared records')
     // console.log('cleared individual records')
   }
-  const _loadRecords = useMemoize(async (key: string) => {
+  const _loadRecords = async (key: string) => {
     const { data, error, status } = await allRecordsWithProjectOrTaskQuery
 
     // console.log(data)
@@ -57,7 +57,7 @@ export const useRecordStore = defineStore('Time-records-store', () => {
     }
 
     return data
-  })
+  }
   const _groupByDate = () => {
     // Take all records and group them into a dictionnary with the key being the date
     // And the value being an array of records.
@@ -67,7 +67,7 @@ export const useRecordStore = defineStore('Time-records-store', () => {
   const getRecords = async () => {
     records.value = null
     records.value = await _loadRecords(StoreCacheKey.AllRecords)
-    _validateCacheRecords(_forceRefreshOnRecords())
+    // _validateCacheRecords(_forceRefreshOnRecords())
   }
 
   const addRecord = async (newRecord: TimeRecordRequestNew) => {
@@ -75,7 +75,7 @@ export const useRecordStore = defineStore('Time-records-store', () => {
     if (error) {
       useErrorStore().setError({ error, customCode: status })
     }
-    _validateCacheRecords(true)
+    // _validateCacheRecords(true)
     return data
   }
   const updateRecord = async (updatedRecord: TimeRecordWithProjectOrTaskType | TimeRecord) => {
@@ -91,7 +91,7 @@ export const useRecordStore = defineStore('Time-records-store', () => {
     }
     console.log('saved new record end date...')
 
-    _validateCacheRecords(true)
+    // _validateCacheRecords(true)
     return data
   }
 

@@ -13,6 +13,8 @@ const emits = defineEmits<{
     sourceRecord: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null,
   ): void
   (event: '@stop-recording'): void
+  (event: '@record-deleted'): void
+  (event: '@record-updated', record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew): void
 }>()
 
 /**
@@ -27,7 +29,7 @@ const textColorOnRecording = computed(() => {
 })
 
 const stopRecording = (record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew | null) => {
-  console.log(record)
+  console.log('RecordTile>stopRecording', record)
   emits('@stop-recording')
 }
 const trackNewRecord = (record: TimeRecordRequestNew) => {
@@ -48,6 +50,16 @@ const prepareEditingRecord = (
   editedRecordTaskUid.value = record?.tasks?.task_uid
   openRecordEditModal.value = true
 }
+
+// Handle record deletion
+const handleRecordDeleted = () => {
+  console.log('Record deleted, emitting to parent')
+  emits('@record-deleted')
+}
+const handleRecordUpdated = (record: TimeRecordWithProjectOrTaskType | TimeRecordRequestNew) => {
+  console.log('Record updated, emitting to parent')
+  emits('@record-updated', record)
+}
 </script>
 <template>
   <hr />
@@ -67,7 +79,12 @@ const prepareEditingRecord = (
       @@edit="prepareEditingRecord"
     />
   </article>
-  <FormDataEditRecordLazy v-model="openRecordEditModal" :record />
+  <FormDataEditRecordLazy
+    v-model="openRecordEditModal"
+    :record
+    @@deleted="handleRecordDeleted"
+    @@updated="handleRecordUpdated"
+  />
 </template>
 
 <style scoped></style>

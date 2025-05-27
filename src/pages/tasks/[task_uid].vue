@@ -13,7 +13,7 @@ watch(
   () => {
     console.log('watch sub-entity', taskWithProject.value)
 
-    usePageStore().pageData.title = `Sub-Project: ${taskWithProject.value?.name || 'Not Sub-Project found'}`
+    usePageStore().pageData.title = `Sub-Task: ${taskWithProject.value?.name || `Not Sub-Task found for ${task_uid}`}`
   },
 )
 
